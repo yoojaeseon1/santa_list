@@ -4,18 +4,20 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.NOTIFICATION_SERVICE
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
+import com.android.santa_list.databinding.FragmentContactDetailBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+const val TAG = "ContactDetailFragment"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,6 +28,7 @@ class ContactDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var _binding: FragmentContactDetailBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,9 @@ class ContactDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact_detail, container, false)
+        _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
+        return _binding?.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,35 +55,39 @@ class ContactDetailFragment : Fragment() {
 
 
 
-        //알림버튼 함수-------공사중
-//        fun btnNotificationListener() {
-//            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-//            val builder: NotificationCompat.Builder
-//            //버전체크
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                val channelId = "one-channel"
-//                val channelName = "My Channel One"
-//                val channel = NotificationChannel(
-//                    channelId,
-//                    channelName,
-//                    NotificationManager.IMPORTANCE_DEFAULT
-//                )
-//                //채널 등록
-//                manager.createNotificationChannel(channel)
-//                //채널을 이용하여 빌더 생성
-//                builder = NotificationCompat.Builder(this, channelId)
-//            } else {
-//                //버전 이하
-//                builder = NotificationCompat.Builder(this)
-//            }
-//            builder.run {
-//                setSmallIcon(R.drawable.ic_alert_on)
-//                setWhen(System.currentTimeMillis())
-//                setContentTitle(getString(R.string.christmas))
-//                setContentText(getString(R.string.christmas))
-//            }
-//            manager.notify(1, builder.build())
-//        }
+//        알림버튼 함수-------공사중
+        _binding?.detailBtnMessage?.setOnClickListener {
+
+        Log.d(TAG,"클릭")
+            val manager = requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val builder: NotificationCompat.Builder
+            //버전체크
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channelId = "one-channel"
+                val channelName = "My Channel One"
+                val channel = NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+                //채널 등록
+                manager.createNotificationChannel(channel)
+                //채널을 이용하여 빌더 생성
+                builder = NotificationCompat.Builder(this.requireContext(), channelId)
+            } else {
+                //버전 이하
+                builder = NotificationCompat.Builder(this.requireContext())
+            }
+            builder.run {
+                setSmallIcon(R.drawable.ic_alert_on)
+                setWhen(System.currentTimeMillis())
+                setContentTitle(getString(R.string.christmas))
+                setContentText(getString(R.string.christmas))
+            }
+            manager.notify(1, builder.build())
+        }
+
+
 
 
 
