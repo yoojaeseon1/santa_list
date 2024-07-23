@@ -51,5 +51,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.android.support:recyclerview-v7:28.0.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }

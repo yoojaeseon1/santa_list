@@ -11,7 +11,7 @@
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/sel_btn_contact"
+        android:background="@drawable/sel_btn_detail_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,13 +19,24 @@
         android:id="@+id/tv_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:text="이름"
         android:textSize="20dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
         app:layout_constraintStart_toEndOf="@+id/iv_item_image"
         app:layout_constraintTop_toTopOf="@+id/iv_item_image" />
 
+    <ImageView
+        android:id="@+id/iv_item_star"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_empt_star"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="262dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_item_name"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_image" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
