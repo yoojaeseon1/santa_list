@@ -11,9 +11,7 @@ import com.android.santa_list.databinding.ActivityContactBinding
 
 class ContactActivity : AppCompatActivity() {
 
-    private val binding: ActivityContactBinding by lazy {
-        ActivityContactBinding.inflate(layoutInflater)
-    }
+    private val binding: ActivityContactBinding by lazy { ActivityContactBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +22,7 @@ class ContactActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
 
         // 작업할 때는 해당 Fragment로 바꿔서 진행해주세요.
         setFragment(ContactListFragment())
