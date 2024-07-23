@@ -14,12 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
+import com.google.android.material.tabs.TabLayout
 
 class ContactActivity : AppCompatActivity() {
 
-    private val binding: ActivityContactBinding by lazy {
-        ActivityContactBinding.inflate(layoutInflater)
-    }
+    private val binding: ActivityContactBinding by lazy { ActivityContactBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +30,28 @@ class ContactActivity : AppCompatActivity() {
             insets
         }
 
-        // 작업할 때는 해당 Fragment로 바꿔서 진행해주세요.
-        setFragment(ContactDetailFragment())
+        binding.run{
+            tabLayout.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    when(tab!!.position){
+                        // 0번째 탭 눌렀을 때
+                        0 -> {
+                            setFragment(ContactListFragment())
+                            toolBar.action.setImageResource(R.drawable.ic_more)
+                        }
+                        // 1번째 탭 눌렀을 때
+                        1-> {
+                            setFragment(MyPageFragment())
+                            toolBar.action.setImageResource(R.drawable.ic_edit)
+                        }
+                    }
+                }
 
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            })
+        }
     }
 
     private fun setFragment(fragment: ContactDetailFragment) {
