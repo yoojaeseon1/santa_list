@@ -3,6 +3,16 @@
 
 
 
+    <!--Contact Detail Title-->
+    <style name="detail_title">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!--Contact Detail Data-->
+    <style name="detail_data">
+        <item name="android:textSize">16sp</item>
+    </style>
 
     <!--Contact Detail Button-->
     <style name="detail_btn" parent="Widget.AppCompat.Button.Borderless">
