@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#77000000"
+    android:gravity="center">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linear_dialog"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="28dp">
+
+        <LinearLayout
+            android:id="@+id/dialog_iv_container"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:background="@drawable/sel_btn_detail_bg"
+            android:orientation="vertical"
+            android:padding="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/dialog_iv"
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                android:layout_gravity="center"
+                android:background="@drawable/sel_btn_iv_bg"
+                android:clipToOutline="true"
+                android:contentDescription="@string/dialog_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/image_choco" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/detail_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:autofillHints=""
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_name"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_iv_container" />
+
+        <EditText
+            android:id="@+id/detail_et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_tel"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_name" />
+
+        <EditText
+            android:id="@+id/detail_et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_email"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_tel"
+            tools:ignore="TextFields" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
+            style="@style/detail_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/stroke"
+            android:gravity="center"
+            android:text="@string/dialog_cancle"
+            android:textAllCaps="false"
+            android:textColor="@color/grey"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/btnQuit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_pregent_date" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnQuit"
+            style="@style/detail_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnBack"
+            app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+        <TextView
+            android:id="@+id/detail_pregent_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_pregent_date"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_email"
+            tools:layout_editor_absoluteX="120dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

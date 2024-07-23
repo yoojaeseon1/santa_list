@@ -1,14 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mypageFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyPageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/mypage_tv_set_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_email" />
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/mypage_btn_message"
+        style="@style/detail_btn"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:text="@string/btn_message"
+        app:layout_constraintEnd_toStartOf="@+id/mypage_btn_call"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_iv_profile" />
+
+    <TextView
+        android:id="@+id/mypage_tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/email"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_set_phone_number" />
+
+    <TextView
+        android:id="@+id/mypage_tv_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/phone_number"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_btn_message" />
+
+    <TextView
+        android:id="@+id/mypage_tv_set_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_phone_number" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/mypage_btn_call"
+        style="@style/detail_btn"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:text="@string/btn_call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_iv_profile" />
+
+    <ImageView
+        android:id="@+id/mypage_iv_profile"
+        android:layout_width="0dp"
+        android:layout_height="267dp"
+        android:contentDescription="@string/mypage_profile_image_desc"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_choco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mypage_tv_christmas"
+        android:layout_width="264dp"
+        android:layout_height="36dp"
+        android:background="@drawable/gradient_christmas_bg"
+        android:gravity="center"
+        android:text="@string/christmas"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/mypage_iv_fade"
+        android:layout_width="0dp"
+        android:layout_height="267dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/gradient_fade_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/mypage_iv_favorite"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="15dp"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_jjanggu"
+        app:layout_constraintBottom_toTopOf="@+id/mypage_btn_message"
+        app:layout_constraintEnd_toStartOf="@id/mypage_tv_name"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/mypage_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_iv_favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mypage_iv_favorite"
+        app:layout_constraintTop_toTopOf="@+id/mypage_iv_favorite" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
