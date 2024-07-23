@@ -1,10 +1,16 @@
 package com.android.santa_list
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.NOTIFICATION_SERVICE
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,6 +45,45 @@ class ContactDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+
+
+        //알림버튼 함수-------공사중
+//        fun btnNotificationListener() {
+//            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+//            val builder: NotificationCompat.Builder
+//            //버전체크
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                val channelId = "one-channel"
+//                val channelName = "My Channel One"
+//                val channel = NotificationChannel(
+//                    channelId,
+//                    channelName,
+//                    NotificationManager.IMPORTANCE_DEFAULT
+//                )
+//                //채널 등록
+//                manager.createNotificationChannel(channel)
+//                //채널을 이용하여 빌더 생성
+//                builder = NotificationCompat.Builder(this, channelId)
+//            } else {
+//                //버전 이하
+//                builder = NotificationCompat.Builder(this)
+//            }
+//            builder.run {
+//                setSmallIcon(R.drawable.ic_alert_on)
+//                setWhen(System.currentTimeMillis())
+//                setContentTitle(getString(R.string.christmas))
+//                setContentText(getString(R.string.christmas))
+//            }
+//            manager.notify(1, builder.build())
+//        }
+
+
+
+
+
     }
 
     companion object {
@@ -60,4 +105,8 @@ class ContactDetailFragment : Fragment() {
                 }
             }
     }
+
+
+
+
 }

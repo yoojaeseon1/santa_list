@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ContactDetailFragment">
 
-
     <ImageView
         android:id="@+id/detail_iv_profile"
         android:layout_width="0dp"
@@ -28,7 +27,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/detail_iv_fade"
@@ -68,22 +66,24 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_btn_message"
         style="@style/detail_btn"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginStart="16dp"
         android:text="@string/btn_message"
         app:layout_constraintEnd_toStartOf="@+id/detail_btn_call"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_btn_call"
         style="@style/detail_btn"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/btn_call"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
@@ -93,9 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/phone_number"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/detail_title"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_btn_message" />
 
@@ -104,7 +102,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/phone_number"
-        android:textSize="14sp"
+        style="@style/detail_data"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number" />
 
@@ -114,9 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/email"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/detail_title"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number" />
 
@@ -125,7 +121,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/email"
-        android:textSize="14sp"
+        style="@style/detail_data"
+
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_email" />
 
@@ -135,11 +132,44 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/present_date"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/detail_title"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email" />
+
+
+    <TextView
+        android:id="@+id/detail_tv_set_present_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/present_date"
+        style="@style/detail_data"
+
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
+
+    <!--   알림버튼   -->
+
+    <ImageView
+        android:id="@+id/detail_iv_alert"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/sel_detail_alert_ic"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_tv_present_date"
+        app:layout_constraintStart_toEndOf="@+id/detail_tv_present_date"
+        app:layout_constraintTop_toTopOf="@+id/detail_tv_present_date" />
+
+    <TextView
+        android:id="@+id/detail_tv_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alert_off"
+        android:textColor="@drawable/sel_alert_detail_text"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_iv_alert"
+        app:layout_constraintStart_toEndOf="@+id/detail_iv_alert"
+        app:layout_constraintTop_toTopOf="@+id/detail_iv_alert" />
 
     <TextView
         android:id="@+id/detail_tv_sonjul_go"
@@ -147,11 +177,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/sonjul_go"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/detail_title"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_present_date" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler_view_sonjul_go"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
 
     <TextView
         android:id="@+id/detail_tv_wish_list"
@@ -163,7 +200,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
