@@ -2,4 +2,26 @@
     <string name="app_name">santa_list</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Common-->
+    <string name="phone_number">전화번호</string>
+    <string name="email">이메일</string>
+    <string name="present_date">선물해 줄 날짜</string>
+    <string name="sonjul_go">입금 확인된 친구</string>
+    <string name="present_history">내가 해준 선물</string>
+    <string name="wish_list">친구의 위시리스트</string>
+
+    <!--Contact List Fragment-->
+
+    <!--Contact Detail Fragment-->
+
+
+    <string name="btn_message">문자 보내기</string>
+    <string name="btn_call">전화 하기</string>
+    <string name="christmas">곧 산타로서 깜짝 선물을 할 때가 왔어요!&#160;&#160;</string>
+
+    <!--Add Contact Dialog-->
+
+    <!--My Page Fragment-->
+
 </resources>

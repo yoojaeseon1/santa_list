@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+    <!--Contact Detail Button-->
+    <style name="detail_btn" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/sel_btn_detail_bg</item>
+        <item name="android:textColor">@drawable/sel_btn_detail_text</item>
+        <item name="android:text">@string/btn</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+</resources>

@@ -1,14 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ContactDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/detail_iv_profile"
+        android:layout_width="0dp"
+        android:layout_height="267dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_jjanggu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detail_tv_christmas"
+        android:layout_width="264dp"
+        android:layout_height="36dp"
+        android:background="@drawable/gradient_christmas_bg"
+        android:gravity="center"
+        android:text="@string/christmas"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/detail_iv_fade"
+        android:layout_width="0dp"
+        android:layout_height="267dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/gradient_fade_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/detail_iv_favorite"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_jjanggu"
+        app:layout_constraintBottom_toTopOf="@+id/detail_btn_message"
+        app:layout_constraintEnd_toStartOf="@id/detail_tv_name"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/detail_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_iv_favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_iv_favorite"
+        app:layout_constraintTop_toTopOf="@+id/detail_iv_favorite" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_btn_message"
+        style="@style/detail_btn"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:text="@string/btn_message"
+        app:layout_constraintEnd_toStartOf="@+id/detail_btn_call"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_btn_call"
+        style="@style/detail_btn"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:text="@string/btn_call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
+
+    <TextView
+        android:id="@+id/detail_tv_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/phone_number"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_btn_message" />
+
+    <TextView
+        android:id="@+id/detail_tv_set_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number" />
+
+    <TextView
+        android:id="@+id/detail_tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/email"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number" />
+
+    <TextView
+        android:id="@+id/detail_tv_set_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_email" />
+
+    <TextView
+        android:id="@+id/detail_tv_present_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/present_date"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email" />
+
+    <TextView
+        android:id="@+id/detail_tv_sonjul_go"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/sonjul_go"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
+
+    <TextView
+        android:id="@+id/detail_tv_wish_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/wish_list"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
