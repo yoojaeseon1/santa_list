@@ -1,13 +1,18 @@
 package com.android.santa_list
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -49,15 +54,11 @@ class ContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFragment(fragment: Fragment) {
+    private fun setFragment(fragment: ContactDetailFragment) {
         supportFragmentManager.commit {
             replace(R.id.frame_layout, fragment)
             setReorderingAllowed(true)
             addToBackStack("")
         }
-    }
-
-    private fun onSelectTabLayout() {
-
     }
 }
