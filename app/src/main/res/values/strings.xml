@@ -14,11 +14,16 @@
     <!--Contact List Fragment-->
 
     <!--Contact Detail Fragment-->
+
     <string name="alert_on"><u>알림ON</u></string>
     <string name="alert_off"><u>알림OFF</u></string>
-    <string name="gift">선물하러 가기!</string>
+    <string name="gift">선물하러 가기</string>
+    <string name="gift_shop">어디에서 선물을 고를까요?</string>
+    <string name="gift_shop_kakao">카카오톡 선물하기</string>
+    <string name="gift_shop_coupang">쿠팡 선물하기</string>
     <string name="btn_message">문자 보내기</string>
     <string name="btn_call">전화 하기</string>
+    <string name="christmas_eve">크리스마스 이브입니다</string>
     <string name="christmas">곧 산타로서 깜짝 선물을 할 때가 왔어요!&#160;&#160;</string>
 
 
