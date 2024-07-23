@@ -34,16 +34,13 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         }
     }
 
-    private fun setFragment(fragment: ContactDetailFragment) {
+    private fun setFragment(fragment: Fragment) {
         supportFragmentManager.commit {
             replace(R.id.frame_layout, fragment)
             setReorderingAllowed(true)
             addToBackStack("")
         }
     }
-<<<<<<< Updated upstream
-=======
-
     override fun onTabSelected(tab: TabLayout.Tab?) {
         when(tab!!.position){
             // 0번째 탭 눌렀을 때
@@ -66,5 +63,4 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     override fun onTabReselected(tab: TabLayout.Tab?) {
         TODO("Not yet implemented")
     }
->>>>>>> Stashed changes
 }
