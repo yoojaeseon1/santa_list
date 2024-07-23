@@ -21,6 +21,7 @@
     </FrameLayout>
 
     <include
+        android:id="@+id/tab_layout"
         layout="@layout/tab_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
