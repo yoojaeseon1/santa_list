@@ -29,7 +29,7 @@
     <string name="dialog_email">이메일</string>
     <string name="dialog_cancle">취소</string>
     <string name="dialog_ok">확인</string>
-    <string name="dialog_pregent_date">선물 해줄 날짜</string>
+    <string name="dialog_gift_date">선물 해줄 날짜</string>
     <string name="mypage_profile_image_desc">mypage_profile_image</string>
 
     <!--My Page Fragment-->

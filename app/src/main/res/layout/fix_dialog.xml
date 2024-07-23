@@ -8,11 +8,11 @@
     android:gravity="center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linear_dialog"
-        android:layout_width="320dp"
+        android:id="@+id/layout_fix_dialog"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#ffffff"
+        android:background="@drawable/shape_dialog_bg"
         android:paddingHorizontal="20dp"
         android:paddingVertical="28dp">
 
@@ -53,6 +53,7 @@
             android:inputType="text"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialog_iv_container" />
@@ -68,6 +69,7 @@
             android:inputType="text"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
             app:layout_constraintStart_toStartOf="@+id/detail_et_name"
             app:layout_constraintTop_toBottomOf="@+id/detail_et_name" />
@@ -83,6 +85,7 @@
             android:inputType="text"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
             app:layout_constraintStart_toStartOf="@+id/detail_et_name"
             app:layout_constraintTop_toBottomOf="@+id/detail_et_tel"
@@ -103,7 +106,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/btnQuit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_pregent_date" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_gift_date" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnQuit"
@@ -122,15 +125,15 @@
             app:layout_constraintTop_toTopOf="@+id/btnBack" />
 
         <TextView
-            android:id="@+id/detail_pregent_date"
+            android:id="@+id/detail_gift_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/sel_dialog_et_bg"
-            android:hint="@string/dialog_pregent_date"
+            android:hint="@string/dialog_gift_date"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/detail_et_email"
             tools:layout_editor_absoluteX="120dp" />
 

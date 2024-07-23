@@ -8,6 +8,27 @@
     tools:context=".MyPageFragment">
 
     <TextView
+        android:id="@+id/mypage_tv_set_gift_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/present_date"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_gift_date" />
+
+    <TextView
+        android:id="@+id/mypage_tv_gift_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/present_date"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mypage_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_set_email" />
+
+    <TextView
         android:id="@+id/mypage_tv_set_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -21,6 +42,7 @@
         style="@style/detail_btn"
         android:layout_width="160dp"
         android:layout_height="40dp"
+        android:layout_marginTop="16dp"
         android:text="@string/btn_message"
         app:layout_constraintEnd_toStartOf="@+id/mypage_btn_call"
         app:layout_constraintHorizontal_bias="0.5"
@@ -66,10 +88,11 @@
         android:layout_width="160dp"
         android:layout_height="40dp"
         android:text="@string/btn_call"
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_btn_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/mypage_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_iv_profile" />
+        app:layout_constraintTop_toTopOf="@+id/mypage_btn_message" />
 
     <ImageView
         android:id="@+id/mypage_iv_profile"
@@ -79,18 +102,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/image_choco"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/mypage_tv_christmas"
-        android:layout_width="264dp"
-        android:layout_height="36dp"
-        android:background="@drawable/gradient_christmas_bg"
-        android:gravity="center"
-        android:text="@string/christmas"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

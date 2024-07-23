@@ -32,12 +32,12 @@ class ContactActivity : AppCompatActivity() {
         }
 
         // 작업할 때는 해당 Fragment로 바꿔서 진행해주세요.
-        setFragment(ContactDetailFragment())
+        setFragment(MyPageFragment())
 
 
     }
 
-    private fun setFragment(fragment: ContactDetailFragment) {
+    private fun setFragment(fragment: MyPageFragment) {
         supportFragmentManager.commit {
             replace(R.id.frame_layout, fragment)
             setReorderingAllowed(true)
