@@ -8,4 +8,8 @@
     <color name="stroke">#F3F3F3</color>
     <color name="highlight">#F9CD5C</color>
     <color name="green">#567B69</color>
+
+    <color name="selected">#FFFFFFFF</color>
+    <color name="unselected">#80FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

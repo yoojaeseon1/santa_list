@@ -32,5 +32,9 @@ data class User(val id: String,
                 val contacts: MutableList<User> = mutableListOf(),
                 val wish_list: MutableList<Present> = mutableListOf(),
                 var event_date: LocalDateTime = LocalDateTime.now(),
-                val created_date: LocalDateTime = LocalDateTime.now(), 
+
+                val presented: Boolean = false,
+                val willPresent: Boolean = false,
+
+                val created_date: LocalDateTime = LocalDateTime.now(),
                 var updated_date: LocalDateTime? = null) : Parcelable
