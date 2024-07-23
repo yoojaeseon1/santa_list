@@ -16,8 +16,7 @@ import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
 
-class ContactActivity : AppCompatActivity() {
-
+class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private val binding: ActivityContactBinding by lazy { ActivityContactBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,34 +30,37 @@ class ContactActivity : AppCompatActivity() {
         }
 
         binding.run{
-            tabLayout.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when(tab!!.position){
-                        // 0번째 탭 눌렀을 때
-                        0 -> {
-                            setFragment(ContactListFragment())
-                            toolBar.action.setImageResource(R.drawable.ic_more)
-                        }
-                        // 1번째 탭 눌렀을 때
-                        1-> {
-                            setFragment(MyPageFragment())
-                            toolBar.action.setImageResource(R.drawable.ic_edit)
-                        }
-                    }
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {}
-            })
+            tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
         }
     }
 
-    private fun setFragment(fragment: ContactDetailFragment) {
+    private fun setFragment(fragment: Fragment) {
         supportFragmentManager.commit {
             replace(R.id.frame_layout, fragment)
             setReorderingAllowed(true)
             addToBackStack("")
         }
+    }
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        when(tab!!.position){
+            // 0번째 탭 눌렀을 때
+            0 -> {
+                setFragment(ContactListFragment())
+                binding.toolBar.action.setImageResource(R.drawable.ic_more)
+            }
+            // 1번째 탭 눌렀을 때
+            1-> {
+                setFragment(MyPageFragment())
+                binding.toolBar.action.setImageResource(R.drawable.ic_edit)
+            }
+        }
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+        TODO("Not yet implemented")
     }
 }
