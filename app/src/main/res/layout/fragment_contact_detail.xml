@@ -7,28 +7,27 @@
     tools:context=".ContactDetailFragment">
 
 
-
     <ImageView
         android:id="@+id/detail_iv_profile"
         android:layout_width="0dp"
         android:layout_height="267dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_jingjing"
+        android:src="@drawable/image_jjanggu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/detail_tv_christmas"
         android:layout_width="264dp"
         android:layout_height="36dp"
-        android:text="@string/christmas"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:gravity="center"
         android:background="@drawable/gradient_christmas_bg"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:gravity="center"
+        android:text="@string/christmas"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -38,15 +37,15 @@
         android:scaleType="centerCrop"
         android:src="@drawable/gradient_fade_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/detail_iv_favorite"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        android:scaleType="centerCrop"
         android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/image_jjanggu"
         app:layout_constraintBottom_toTopOf="@+id/detail_btn_message"
         app:layout_constraintEnd_toStartOf="@id/detail_tv_name"
@@ -92,78 +91,79 @@
         android:id="@+id/detail_tv_phone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/grey"
-        android:textStyle="bold"
         android:text="@string/phone_number"
-        app:layout_constraintTop_toBottomOf="@+id/detail_btn_message"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_btn_message" />
+
     <TextView
         android:id="@+id/detail_tv_set_phone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
         android:text="@string/phone_number"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number" />
 
     <TextView
         android:id="@+id/detail_tv_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/grey"
         android:text="@string/email"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number" />
 
     <TextView
         android:id="@+id/detail_tv_set_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
         android:text="@string/email"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_email"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_email" />
 
     <TextView
         android:id="@+id/detail_tv_present_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/grey"
         android:text="@string/present_date"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email" />
 
     <TextView
         android:id="@+id/detail_tv_sonjul_go"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/grey"
         android:text="@string/sonjul_go"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
 
     <TextView
         android:id="@+id/detail_tv_wish_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/grey"
         android:text="@string/wish_list"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message" />
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
