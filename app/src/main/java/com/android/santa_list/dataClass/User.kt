@@ -23,11 +23,18 @@ import java.time.LocalDateTime
  */
 @Parcelize
 data class User(val id: String,
+                var name: String,
                 var phone_number: String,
                 var email: String,
+                var group: UserGroup,
                 var profile_image: Int,
-                val my_contacts: MutableList<MyContact> = mutableListOf(),
+                var is_starred: Boolean = false,
+                val contacts: MutableList<User> = mutableListOf(),
                 val wish_list: MutableList<Present> = mutableListOf(),
                 var event_date: LocalDateTime = LocalDateTime.now(),
-                val created_date: LocalDateTime = LocalDateTime.now(), 
+
+                val presented: Boolean = false,
+                val willPresent: Boolean = false,
+
+                val created_date: LocalDateTime = LocalDateTime.now(),
                 var updated_date: LocalDateTime? = null) : Parcelable
