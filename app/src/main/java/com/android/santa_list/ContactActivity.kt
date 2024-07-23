@@ -32,6 +32,8 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         binding.run{
             tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
         }
+        //임시개발용
+        setFragment(ContactDetailFragment())
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -57,10 +59,10 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab?) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 }
