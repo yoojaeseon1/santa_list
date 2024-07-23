@@ -1,6 +1,7 @@
 package com.android.santa_list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -8,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.android.santa_list.databinding.ActivityContactBinding
+import com.google.android.material.tabs.TabLayout
 
 class ContactActivity : AppCompatActivity() {
 
@@ -23,10 +25,28 @@ class ContactActivity : AppCompatActivity() {
             insets
         }
 
+        binding.run{
+            tabLayout.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    when(tab!!.position){
+                        // 0번째 탭 눌렀을 때
+                        0 -> {
+                            setFragment(ContactListFragment())
+                            toolBar.action.setImageResource(R.drawable.ic_more)
+                        }
+                        // 1번째 탭 눌렀을 때
+                        1-> {
+                            setFragment(MyPageFragment())
+                            toolBar.action.setImageResource(R.drawable.ic_edit)
+                        }
+                    }
+                }
 
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-        // 작업할 때는 해당 Fragment로 바꿔서 진행해주세요.
-        setFragment(ContactListFragment())
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            })
+        }
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -37,4 +57,7 @@ class ContactActivity : AppCompatActivity() {
         }
     }
 
+    private fun onSelectTabLayout() {
+
+    }
 }

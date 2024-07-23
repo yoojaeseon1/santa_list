@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="8dp">
+    android:paddingVertical="8dp"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/logo"
@@ -37,7 +38,7 @@
         android:layout_height="24dp"
         android:contentDescription="action"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_edit"
+        android:src="@drawable/ic_more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
