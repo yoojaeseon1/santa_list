@@ -35,7 +35,6 @@ data class User(val id: String,
 
                 val presented: Boolean = false,
                 val willPresent: Boolean = false,
-                val group: String = "none", // "family", "school", "company", "friend", "none"
 
                 val created_date: LocalDateTime = LocalDateTime.now(),
                 var updated_date: LocalDateTime? = null) : Parcelable
