@@ -16,15 +16,18 @@ object Dummy {
     val bora = User("id4", "김보라", "010-1255-5655", "bora@gmail.com", UserGroup.SCHOOL, R.drawable.image_bora)
     val ingi = User("id5", "조인기", "010-1266-4567", "ingi@gmail.com", UserGroup.SCHOOL, R.drawable.image_ingi)
 
-    val present1 = Present("케이크")
-    val present2 = Present("편지")
-    val present3 = Present("초코케이크")
-    val present4 = Present("골드바")
-    val present5 = Present("가습기")
+    var loginedUser = jaeseon
+
+    val present1 = Present("케이크", R.drawable.image_chulsu)
+    val present2 = Present("편지", R.drawable.image_yoori)
+    val present3 = Present("초코케이크", R.drawable.image_ddoong)
+    val present4 = Present("골드바", R.drawable.image_jjanggu)
+    val present5 = Present("가습기", R.drawable.image_hoon)
     val present6 = Present("휴지")
     val present7 = Present("피규어")
     val present8 = Present("아이패드")
     val present9 = Present("캣타워")
+    val addPresent = Present("선물추가", R.drawable.image_add_present)
 
 
     init {
@@ -34,10 +37,23 @@ object Dummy {
         presents.add(present3)
         presents.add(present4)
         presents.add(present5)
-        presents.add(present6)
-        presents.add(present7)
-        presents.add(present8)
-        presents.add(present9)
+//        presents.add(present6)
+//        presents.add(present7)
+//        presents.add(present8)
+//        presents.add(present9)
+
+//        hwamin.wish_list.add(present1)
+//        hwamin.wish_list.add(present2)
+//        hwamin.wish_list.add(present3)
+//        hwamin.wish_list.add(present4)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present5)
 
         jaeseon.contacts.add(hwamin)
         jaeseon.contacts.add(hyehyun)
@@ -65,6 +81,7 @@ object Dummy {
         ingi.contacts.add(bora)
 
         presentLogs.add(PresentLog(jaeseon, hwamin, present1, created_date =  LocalDateTime.of(2022,5,1,4,0,0)))
+        presentLogs.add(PresentLog(jaeseon, hwamin, present3, created_date =  LocalDateTime.of(2022,5,1,4,0,0)))
         presentLogs.add(PresentLog(jaeseon, hyehyun, present2, created_date =  LocalDateTime.of(2023,1,2,4,0,0)))
         presentLogs.add(PresentLog(jaeseon, bora, present3, created_date =  LocalDateTime.of(2024,2,3,4,0,0)))
         presentLogs.add(PresentLog(jaeseon, ingi, present4, created_date =  LocalDateTime.of(2022,3,4,4,0,0)))

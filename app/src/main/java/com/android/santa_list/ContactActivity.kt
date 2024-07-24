@@ -32,7 +32,9 @@ class ContactActivity : AppCompatActivity() {
         }
 
         // 작업할 때는 해당 Fragment로 바꿔서 진행해주세요.
-        setFragment(ContactDetailFragment())
+        val contactDetailFragment = ContactDetailFragment.newInstance(Dummy.hwamin)
+
+        setFragment(contactDetailFragment)
 
 
     }
