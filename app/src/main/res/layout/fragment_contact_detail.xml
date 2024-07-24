@@ -93,8 +93,6 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
 
-
-
     <TextView
         android:id="@+id/detail_tv_phone_number"
         android:layout_width="0dp"

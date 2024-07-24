@@ -19,7 +19,10 @@ import androidx.appcompat.app.AppCompatActivity.NOTIFICATION_SERVICE
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.android.santa_list.dataClass.Dummy
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactDetailBinding
+import com.android.santa_list.repository.PresentLogRepository
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,10 +57,6 @@ class ContactDetailFragment : Fragment() {
 
 
     private var friend: User? = null
-    private var param1: String? = null
-    private var param2: String? = null
-    private var _binding: FragmentContactDetailBinding? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +109,21 @@ class ContactDetailFragment : Fragment() {
 //                setContentIntent(pendingIntent)
                 setAutoCancel(true)
 
+
+
+            }
+            manager.notify(1, builder.build())
+        }
+
+       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+           if (!NotificationManagerCompat.from(this.requireContext()).areNotificationsEnabled()) {
+               val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                   putExtra(Settings.EXTRA_APP_PACKAGE, `package`)
+               }
+               startActivity(intent)
+           }
+       }
+
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
@@ -150,22 +164,6 @@ class ContactDetailFragment : Fragment() {
         binding.detailRecyclerViewSonjulGo.adapter = receivedPresentAdapter
         binding.detailRecyclerViewPresentHistory.adapter = givePresentAdapter
         binding.detailRecyclerWishPresent.adapter = wishPresentAdapter
-
-            }
-            manager.notify(1, builder.build())
-        }
-
-       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-           if (!NotificationManagerCompat.from(this.requireContext()).areNotificationsEnabled()) {
-               val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                   putExtra(Settings.EXTRA_APP_PACKAGE, `package`)
-               }
-               startActivity(intent)
-           }
-       }
-        when {
-
-        }
         
 //        알림버튼 함수-------공사중
 //        fun btnNotificationListener() {
