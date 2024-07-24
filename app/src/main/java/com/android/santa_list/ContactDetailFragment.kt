@@ -79,8 +79,12 @@ class ContactDetailFragment : Fragment() {
 
 //        알림버튼-------공사중
         _binding?.detailIvAlert?.setOnClickListener {
-//            val intent = Intent(this.requireContext(), ContactDetailFragment::class.java)
-//            val pendingIntent = PendingIntent.getActivity(this.requireContext(), 0, intent, 0)
+            val intent = Intent(context, ContactDetailFragment::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra("Fragment", "ContactDetailFragment")
+            }
+
+            val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
             val manager =
                 requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder
@@ -106,7 +110,8 @@ class ContactDetailFragment : Fragment() {
                 setWhen(System.currentTimeMillis())
                 setContentTitle(getString(R.string.christmas_eve))
                 setContentText(getString(R.string.christmas))
-//                setContentIntent(pendingIntent)
+                setContentIntent(pendingIntent)
+
                 setAutoCancel(true)
 
 
@@ -123,6 +128,7 @@ class ContactDetailFragment : Fragment() {
                startActivity(intent)
            }
        }
+
 
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
@@ -164,41 +170,6 @@ class ContactDetailFragment : Fragment() {
         binding.detailRecyclerViewSonjulGo.adapter = receivedPresentAdapter
         binding.detailRecyclerViewPresentHistory.adapter = givePresentAdapter
         binding.detailRecyclerWishPresent.adapter = wishPresentAdapter
-        
-//        알림버튼 함수-------공사중
-//        fun btnNotificationListener() {
-//            val manager = requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-//            val builder: NotificationCompat.Builder
-//            //버전체크
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                val channelId = "one-channel"
-//                val channelName = "My Channel One"
-//                val channel = NotificationChannel(
-//                    channelId,
-//                    channelName,
-//                    NotificationManager.IMPORTANCE_DEFAULT
-//                )
-//                //채널 등록
-//                manager.createNotificationChannel(channel)
-//                //채널을 이용하여 빌더 생성
-//                builder = NotificationCompat.Builder(requireContext(), channelId)
-//            } else {
-//                //버전 이하
-//                builder = NotificationCompat.Builder(requireContext())
-//            }
-//            builder.run {
-//                setSmallIcon(R.drawable.ic_alert_on)
-//                setWhen(System.currentTimeMillis())
-//                setContentTitle(getString(R.string.christmas))
-//                setContentText(getString(R.string.christmas))
-//            }
-//            manager.notify(1, builder.build())
-//        }
-//
-//        binding.detailBtnMessage.setOnClickListener {
-//            Log.d(TAG,"클릭")
-//            btnNotificationListener()
-//        }
 
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
