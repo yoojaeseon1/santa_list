@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.santa_list.dataClass.Dummy
+import com.android.santa_list.dataClass.UserList
 import com.android.santa_list.databinding.FragmentContactListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,8 +27,10 @@ class ContactListFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentContactListBinding
+
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
+    private val contactList : MutableList<UserList> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +47,43 @@ class ContactListFragment : Fragment() {
     ): View? {
 
         binding = FragmentContactListBinding.inflate(inflater, container, false)
+        return binding.root
 
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact_list, container, false)
+//         Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_contact_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         recyclerView = binding.contactRecyclerView
-//        adapter = MainRecyclerViewAdapter()
+        adapter = MainRecyclerViewAdapter(contactList)
 
+        adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                val user = contactList[position]
+                user.is_starred = !user.is_starred
+//                adapter.notifyItemChanged(position)
+            }
+        }
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+
+        loadContactList()
 
     }
+
+    private fun loadContactList() {
+        contactList.add(UserList(R.drawable.image_jaesun, "유재선", false))
+        contactList.add(UserList(R.drawable.image_hwamin, "이화민", false))
+        contactList.add(UserList(R.drawable.image_hyehyun, "정혜현", false))
+        contactList.add(UserList(R.drawable.image_bora, "김보라", false))
+        contactList.add(UserList(R.drawable.image_ingi, "조인기", false))
+
+//        adapter.notifyDataSetChanged()
+    }
+
 
     companion object {
         /**

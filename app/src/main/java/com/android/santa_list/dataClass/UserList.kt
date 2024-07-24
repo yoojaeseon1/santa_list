@@ -9,3 +9,4 @@ data class UserList(
     var image : Int,
     var name: String,
     var is_starred : Boolean = false ) : Parcelable
+

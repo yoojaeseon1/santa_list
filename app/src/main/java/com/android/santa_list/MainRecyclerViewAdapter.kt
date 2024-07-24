@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.UserList
 import com.android.santa_list.databinding.FragmentContactListBinding
-import com.android.santa_list.databinding.ItemFriendsListBinding
+import com.android.santa_list.databinding.ItemUserListBinding
 
 class MainRecyclerViewAdapter (private val contact :MutableList<UserList>) : RecyclerView.Adapter<MainRecyclerViewAdapter.Holder>(){
 
@@ -17,38 +17,43 @@ class MainRecyclerViewAdapter (private val contact :MutableList<UserList>) : Rec
 
     var itemClick : ItemClick? = null
 
+    inner class Holder(private val binding: ItemUserListBinding):
+        RecyclerView.ViewHolder(binding.root) {
+        val image = binding.ivItemImage
+        val name = binding.tvItemName
+        val is_starred = binding.ivItemStar
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = ItemFriendsListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val contact = contact[position]
-
-        holder.image.setImageResource(position)
-        holder.name.text = contact.name
-        holder.bookmark.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
-
-
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
 
-        holder.bookmark.setOnClickListener {
+        val contact = contact[position]
+
+        holder.image.setImageResource(contact.image)
+        holder.name.text = contact.name
+        holder.is_starred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+
+
+        holder.is_starred.setOnClickListener {
             contact.is_starred = !contact.is_starred
             notifyItemChanged(position)
         }
     }
 
-    inner class Holder(val binding: ItemFriendsListBinding):
-        RecyclerView.ViewHolder(binding.root) {
-        val image = binding.ivItemImage
-        val name = binding.tvItemName
-        val bookmark = binding.ivItemStar
-    }
-
     override fun getItemCount(): Int {
         return contact.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
 
