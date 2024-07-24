@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ContactDetailFragment">
 
-    <include
-        android:id="@+id/toolbar"
-    layout="@layout/common_toolbar" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detail_upper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-
-    <ImageView
+        <ImageView
         android:id="@+id/detail_iv_profile"
         android:layout_width="0dp"
         android:layout_height="267dp"
@@ -19,7 +23,7 @@
         android:src="@drawable/image_jjanggu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/detail_tv_christmas"
@@ -31,7 +35,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/detail_iv_fade"
@@ -41,7 +45,7 @@
         android:src="@drawable/gradient_fade_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/detail_iv_favorite"
@@ -92,173 +96,197 @@
         app:layout_constraintStart_toEndOf="@+id/detail_btn_message"
         app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/detail_tv_phone_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/phone_number"
-        style="@style/detail_title"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_btn_message" />
+        <!--스크롤뷰-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_upper">
 
-    <TextView
-        android:id="@+id/detail_tv_set_phone_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/phone_number"
-        style="@style/detail_data"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/detail_tv_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/email"
-        style="@style/detail_title"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number" />
+            <TextView
+                android:id="@+id/detail_tv_phone_number"
+                style="@style/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/phone_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/detail_tv_set_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        style="@style/detail_data"
+            <TextView
+                android:id="@+id/detail_tv_set_phone_number"
+                style="@style/detail_data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_number"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_phone_number" />
 
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_email" />
+            <TextView
+                android:id="@+id/detail_tv_email"
+                style="@style/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/email"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_phone_number" />
 
-    <TextView
-        android:id="@+id/detail_tv_present_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/present_date"
-        style="@style/detail_title"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email" />
+            <TextView
+                android:id="@+id/detail_tv_set_email"
+                style="@style/detail_data"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_email" />
 
-
-    <TextView
-        android:id="@+id/detail_tv_set_present_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/present_date"
-        style="@style/detail_data"
-
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
-
-    <!--   알림버튼   -->
-
-    <ImageView
-        android:id="@+id/detail_iv_alert"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="12dp"
-        android:src="@drawable/sel_detail_alert_ic"
-        app:layout_constraintBottom_toBottomOf="@+id/detail_tv_set_present_date"
-        app:layout_constraintStart_toEndOf="@+id/detail_tv_set_present_date"
-        app:layout_constraintTop_toTopOf="@+id/detail_tv_set_present_date" />
-
-    <TextView
-        android:id="@+id/detail_tv_alert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/alert_off"
-        android:textColor="@drawable/sel_alert_detail_text"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/detail_iv_alert"
-        app:layout_constraintStart_toEndOf="@+id/detail_iv_alert"
-        app:layout_constraintTop_toTopOf="@+id/detail_iv_alert" />
-
-    <TextView
-        android:id="@+id/detail_tv_gift"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gift"
-        android:textColor="@drawable/sel_alert_detail_text"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/detail_tv_present_date"
-        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call" />
-
-    <ImageView
-        android:id="@+id/detail_iv_gift"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/ic_gift_grey"
-        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
-        app:layout_constraintStart_toStartOf="@+id/detail_tv_gift"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_gift" />
+            <TextView
+                android:id="@+id/detail_tv_present_date"
+                style="@style/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/present_date"
+                app:layout_constraintBottom_toTopOf="@+id/detail_tv_set_present_date"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_email" />
 
 
-    <TextView
-        android:id="@+id/detail_tv_sonjul_go"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/sonjul_go"
-        style="@style/detail_title"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_present_date" />
+            <TextView
+                android:id="@+id/detail_tv_set_present_date"
+                style="@style/detail_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/present_date"
+                app:layout_constraintEnd_toStartOf="@+id/detail_iv_alert"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detail_recycler_view_sonjul_go"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"
-        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
-        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
+            <!--   알림버튼   -->
 
-    <TextView
-        android:id="@+id/detail_tv_present_history"
-        style="@style/detail_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/present_history"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
+            <ImageView
+                android:id="@+id/detail_iv_alert"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/sel_detail_alert_ic"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_tv_set_present_date"
+                app:layout_constraintStart_toEndOf="@+id/detail_tv_set_present_date"
+                app:layout_constraintTop_toTopOf="@+id/detail_tv_set_present_date" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detail_recycler_view_present_history"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"
-        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
-        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_history" />
+            <TextView
+                android:id="@+id/detail_tv_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alert_off"
+                android:textColor="@drawable/sel_alert_detail_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_iv_alert"
+                app:layout_constraintStart_toEndOf="@+id/detail_iv_alert"
+                app:layout_constraintTop_toTopOf="@+id/detail_iv_alert" />
 
-    <TextView
-        android:id="@+id/detail_tv_wish_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/wish_list"
-        android:textColor="@color/grey"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_present_history" />
+            <TextView
+                android:id="@+id/detail_tv_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/gift"
+                android:textColor="@drawable/sel_alert_detail_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_tv_present_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/detail_tv_present_date" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detail_recycler_wish_present"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
-        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
-        app:layout_constraintTop_toBottomOf="@+id/detail_tv_wish_list"
-        app:spanCount="4" />
+            <ImageView
+                android:id="@+id/detail_iv_gift"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_gift_grey"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_gift"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_gift"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_gift" />
 
+            <TextView
+                android:id="@+id/detail_tv_sonjul_go"
+                style="@style/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sonjul_go"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_present_date" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/detail_recycler_view_sonjul_go"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go"
+                app:spanCount="4" />
+
+            <TextView
+                android:id="@+id/detail_tv_present_history"
+                style="@style/detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/present_history"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/detail_recycler_view_present_history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_history"
+                app:spanCount="4" />
+
+            <TextView
+                android:id="@+id/detail_tv_wish_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/wish_list"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_present_history" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/detail_recycler_wish_present"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
+                app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_wish_list"
+                app:spanCount="4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

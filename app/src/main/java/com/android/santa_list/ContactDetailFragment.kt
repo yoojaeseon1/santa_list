@@ -79,12 +79,12 @@ class ContactDetailFragment : Fragment() {
 
 //        알림버튼-------공사중
         _binding?.detailIvAlert?.setOnClickListener {
-            val intent = Intent(context, ContactDetailFragment::class.java).apply {
+            val intent = Intent(this.requireContext(), ContactActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 putExtra("Fragment", "ContactDetailFragment")
             }
 
-            val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+            val pendingIntent = PendingIntent.getActivity(this.requireContext(), 0, intent, 0)
             val manager =
                 requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder
