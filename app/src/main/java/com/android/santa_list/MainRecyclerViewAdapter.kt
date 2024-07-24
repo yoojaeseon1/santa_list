@@ -1,15 +1,13 @@
 package com.android.santa_list
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.santa_list.dataClass.UserList
-import com.android.santa_list.databinding.FragmentContactListBinding
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserListBinding
 
-class MainRecyclerViewAdapter (private val contact :MutableList<UserList>) : RecyclerView.Adapter<MainRecyclerViewAdapter.Holder>(){
+class MainRecyclerViewAdapter(private val contact: MutableList<User>) : RecyclerView.Adapter<MainRecyclerViewAdapter.Holder>(){
 
     interface ItemClick {
         fun onClick(view : View, position : Int)
@@ -37,7 +35,7 @@ class MainRecyclerViewAdapter (private val contact :MutableList<UserList>) : Rec
 
         val contact = contact[position]
 
-        holder.image.setImageResource(contact.image)
+        holder.image.setImageResource(contact.profile_image)
         holder.name.text = contact.name
         holder.is_starred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 

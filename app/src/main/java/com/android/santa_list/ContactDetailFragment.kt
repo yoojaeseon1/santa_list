@@ -124,7 +124,7 @@ class ContactDetailFragment : Fragment() {
            }
        }
 
-        val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
+        val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
                 val presentAddFragment = PresentAddFragment()
@@ -137,7 +137,7 @@ class ContactDetailFragment : Fragment() {
         receivedPresentAdapter.submitList(santaUtil.makePresentList(receivedPresents))
 
 
-        val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loginedUser)
+        val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
                 val presentAddFragment = PresentAddFragment()

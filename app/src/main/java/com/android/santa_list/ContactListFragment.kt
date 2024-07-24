@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.Dummy
-import com.android.santa_list.dataClass.UserList
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,7 +30,7 @@ class ContactListFragment : Fragment() {
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
-    private val contactList : MutableList<UserList> = mutableListOf()
+    private val contactList : MutableList<User> = Dummy.dummyUserList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,19 +70,17 @@ class ContactListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
-        loadContactList()
-
     }
 
-    private fun loadContactList() {
-        contactList.add(UserList(R.drawable.image_jaesun, "유재선", false))
-        contactList.add(UserList(R.drawable.image_hwamin, "이화민", false))
-        contactList.add(UserList(R.drawable.image_hyehyun, "정혜현", false))
-        contactList.add(UserList(R.drawable.image_bora, "김보라", false))
-        contactList.add(UserList(R.drawable.image_ingi, "조인기", false))
-
-//        adapter.notifyDataSetChanged()
-    }
+//    private fun loadContactList() {
+//        contactList.add(UserList(R.drawable.image_jaesun, "유재선", false))
+//        contactList.add(UserList(R.drawable.image_hwamin, "이화민", false))
+//        contactList.add(UserList(R.drawable.image_hyehyun, "정혜현", false))
+//        contactList.add(UserList(R.drawable.image_bora, "김보라", false))
+//        contactList.add(UserList(R.drawable.image_ingi, "조인기", false))
+//
+////        adapter.notifyDataSetChanged()
+//    }
 
 
     companion object {
