@@ -93,8 +93,6 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
 
-
-
     <TextView
         android:id="@+id/detail_tv_phone_number"
         android:layout_width="0dp"
@@ -214,10 +212,31 @@
         android:id="@+id/detail_recycler_view_sonjul_go"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4"
         app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
         app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go" />
+
+    <TextView
+        android:id="@+id/detail_tv_present_history"
+        style="@style/detail_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/present_history"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler_view_present_history"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="4"
+        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
+        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_history" />
 
     <TextView
         android:id="@+id/detail_tv_wish_list"
@@ -229,7 +248,17 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_message"
-        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_present_history" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detail_recycler_wish_present"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintEnd_toEndOf="@+id/detail_btn_call"
+        app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
+        app:layout_constraintTop_toBottomOf="@+id/detail_tv_wish_list"
+        app:spanCount="4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

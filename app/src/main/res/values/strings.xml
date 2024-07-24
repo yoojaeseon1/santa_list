@@ -11,6 +11,12 @@
     <string name="present_history">내가 해준 선물</string>
     <string name="wish_list">친구의 위시리스트</string>
 
+    <!--Menu Items-->
+    <string name="menu_item_list">리스트뷰로 보기</string>
+    <string name="menu_item_grid">그리드뷰로 보기</string>
+    <string name="menu_item_1">전화번호</string>
+    <string name="menu_item_2">전화번호</string>
+
     <!--Contact List Fragment-->
 
     <!--Contact Detail Fragment-->

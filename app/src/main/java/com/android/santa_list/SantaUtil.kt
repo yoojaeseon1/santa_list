@@ -1,5 +1,7 @@
 package com.android.santa_list
 
+import com.android.santa_list.dataClass.Dummy
+import com.android.santa_list.dataClass.Present
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -39,6 +41,24 @@ class SantaUtil {
      */
     fun makeDateFormat(date: LocalDateTime): String {
         return date.format(DateTimeFormatter.ofPattern("yyyy년 M월 dd일"))
+    }
+
+    fun makePresentList(presents: MutableList<Present>): MutableList<Present>{
+        if(presents.size <= 7) {
+            val subList = presents.toMutableList()
+            subList.add(Dummy.addPresent)
+
+            if(subList.size == 5)
+                subList.removeAt(subList.size - 2)
+
+            return subList
+        } else {
+            val subList = presents.subList(0, 7)
+            subList.add(Dummy.addPresent)
+
+            return subList
+        }
+
     }
 
 }

@@ -27,4 +27,5 @@ class PresentLog(val from: User,
     companion object {
         var idCount = 1
     }
+
 }
