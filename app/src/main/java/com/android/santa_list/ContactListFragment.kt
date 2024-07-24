@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
+import com.android.santa_list.databinding.ActivityContactBinding
 import com.android.santa_list.databinding.FragmentContactListBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,15 +24,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ContactListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var binding: FragmentContactListBinding
-
-    private lateinit var recyclerView : RecyclerView
+    private val binding: FragmentContactListBinding by lazy { FragmentContactListBinding.inflate(layoutInflater) }
+    lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
-    private val contactList : MutableList<User> = Dummy.dummyUserList()
+
+    private val contactList: MutableList<User> = Dummy.dummyUserList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,19 +39,13 @@ class ContactListFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentContactListBinding.inflate(inflater, container, false)
+    ): View {
         return binding.root
-
-//         Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_contact_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,19 +64,7 @@ class ContactListFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
     }
-
-//    private fun loadContactList() {
-//        contactList.add(UserList(R.drawable.image_jaesun, "유재선", false))
-//        contactList.add(UserList(R.drawable.image_hwamin, "이화민", false))
-//        contactList.add(UserList(R.drawable.image_hyehyun, "정혜현", false))
-//        contactList.add(UserList(R.drawable.image_bora, "김보라", false))
-//        contactList.add(UserList(R.drawable.image_ingi, "조인기", false))
-//
-////        adapter.notifyDataSetChanged()
-//    }
-
 
     companion object {
         /**

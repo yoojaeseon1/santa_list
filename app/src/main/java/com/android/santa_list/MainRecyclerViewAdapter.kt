@@ -1,5 +1,6 @@
 package com.android.santa_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,26 +8,50 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserListBinding
 
-class MainRecyclerViewAdapter(private val contact: MutableList<User>) : RecyclerView.Adapter<MainRecyclerViewAdapter.Holder>(){
+enum class CommonViewType(viewType: String) {
+    LINEAR("ONE_LINE_TEXT"),
+    GRID("TWO_LINE_TEXT"),
+}
 
+class MainRecyclerViewAdapter(private val contact: MutableList<User>) :
+    RecyclerView.Adapter<MainRecyclerViewAdapter.Holder>() {
     interface ItemClick {
-        fun onClick(view : View, position : Int)
+        fun onClick(view: View, position: Int)
     }
 
-    var itemClick : ItemClick? = null
+    var itemClick: ItemClick? = null
 
-    inner class Holder(private val binding: ItemUserListBinding):
+    inner class Holder(private val binding: ItemUserListBinding, viewType: CommonViewType) :
         RecyclerView.ViewHolder(binding.root) {
+
+
         val image = binding.ivItemImage
         val name = binding.tvItemName
-        val is_starred = binding.ivItemStar
+        val isStarred = binding.ivItemStar
     }
+
+    class GridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
+
+    class LinearViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding)
+        Log.d("viewType", "${viewType}")
+        val binding =
+            ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        when (viewType) {
+            CommonViewType.LINEAR.ordinal -> {
+                return Holder(binding, CommonViewType.LINEAR)
+            }
+
+            CommonViewType.GRID.ordinal -> {}
+            else -> {}
+        }
+        return Holder(binding, CommonViewType.LINEAR)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.itemView.setOnClickListener {
@@ -37,10 +62,9 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>) : Recycler
 
         holder.image.setImageResource(contact.profile_image)
         holder.name.text = contact.name
-        holder.is_starred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+        holder.isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
-
-        holder.is_starred.setOnClickListener {
+        holder.isStarred.setOnClickListener {
             contact.is_starred = !contact.is_starred
             notifyItemChanged(position)
         }
@@ -53,6 +77,4 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>) : Recycler
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 }

@@ -1,19 +1,10 @@
 package com.android.santa_list
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -41,6 +32,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             insets
         }
 
+
         // binding 관련된 코드들 추가할 때 여기서
         binding.run {
             tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
@@ -51,8 +43,8 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 if (currentFragment != null) {
                     when (currentFragment) {
                         is ContactListFragment -> {
-                            val popup: PopupMenu = PopupMenu(this@ContactActivity, it)
-                            onClickMore(popup)
+                            val popup = PopupMenu(this@ContactActivity, it)
+                            ContactViewModel().onClickMore(popup, currentFragment)
                         }
 
                         is MyPageFragment -> {
@@ -78,30 +70,6 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             setReorderingAllowed(true)
             addToBackStack("")
         }
-    }
-
-    private fun onClickMore(popup: PopupMenu) {
-        val inflater: MenuInflater = popup.menuInflater
-        inflater.inflate(R.menu.main_menu_option, popup.menu)
-
-        popup.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_item_list -> {
-                    Log.d("🤔 ??", "리스트 뷰 선택")
-                }
-
-                R.id.menu_item_grid -> {
-                    Log.d("🤔 ??", "그리드 뷰 선택")
-                }
-
-                else -> {
-                    Log.d("🤔 ??", "뭐여?")
-                }
-            }
-            false
-        }
-
-        popup.show()
     }
 
 
