@@ -1,13 +1,11 @@
 package com.android.santa_list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
@@ -84,7 +82,7 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
