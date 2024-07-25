@@ -26,7 +26,8 @@ class ContactListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var binding: FragmentContactListBinding
+    private var _binding: FragmentContactListBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
@@ -46,7 +47,7 @@ class ContactListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentContactListBinding.inflate(inflater, container, false)
+        _binding = FragmentContactListBinding.inflate(inflater, container, false)
         return binding.root
 
 //         Inflate the layout for this fragment
