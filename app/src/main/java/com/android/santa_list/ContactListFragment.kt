@@ -72,7 +72,6 @@ class ContactListFragment() : Fragment() {
             }
         }
 
-        //            toolBar.action.setOnClickListener {
         binding.toolBar.action.setOnClickListener {
             val popup = PopupMenu(context, it)
             onClickMore(popup)
@@ -108,11 +107,10 @@ class ContactListFragment() : Fragment() {
 
 
     private fun onClickMore(popup: PopupMenu) {
-        val linearLayoutManager: RecyclerView.LayoutManager =
+        val linearLayoutManager: LayoutManager =
             LinearLayoutManager(context)
-        val gridLayoutManager: RecyclerView.LayoutManager =
+        val gridLayoutManager: LayoutManager =
             GridLayoutManager(context, 4)
-
 
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.main_menu_option, popup.menu)
