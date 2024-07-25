@@ -1,9 +1,11 @@
 package com.android.santa_list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -98,6 +100,28 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
             is LinearViewHolder -> holder.bind(position)
             is GridViewHolder -> holder.bind(position)
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            // 아이템 이동 로직
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            // 오른쪽으로 스와이프 할 경우
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (direction == ItemTouchHelper.RIGHT) {
+                    val position = viewHolder.adapterPosition
+                    // 아이템 삭제 등의 처리
+                    Log.d("스와이핑!", "$position")
+                }
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     override fun getItemCount(): Int {
