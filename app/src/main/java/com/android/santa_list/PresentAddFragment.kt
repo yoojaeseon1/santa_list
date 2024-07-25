@@ -53,7 +53,7 @@ class PresentAddFragment : DialogFragment() {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    private val loginedUser = Dummy.loginedUser
+    private val loginedUser = Dummy.loggedInUser
 
     private val presentLogRepository = PresentLogRepository()
 
@@ -238,7 +238,7 @@ class PresentAddFragment : DialogFragment() {
 //        param3?.givePresentAdapter?.notifyDataSetChanged()
 //        param3?.wishPresentAdapter?.notifyDataSetChanged()
 
-        val receivedPresents = presentLogRepository.selectPresentList(param1!!, Dummy.loginedUser)
+        val receivedPresents = presentLogRepository.selectPresentList(param1!!, Dummy.loggedInUser)
 
 //        for (receivedPresent in receivedPresents) {
 //            Log.d("PresentAddFragment", "${receivedPresent}")
@@ -246,7 +246,7 @@ class PresentAddFragment : DialogFragment() {
 
         param3?.receivedPresentAdapter?.submitList(santaUtil.makePresentList(receivedPresents))
 
-        val givePresents = presentLogRepository.selectPresentList(Dummy.loginedUser, param1!!)
+        val givePresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, param1!!)
 
         param3?.givePresentAdapter?.submitList(santaUtil.makePresentList(givePresents))
 
