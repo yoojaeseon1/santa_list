@@ -4,19 +4,37 @@ import com.android.santa_list.R
 import java.time.LocalDateTime
 
 object Dummy {
+    fun dummyUserList(): MutableList<User> {
+        return mutableListOf(
+            jaeseon,
+            hwamin,
+            hyehyun,
+            bora,
+            ingi,
+            User("id6", "초코", "010-1234-5678", "choco_love@gmail.com", UserGroup.FAMILY, R.drawable.image_choco, is_starred = false),
+            User("id7", "훈이", "010-1234-5678", "hooon@gmail.com", UserGroup.FRIEND, R.drawable.image_hoon, is_starred = false),
+            User("id8", "뚱이", "010-1234-5678", "ddongddong2@gmail.com", UserGroup.NONE, R.drawable.image_ddoong, is_starred = false),
+            User("id9", "철수", "010-1234-5678", "chulsoooo@gmail.com", UserGroup.FRIEND, R.drawable.image_chulsu, is_starred = false),
+            User("id10", "흰둥이", "010-1234-5678", "white_dog@gmail.com", UserGroup.FAMILY, R.drawable.image_huindoong, is_starred = false),
+            User("id11", "짱구", "010-1234-5678", "crayon@gmail.com", UserGroup.FRIEND, R.drawable.image_jjanggu, is_starred = false),
+            User("id12", "스폰지밥", "010-1234-5678", "sponge@gmail.com", UserGroup.NONE, R.drawable.image_spongebob, is_starred = false),
+            User("id13", "유리", "010-1234-5678", "glass@gmail.com", UserGroup.FRIEND, R.drawable.image_yoori, is_starred = false),
+            User("id14", "피카츄", "010-1234-5678", "thunder@gmail.com", UserGroup.FAMILY, R.drawable.image_pikachu, is_starred = false),
+        )
+    }
 
     val presents: MutableList<Present> = mutableListOf()
     val presentLogs: MutableList<PresentLog> = mutableListOf()
-
-    // jaeseon이 로그인 되어 있다고 가정
     
-    val jaeseon = User("id1", "유재선", "010-1234-5678", "jaeseon@gmail.com",UserGroup.NONE, R.drawable.image_jaesun)
-    val hwamin = User("id2", "이화민", "010-1256-5678", "hwamin@gmail.com", UserGroup.SCHOOL, R.drawable.image_hwamin)
-    val hyehyun = User("id3", "정혜현", "010-1234-5611", "hyehyun@gmail.com", UserGroup.SCHOOL,R.drawable.image_hyehyun)
-    val bora = User("id4", "김보라", "010-1255-5655", "bora@gmail.com", UserGroup.SCHOOL, R.drawable.image_bora)
-    val ingi = User("id5", "조인기", "010-1266-4567", "ingi@gmail.com", UserGroup.SCHOOL, R.drawable.image_ingi)
+    val myData = mutableListOf<MyData>()
 
-    var loginedUser = jaeseon
+    val jaeseon = User("id1", "유재선", "010-1234-5678", "jaeseon@gmail.com",UserGroup.SCHOOL, R.drawable.image_jaesun, is_starred = false)
+    val hwamin = User("id2", "이화민", "010-1256-5678", "hwamin@gmail.com", UserGroup.SCHOOL, R.drawable.image_hwamin, is_starred = false)
+    val hyehyun = User("id3", "정혜현", "010-1234-5611", "hyehyun@gmail.com", UserGroup.SCHOOL,R.drawable.image_hyehyun, is_starred = false)
+    val bora = User("id4", "김보라", "010-1255-5655", "bora@gmail.com", UserGroup.SCHOOL, R.drawable.image_bora, is_starred = false)
+    val ingi = User("id5", "조인기", "010-1266-4567", "ingi@gmail.com", UserGroup.SCHOOL, R.drawable.image_ingi, is_starred = false)
+
+    var loggedInUser = jaeseon
 
 //    val present1 = Present("케이크", R.drawable.image_chulsu)
 //    val present2 = Present("편지", R.drawable.image_yoori)
@@ -29,6 +47,7 @@ object Dummy {
 //    val present9 = Present("캣타워")
 //    val addPresent = Present("선물추가", R.drawable.image_add_present)
 
+    val MyData = MyData("drawable://" + "${R.drawable.image_choco}", "default_name", "default_phone_number", "default_email", "default_gift_date")
 
     init {
 
@@ -42,18 +61,11 @@ object Dummy {
 //        presents.add(present8)
 //        presents.add(present9)
 
-//        hwamin.wish_list.add(present1)
-//        hwamin.wish_list.add(present2)
-//        hwamin.wish_list.add(present3)
-//        hwamin.wish_list.add(present4)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
-//        hwamin.wish_list.add(present5)
+        hwamin.wish_list.add(present1)
+        hwamin.wish_list.add(present2)
+        hwamin.wish_list.add(present3)
+        hwamin.wish_list.add(present4)
+        hwamin.wish_list.add(present5)
 
 //        jaeseon.contacts.add(hwamin)
 //        jaeseon.contacts.add(hyehyun)
@@ -101,6 +113,8 @@ object Dummy {
 //        presentLogs.add(PresentLog(ingi, hwamin, present1, created_date =  LocalDateTime.of(2023,5,18,4,0,0)))
 //        presentLogs.add(PresentLog(ingi, hyehyun, present3, created_date =  LocalDateTime.of(2022,6,19,4,0,0)))
 //        presentLogs.add(PresentLog(ingi, bora, present5, created_date =  LocalDateTime.of(2022,7,20,4,0,0)))
+
+        myData.add(MyData)
 
     }
 

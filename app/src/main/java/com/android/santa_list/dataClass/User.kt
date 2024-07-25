@@ -1,5 +1,6 @@
 package com.android.santa_list.dataClass
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
@@ -8,7 +9,7 @@ import java.time.LocalDateTime
 
 /**
  * TODO
- * 
+ *
  * 사용자(앱 사용자 / 등록될 사람) 정보
  *
  * @property id
@@ -38,3 +39,12 @@ data class User(val id: String,
 
                 val created_date: LocalDateTime = LocalDateTime.now(),
                 var updated_date: LocalDateTime? = null) : Parcelable
+
+@Parcelize
+data class MyData (
+    var uri: String?,
+    var name: String?,
+    var phone_number: String?,
+    var email: String?,
+    var gift_date: String?
+) : Parcelable
