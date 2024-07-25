@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import com.android.santa_list.databinding.FragmentContactDetailBinding
@@ -55,6 +56,10 @@ class MyPageFragment : Fragment() {
             setMyPageData()
         }
         setMyPageData()
+             binding.toolBar.action.setOnClickListener {
+                 val myPageDialog = MyPageDialogFragment()
+                 myPageDialog.show(requireFragmentManager(), "DialogFragment")
+             }
     }
 
     override fun onResume() {
@@ -63,11 +68,16 @@ class MyPageFragment : Fragment() {
     }
     private fun setMyPageData () {
         binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
+        binding.mypageIvFavorite.setImageURI(myData[0].uri?.toUri())
         binding.mypageTvName.text = myData[0].name
         binding.mypageTvSetPhoneNumber.text = myData[0].email
         binding.mypageTvSetEmail.text = myData[0].phone_number
-        binding.mypageTvSetGiftDate.text = myData[0].gift_date
-        Log.d("myDataCheck", myData.toString())
+        if (myData[0].gift_date[0] == null) {
+            binding.mypageTvSetGiftDate.text = ""
+        } else {
+            binding.mypageTvSetGiftDate.text = "${myData[0].gift_date[0]}년 ${myData[0].gift_date[1]}월 ${myData[0].gift_date[2]}일"
+        }
+
     }
     companion object {
         /**
