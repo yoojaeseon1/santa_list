@@ -49,6 +49,4 @@
         app:layout_constraintTop_toTopOf="@+id/materialDivider"
         app:layout_constraintStart_toStartOf="@+id/materialDivider"/>
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
