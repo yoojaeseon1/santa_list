@@ -8,18 +8,15 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
-import com.android.santa_list.databinding.ActivityContactBinding
 import com.android.santa_list.databinding.FragmentContactListBinding
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -29,6 +26,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
+// 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
+// AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
 class ContactListFragment() : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
@@ -60,9 +59,8 @@ class ContactListFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         recyclerView = binding.contactRecyclerView
-        adapter = MainRecyclerViewAdapter(contactList)
+        adapter = MainRecyclerViewAdapter(contactList, recyclerView)
 
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
@@ -79,10 +77,6 @@ class ContactListFragment() : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
-        // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
-        // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
-        //
     }
 
     companion object {
