@@ -1,5 +1,8 @@
 package com.android.santa_list
 
+import android.app.Activity
+import android.net.Uri
+import android.provider.MediaStore
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.Present
 import java.time.LocalDateTime
@@ -43,22 +46,52 @@ class SantaUtil {
         return date.format(DateTimeFormatter.ofPattern("yyyy년 M월 dd일"))
     }
 
+    fun removePhoneHyphen(phone_number: String): String{
+        return phone_number.replace("-","")
+    }
+
     fun makePresentList(presents: MutableList<Present>): MutableList<Present>{
-        if(presents.size <= 7) {
-            val subList = presents.toMutableList()
-            subList.add(Dummy.addPresent)
+//        if(presents.size <= 7) {
+//            val subList = presents.toMutableList()
+////            subList.add(Dummy.addPresent)
+//
+//            if(subList.size == 5)
+//                subList.removeAt(subList.size - 2)
+//
+//            return subList
+//        } else {
+//            val subList = presents.subList(0, 7)
+////            subList.add(Dummy.addPresent)
+//
+//            return subList
+//        }
+        var subList = mutableListOf<Present>()
+        subList.add(Present(""))
 
-            if(subList.size == 5)
-                subList.removeAt(subList.size - 2)
+        if(presents.size >= 8)
+            subList.addAll(presents.subList(0,6))
+        else
+            subList.addAll(presents)
+//            subList = presents.toMutableList()
 
-            return subList
-        } else {
-            val subList = presents.subList(0, 7)
-            subList.add(Dummy.addPresent)
+//        subList.add(0, Present(""))
 
-            return subList
+        return subList
+
+    }
+
+    fun getRealPathFromURI(activity: Activity, uri: Uri): String {
+        var index = 0
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+
+        val cursor = activity.contentResolver.query(uri, proj, null, null, null)
+        if(cursor == null)
+            return "empty uri"
+
+        if(cursor.moveToFirst()){
+            index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         }
-
+        return cursor.getString(index)
     }
 
 }
