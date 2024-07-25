@@ -28,6 +28,8 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
+import java.lang.StringBuilder
+import java.time.LocalDateTime
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,8 +78,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
 //    }
 
 
-
-
     private var friend: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,13 +112,13 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
 
-
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 //                val presentAddFragment = PresentAddFragment()
 
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "received", this@ContactDetailFragment)
 //                requireActivity().supportFragmentManager.beginTransaction()
 //                    .replace(R.id.frame_layout, presentAddFragment)
 //                    .addToBackStack(null)
@@ -135,13 +135,15 @@ class ContactDetailFragment : Fragment(), Parcelable {
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 //                val presentAddFragment = PresentAddFragment()
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
 //                requireActivity().supportFragmentManager.beginTransaction()
 //                    .replace(R.id.frame_layout, presentAddFragment)
 //                    .addToBackStack(null)
 //                    .commit()
                 presentAddFragment.show(
-                    requireActivity().supportFragmentManager, "addPresentDialog")
+                    requireActivity().supportFragmentManager, "addPresentDialog"
+                )
             }
         }
         givePresentAdapter.submitList(santaUtil.makePresentList(givePresents))
@@ -150,14 +152,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
         wishPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 //                val presentAddFragment = PresentAddFragment()
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
 
 //                requireActivity().supportFragmentManager.beginTransaction()
 //                    .replace(R.id.frame_layout, presentAddFragment)
 //                    .addToBackStack(null)
 //                    .commit()
                 presentAddFragment.show(
-                    requireActivity().supportFragmentManager, "addPresentDialog")
+                    requireActivity().supportFragmentManager, "addPresentDialog"
+                )
             }
         }
         wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
@@ -178,8 +182,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         binding.detailBtnCall.setOnClickListener {
 
-            if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), 1)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            )
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    1
+                )
             else {
                 val phone_number = "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
                 val intent = Intent("android.intent.action.CALL", Uri.parse(phone_number))
@@ -193,16 +205,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
         view.setOnClickListener {
 
 //            initNotification()
-            dialogAlarm()
+            selectAlarm()
         }
     }
 
 
-    //알람리시버 설정 함수 : 사용자가 선택한 시간에 알림
+    //알림버튼_알람리시버 함수 : 사용자가 선택한 시간에 알림을 출력해주는 함수
     @SuppressLint("ScheduleExactAlarm")
-    fun setAlarmReceiver() {
-        Toast.makeText(context, "알람설정완료", Toast.LENGTH_SHORT).show()
-
+    fun setAlarmReceiver(selectedAlarm: Int) {
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -211,14 +221,57 @@ class ContactDetailFragment : Fragment(), Parcelable {
             intent,
             PendingIntent.FLAG_MUTABLE
         )
-        val calendar = Calendar.getInstance().apply {
+
+        //현재시간
+        val calendar = Calendar.getInstance()
+
+        val santaDay = arrayOf(2024, 7, 25, 21, 19, 0)
+
+        when (selectedAlarm) {
+            //5초뒤
+            0 -> {
+                val localDateTime = StringBuilder(LocalDateTime.now().toString())
+                val localDateTimeArray = arrayOf("", "", "", "", "", "0")
+                localDateTime.forEachIndexed { index, i ->
+                    when (index) {
+                        in 0..3 -> localDateTimeArray[0] += i.toString()
+                        in 5..6 -> localDateTimeArray[1] += i.toString()
+                        in 8..9 -> localDateTimeArray[2] += i.toString()
+                        in 11..12 -> localDateTimeArray[3] += i.toString()
+                        in 14..15 -> localDateTimeArray[4] += i.toString()
+                    }
+                }
+                val now = localDateTimeArray.map { it.toInt() }.toIntArray()
+                calendar.apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.YEAR, now[0])
+                    set(Calendar.MONTH, now[1] - 1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, now[2])
+                    set(Calendar.HOUR_OF_DAY, now[3]) //24시간으로 지정한다
+                    set(Calendar.MINUTE, now[4])
+                    set(Calendar.SECOND, now[5] + 30)
+                }
+            }
+            //하루 전
+            1 -> calendar.apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.YEAR, 2024)
-            set(Calendar.MONTH, 6) //0부터 시작한다
-            set(Calendar.DAY_OF_MONTH, 25)
-            set(Calendar.HOUR_OF_DAY, 9) //24시간으로 지정한다
-            set(Calendar.MINUTE, 15)
-            set(Calendar.SECOND, 0)
+            set(Calendar.YEAR, santaDay[0])
+            set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
+            set(Calendar.DAY_OF_MONTH, santaDay[2] - 1)
+            set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
+            set(Calendar.MINUTE, santaDay[4])
+            set(Calendar.SECOND, santaDay[5])
+        }
+            //당일
+            2 -> calendar.apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.YEAR, santaDay[0])
+                set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
+                set(Calendar.DAY_OF_MONTH, santaDay[2])
+                set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
+                set(Calendar.MINUTE, santaDay[4])
+                set(Calendar.SECOND, santaDay[5])
+            }
         }
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
@@ -226,8 +279,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
         )
     }
 
-//알림_다이얼로그 함수 : 사용자에게 알림시간을 받고 알람매니저를 호출
-    private fun dialogAlarm() {
+    //알림버튼_다이얼로그 함수 : 사용자에게 알림을 입력받고 알람리시버 함수를 호출하는 함수
+    private fun selectAlarm() {
 
         val alarmGroup = arrayOf(
             getString(R.string.alarm_second_5),
@@ -244,17 +297,31 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             .setPositiveButton(getString(R.string.complete)) { dialog, which ->
                 when (selectedAlarm) {
-                    0 -> Toast.makeText(requireContext(), getString(R.string.alarm_second_5) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
-                    1 -> Toast.makeText(requireContext(), getString(R.string.alarm_day_before) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
-                    2 -> Toast.makeText(requireContext(), getString(R.string.alarm_today) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
+                    0 -> Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    1 -> Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alarm_day_before) + getString(R.string.alarm_selected),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    2 -> Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alarm_today) + getString(R.string.alarm_selected),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                setAlarmReceiver()
+                setAlarmReceiver(selectedAlarm)
             }
             .show()
     }
 
 
-    //선물하기 버튼 함수
+    //선물하기버튼 함수 : 카카오톡 또는 쿠팡으로 연동하는 함수
     private fun giftListener() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.gift))
@@ -309,7 +376,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 }
             }
     }
-
 
 
     override fun onStart() {

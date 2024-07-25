@@ -24,12 +24,10 @@ class AlarmReceiver : BroadcastReceiver() {
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or
                         PendingIntent.FLAG_IMMUTABLE
             )
-
             val manager =
                 context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                //버전체크
                 val channelId = "one-channel"
                 val channelName = "My Channel One"
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -38,12 +36,9 @@ class AlarmReceiver : BroadcastReceiver() {
                     channelName,
                     importance
                 )
-                //채널 등록
                 manager.createNotificationChannel(channel)
-                //채널을 이용하여 빌더 생성
                 builder = NotificationCompat.Builder(context, channelId)
             } else {
-                //버전 이하
                 builder = NotificationCompat.Builder(context)
             }
             builder.run {
