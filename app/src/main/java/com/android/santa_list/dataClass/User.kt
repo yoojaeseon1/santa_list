@@ -46,5 +46,5 @@ data class MyData (
     var name: String?,
     var phone_number: String?,
     var email: String?,
-    var gift_date: String?
+    var gift_date: Array<Int?> = arrayOfNulls<Int>(3)
 ) : Parcelable
