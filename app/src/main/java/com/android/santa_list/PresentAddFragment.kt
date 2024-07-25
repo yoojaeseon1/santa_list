@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +17,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.Present
 import com.android.santa_list.dataClass.PresentLog
 import com.android.santa_list.dataClass.User
-import com.android.santa_list.databinding.FragmentAddContactDialogBinding
 import com.android.santa_list.databinding.FragmentPresentAddBinding
 import com.android.santa_list.repository.PresentLogRepository
 import java.io.File
@@ -90,9 +89,6 @@ class PresentAddFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("presentAddFragment", "user : ${param1}")
-        Log.d("presentAddFragment", "from : ${param2}")
-
         if(param2 == "wish") {
             binding.tvPresentDate.visibility = ViewGroup.INVISIBLE
             binding.tvPresentDate.text = "${year}년 ${month + 1}월 ${day}일"
@@ -111,7 +107,6 @@ class PresentAddFragment : DialogFragment() {
             )
             imageLauncher.launch(intent)
 
-            Log.d("PresentAddFragment", "${imageFile}")
         }
 
         binding.tvPresentDate.setOnClickListener {
@@ -131,10 +126,6 @@ class PresentAddFragment : DialogFragment() {
         binding.btnPresentComplete.setOnClickListener {
 
             // validation
-
-            Log.d("presentAddFragment", "date = ${binding.tvPresentDate.text == null}")
-            Log.d("presentAddFragment", "date = ${binding.tvPresentDate.text == ""}")
-            Log.d("presentAddFragment", "image = ${imageUri == null}")
 
             val present_name = binding.etPresentName.text.toString()
             val present_date = binding.tvPresentDate.text.toString()
@@ -166,16 +157,13 @@ class PresentAddFragment : DialogFragment() {
                         param1!!.wish_list.add(Present(present_name, imageUri.toString()))
                     }
                 }
-                Log.d("presentAddFragment", "${Dummy.presentLogs[0]}")
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
             }
         }
         
         binding.btnPresentCancel.setOnClickListener {
-//            requireActivity().supportFragmentManager.popBackStack()
             requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
         }
-
 
     }
 
@@ -207,22 +195,6 @@ class PresentAddFragment : DialogFragment() {
             Log.d("PresentAddFragment","${imageUri}")
             binding.ivAddPresent.setImageURI(imageUri)
         }
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("PresentAddFragment","onStop()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("PresentAddFragment","onPause()")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("PresentAddFragment","onStart()")
     }
 
     override fun onDestroy() {
@@ -234,27 +206,15 @@ class PresentAddFragment : DialogFragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onDetach() {
         super.onDetach()
-//        param3?.receivedPresentAdapter?.notifyDataSetChanged()
-//        param3?.givePresentAdapter?.notifyDataSetChanged()
-//        param3?.wishPresentAdapter?.notifyDataSetChanged()
-
         val receivedPresents = presentLogRepository.selectPresentList(param1!!, Dummy.loggedInUser)
-
-//        for (receivedPresent in receivedPresents) {
-//            Log.d("PresentAddFragment", "${receivedPresent}")
-//        }
-
         param3?.receivedPresentAdapter?.submitList(santaUtil.makePresentList(receivedPresents))
 
         val givePresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, param1!!)
-
         param3?.givePresentAdapter?.submitList(santaUtil.makePresentList(givePresents))
 
         val wishList = param1!!.wish_list
-
         param3?.wishPresentAdapter?.submitList(santaUtil.makePresentList(wishList))
 
-        Log.d("PresentAddFragment","onDetach(), param3 = ${param3?.receivedPresentAdapter}")
     }
 
 }
