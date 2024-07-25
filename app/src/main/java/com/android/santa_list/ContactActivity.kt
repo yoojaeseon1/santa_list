@@ -85,9 +85,12 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
         }
 
+
         val contactDetailFragment = ContactDetailFragment.newInstance(Dummy.hwamin)
         // 임시 개발용
         setFragment(contactDetailFragment)
+
+
     }
 
     private fun setFragment(fragment: Fragment) {
