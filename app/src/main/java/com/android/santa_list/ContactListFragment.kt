@@ -37,7 +37,7 @@ class ContactListFragment() : Fragment() {
             layoutInflater
         )
     }
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
 
     private val contactList: MutableList<User> = Dummy.dummyUserList()

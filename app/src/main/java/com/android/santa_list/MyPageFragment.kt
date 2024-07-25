@@ -61,6 +61,7 @@ class MyPageFragment : Fragment() {
         super.onResume()
         setMyPageData()
     }
+
     private fun setMyPageData () {
         binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
         binding.mypageTvName.text = myData[0].name
