@@ -1,13 +1,18 @@
 package com.android.santa_list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ActivityContactBinding
@@ -23,11 +28,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ContactListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ContactListFragment : Fragment() {
+
+class ContactListFragment() : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private val binding: FragmentContactListBinding by lazy { FragmentContactListBinding.inflate(layoutInflater) }
+    private val binding: FragmentContactListBinding by lazy {
+        FragmentContactListBinding.inflate(
+            layoutInflater
+        )
+    }
     lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
 
@@ -62,8 +72,18 @@ class ContactListFragment : Fragment() {
             }
         }
 
+        //            toolBar.action.setOnClickListener {
+        binding.toolBar.action.setOnClickListener {
+            val popup = PopupMenu(context, it)
+            onClickMore(popup)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
+        // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
+        // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
+        //
     }
 
     companion object {
@@ -84,5 +104,38 @@ class ContactListFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+
+    private fun onClickMore(popup: PopupMenu) {
+        val linearLayoutManager: RecyclerView.LayoutManager =
+            LinearLayoutManager(context)
+        val gridLayoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(context, 4)
+
+
+        val inflater: MenuInflater = popup.menuInflater
+        inflater.inflate(R.menu.main_menu_option, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_item_list -> {
+                    Log.d("🤔 ??", "리스트 뷰 선택")
+                    recyclerView.layoutManager = linearLayoutManager
+                }
+
+                R.id.menu_item_grid -> {
+                    Log.d("🤔 ??", "그리드 뷰 선택")
+                    recyclerView.layoutManager = gridLayoutManager
+                }
+
+                else -> {
+                    Log.d("🤔 ??", "뭐여?")
+                }
+            }
+            false
+        }
+
+        popup.show()
     }
 }
