@@ -68,7 +68,6 @@ class MyPageFragment : Fragment() {
     }
     private fun setMyPageData () {
         binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
-        binding.mypageIvFavorite.setImageURI(myData[0].uri?.toUri())
         binding.mypageTvName.text = myData[0].name
         binding.mypageTvSetPhoneNumber.text = myData[0].email
         binding.mypageTvSetEmail.text = myData[0].phone_number
