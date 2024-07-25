@@ -1,24 +1,20 @@
 package com.android.santa_list
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context.ALARM_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity.NOTIFICATION_SERVICE
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactDetailBinding
@@ -74,60 +70,23 @@ class ContactDetailFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        알림버튼-------공사중
+//알림버튼 : 클릭 시 다이얼로그 응답에 따라 해당 시간에 알림, 알림 클릭시 디테일 페이지로 돌아옴
         _binding?.detailIvAlert?.setOnClickListener {
-            val intent = Intent(this.requireContext(), ContactActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                putExtra("Fragment", "ContactDetailFragment")
-            }
+            initAlarm()
+            initNotification()
+            dialogAlarm()
+              }
 
-            val pendingIntent = PendingIntent.getActivity(this.requireContext(), 0, intent, 0)
-            val manager =
-                requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            val builder: NotificationCompat.Builder
-            //버전체크
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channelId = "one-channel"
-                val channelName = "My Channel One"
-                val channel = NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
-                //채널 등록
-                manager.createNotificationChannel(channel)
-                //채널을 이용하여 빌더 생성
-                builder = NotificationCompat.Builder(this.requireContext(), channelId)
-            } else {
-                //버전 이하
-                builder = NotificationCompat.Builder(this.requireContext())
-            }
-            builder.run {
-                setSmallIcon(R.drawable.ic_alert_on)
-                setWhen(System.currentTimeMillis())
-                setContentTitle(getString(R.string.christmas_eve))
-                setContentText(getString(R.string.christmas))
-                setContentIntent(pendingIntent)
-
-                setAutoCancel(true)
+        //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
+        _binding?.detailIvGift?.setOnClickListener {
 
 
-
-            }
-            manager.notify(1, builder.build())
         }
 
-       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-           if (!NotificationManagerCompat.from(this.requireContext()).areNotificationsEnabled()) {
-               val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                   putExtra(Settings.EXTRA_APP_PACKAGE, `package`)
-               }
-               startActivity(intent)
-           }
-       }
 
 
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
@@ -172,33 +131,90 @@ class ContactDetailFragment : Fragment() {
         binding.detailRecyclerWishPresent.adapter = wishPresentAdapter
 
 
-        //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
-        _binding?.detailIvGift?.setOnClickListener {
-            val builder = AlertDialog.Builder(this.requireContext())
-            builder.setTitle(getString(R.string.gift))
-            builder.setMessage(getString(R.string.gift_shop))
-            builder.setIcon(R.drawable.ic_gift_grey)
+    }
 
-            val btnListener = DialogInterface.OnClickListener { dialog, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
-                        startActivity(intent)
-                    }
+    //알람 함수
+    @SuppressLint("ScheduleExactAlarm")
+    fun initAlarm() {
+        Toast.makeText(context, "알람설정완료", Toast.LENGTH_SHORT).show()
 
-                    DialogInterface.BUTTON_NEGATIVE -> {
-                        val intent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
-                        startActivity(intent)
-                    }
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            0,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.YEAR, 2024)
+            set(Calendar.MONTH, 6) //0부터 시작한다
+            set(Calendar.DAY_OF_MONTH, 25)
+            set(Calendar.HOUR_OF_DAY, 9) //24시간으로 지정한다
+            set(Calendar.MINUTE, 15)
+            set(Calendar.SECOND, 0)
+        }
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis, pendingIntent)
+    }
+
+    fun dialogAlarm() {
+        val builder = AlertDialog.Builder(this.requireContext())
+        builder.setTitle(getString(R.string.gift))
+        builder.setMessage(getString(R.string.gift_shop))
+        builder.setIcon(R.drawable.ic_gift_grey)
+
+        val btnListener = DialogInterface.OnClickListener { dialog, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
+                    startActivity(intent)
+                }
+
+                DialogInterface.BUTTON_NEGATIVE -> {
+                    val intent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
+                    startActivity(intent)
                 }
             }
-            builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
-            builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
-            builder.show()
         }
+        builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
+        builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
+        builder.show()
 
     }
+
+
+
+    //알림 함수
+    private fun initNotification() {
+    val builder = AlertDialog.Builder(requireContext())
+    builder.setTitle(getString(R.string.gift))
+    builder.setMessage(getString(R.string.gift_shop))
+    builder.setIcon(R.drawable.ic_gift_grey)
+
+    val btnListener = DialogInterface.OnClickListener { dialog, which ->
+        when (which) {
+            DialogInterface.BUTTON_POSITIVE -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
+                startActivity(intent)
+            }
+
+            DialogInterface.BUTTON_NEGATIVE -> {
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
+                startActivity(intent)
+            }
+        }
+    }
+    builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
+    builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
+    builder.show()
+}
+
+
 
     companion object {
         /**

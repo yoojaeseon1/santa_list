@@ -67,12 +67,6 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         setFragment(contactDetailFragment)
 
 
-        //공사중...
-//        fun saveAndChangeFragment(fragment: Fragment) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(binding.fragmentContainer.id, fragment)
-//        }
-
     }
 
     private fun setFragment(fragment: Fragment) {
