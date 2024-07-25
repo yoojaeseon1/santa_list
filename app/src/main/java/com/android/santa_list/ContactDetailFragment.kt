@@ -65,18 +65,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         PresentListAdapter()
     }
 
-//    fun getReceivedPresentAdapter(): PresentListAdapter {
-//        return this.receivedPresentAdapter
-//    }
-//
-//    fun getGivePresentAdapter(): PresentListAdapter{
-//        return this.givePresentAdapter
-//    }
-//
-//    fun getWishPresentAdapter(): PresentListAdapter{
-//        return this.wishPresentAdapter
-//    }
-
 
     private var friend: User? = null
 
@@ -110,19 +98,13 @@ class ContactDetailFragment : Fragment(), Parcelable {
         _binding?.detailIvGift?.setOnClickListener {
             giftListener()
         }
-
-
+        
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
+                
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
 
-                val presentAddFragment =
-                    PresentAddFragment.newInstance(friend!!, "received", this@ContactDetailFragment)
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -134,13 +116,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
         val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
-                val presentAddFragment =
-                    PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
+
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
+
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -151,14 +129,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
         val wishList = friend!!.wish_list
         wishPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
-                val presentAddFragment =
-                    PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
 
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
+
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -181,18 +154,20 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
         binding.detailBtnCall.setOnClickListener {
+            
+            if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("contactDetailFragment", "don't have permission")
 
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CALL_PHONE
-                ) != PackageManager.PERMISSION_GRANTED
-            )
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(Manifest.permission.CALL_PHONE),
                     1
                 )
+
+            }
+
             else {
+                Log.d("contactDetailFragment", "have permission")
                 val phone_number = "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
                 val intent = Intent("android.intent.action.CALL", Uri.parse(phone_number))
                 startActivity(intent)

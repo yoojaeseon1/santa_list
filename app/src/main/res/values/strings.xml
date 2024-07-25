@@ -54,5 +54,7 @@
     <string name="mypage_profile_image_desc">mypage_profile_image</string>
 
     <!--My Page Fragment-->
+    <string name="btn_random_message">아무에게나 문자 보내기</string>
+    <string name="btn_random_call">아무에게나 전화 하기</string>
 
 </resources>
