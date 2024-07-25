@@ -17,7 +17,8 @@ import java.time.LocalDateTime
  */
 @Parcelize
 data class Present(var name: String,
-                   var imageResource: Int = 0,
+//                   var imageResource: Int = 0,
+                   var imageUri: String = "",
                    val id: Int = idCount++,
                    val created_date: LocalDateTime = LocalDateTime.now(),
                    var updated_date: LocalDateTime? = null) : Parcelable

@@ -1,21 +1,24 @@
 package com.android.santa_list
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity.NOTIFICATION_SERVICE
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -23,6 +26,7 @@ import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
+import kotlinx.parcelize.Parcelize
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +39,9 @@ const val TAG = "ContactDetailFragment"
  * Use the [ContactDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ContactDetailFragment : Fragment() {
+
+@Parcelize
+class ContactDetailFragment : Fragment(), Parcelable {
     // TODO: Rename and change types of parameters
 
     private var _binding: FragmentContactDetailBinding? = null
@@ -43,17 +49,31 @@ class ContactDetailFragment : Fragment() {
     private val presentLogRepository = PresentLogRepository()
     private val santaUtil = SantaUtil.getInstance()
 
-    private val receivedPresentAdapter: PresentListAdapter by lazy {
+    val receivedPresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
     }
 
-    private val givePresentAdapter: PresentListAdapter by lazy {
+    val givePresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
     }
 
-    private val wishPresentAdapter: PresentListAdapter by lazy {
+    val wishPresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
     }
+
+//    fun getReceivedPresentAdapter(): PresentListAdapter {
+//        return this.receivedPresentAdapter
+//    }
+//
+//    fun getGivePresentAdapter(): PresentListAdapter{
+//        return this.givePresentAdapter
+//    }
+//
+//    fun getWishPresentAdapter(): PresentListAdapter{
+//        return this.wishPresentAdapter
+//    }
+
+
 
 
     private var friend: User? = null
@@ -124,27 +144,35 @@ class ContactDetailFragment : Fragment() {
            }
        }
 
-        val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
+        val receivedPresents = presentLogRepository.selectPresentList(friend!!, Dummy.loginedUser)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-                val presentAddFragment = PresentAddFragment()
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, presentAddFragment)
-                    .addToBackStack(null)
-                    .commit()
+//                val presentAddFragment = PresentAddFragment()
+
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.frame_layout, presentAddFragment)
+//                    .addToBackStack(null)
+//                    .commit()
+                presentAddFragment.show(
+                    requireActivity().supportFragmentManager, "addPresentDialog"
+                )
             }
         }
         receivedPresentAdapter.submitList(santaUtil.makePresentList(receivedPresents))
 
 
-        val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loginedUser)
+        val givePresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-                val presentAddFragment = PresentAddFragment()
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, presentAddFragment)
-                    .addToBackStack(null)
-                    .commit()
+//                val presentAddFragment = PresentAddFragment()
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.frame_layout, presentAddFragment)
+//                    .addToBackStack(null)
+//                    .commit()
+                presentAddFragment.show(
+                    requireActivity().supportFragmentManager, "addPresentDialog")
             }
         }
         givePresentAdapter.submitList(santaUtil.makePresentList(givePresents))
@@ -152,11 +180,15 @@ class ContactDetailFragment : Fragment() {
         val wishList = friend!!.wish_list
         wishPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-                val presentAddFragment = PresentAddFragment()
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, presentAddFragment)
-                    .addToBackStack(null)
-                    .commit()
+//                val presentAddFragment = PresentAddFragment()
+                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
+
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.frame_layout, presentAddFragment)
+//                    .addToBackStack(null)
+//                    .commit()
+                presentAddFragment.show(
+                    requireActivity().supportFragmentManager, "addPresentDialog")
             }
         }
         wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
@@ -227,6 +259,24 @@ class ContactDetailFragment : Fragment() {
             builder.show()
         }
 
+        binding.detailBtnMessage.setOnClickListener {
+            val smsUri = Uri.parse("smsto:" + friend?.phone_number)
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.setData(smsUri)
+            intent.putExtra("sms_body", "")
+            startActivity(intent)
+        }
+
+        binding.detailBtnCall.setOnClickListener {
+
+            if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), 1)
+            else {
+                val phone_number = "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
+                val intent = Intent("android.intent.action.CALL", Uri.parse(phone_number))
+                startActivity(intent)
+            }
+        }
     }
 
     companion object {
@@ -256,8 +306,27 @@ class ContactDetailFragment : Fragment() {
                     putParcelable(ARG_PARAM1, user)
                 }
             }
-
     }
 
 
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("ContactDetailFragment", "onStart()")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("ContactDetailFragment", "onResume()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("ContactDetailFragment", "onStop()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ContactDetailFragment", "onPause()")
+    }
 }
