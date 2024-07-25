@@ -14,6 +14,9 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
+import androidx.fragment.app.findFragment
+
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
@@ -42,6 +45,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         binding.run {
             tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
 
+
             // 툴바의 action icon 클릭할 때 동작 하는 부분 >>
             // TODO: ❗️❗️❗️ 각 프래그먼트로 작성한 함수 이동 해야 합니다 ❗️❗️❗️
 //            toolBar.action.setOnClickListener {
@@ -64,6 +68,29 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 //                    }
 //                }
 //            }
+
+            // 툴바의 action icon 클릭할 때 동작 하는 부분
+//             toolBar.action.setOnClickListener {
+//                 val currentFragment: Fragment? = fragmentManager.findFragmentById(R.id.frame_layout)
+//                 if (currentFragment != null) {
+//                     when (currentFragment) {
+//                         is ContactListFragment -> {
+//                             val popup: PopupMenu = PopupMenu(this@ContactActivity, it)
+//                             onClickMore(popup)
+//                         }
+
+//                         is MyPageFragment -> {
+//                             val myPageDialog = MyPageDialogFragment()
+//                             myPageDialog.show(fragmentManager, "DialogFragment")
+//                         }
+
+//                         else -> {
+//                             Log.d("⏰ action Click", "다른 화면입니다.")
+//                         }
+//                     }
+//                 }
+//             }
+
         }
 
         val contactDetailFragment = ContactDetailFragment.newInstance(Dummy.hwamin)
