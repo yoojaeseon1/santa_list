@@ -26,10 +26,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
-class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
-
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
+
+class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
     private var param1: String? = null
     private var param2: String? = null
 

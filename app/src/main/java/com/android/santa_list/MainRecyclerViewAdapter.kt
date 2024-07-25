@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -118,8 +117,6 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
                 return false
             }
 
-
-            // 오른쪽으로 스와이프 할 경우
             // TODO: 아래 코드 튜터님께 여쭤보기
             override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
                 val test = context as Activity
@@ -132,6 +129,7 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
                         val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
                         val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
                         test.startActivity(intent)
+                        notifyItemChanged(position)
                     }
                 }
             }
@@ -147,6 +145,4 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 }
