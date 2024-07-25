@@ -8,18 +8,15 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
-import com.android.santa_list.databinding.ActivityContactBinding
 import com.android.santa_list.databinding.FragmentContactListBinding
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -60,9 +57,8 @@ class ContactListFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         recyclerView = binding.contactRecyclerView
-        adapter = MainRecyclerViewAdapter(contactList)
+        adapter = MainRecyclerViewAdapter(contactList, recyclerView)
 
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
