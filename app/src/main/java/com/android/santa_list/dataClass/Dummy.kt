@@ -61,11 +61,11 @@ object Dummy {
 //        presents.add(present8)
 //        presents.add(present9)
 
-        hwamin.wish_list.add(present1)
-        hwamin.wish_list.add(present2)
-        hwamin.wish_list.add(present3)
-        hwamin.wish_list.add(present4)
-        hwamin.wish_list.add(present5)
+//        hwamin.wish_list.add(present1)
+//        hwamin.wish_list.add(present2)
+//        hwamin.wish_list.add(present3)
+//        hwamin.wish_list.add(present4)
+//        hwamin.wish_list.add(present5)
 
 //        jaeseon.contacts.add(hwamin)
 //        jaeseon.contacts.add(hyehyun)
