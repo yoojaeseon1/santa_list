@@ -4,19 +4,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactListFragment">
+    tools:context=".ContactListFragment"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/tool_bar"
         layout="@layout/common_toolbar" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="708dp"
+        android:text="즐겨찾기 한 친구"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contact_isStarred_RecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_isStarred_RecyclerView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintEnd_toEndOf="@+id/materialDivider"
+        app:layout_constraintTop_toTopOf="@+id/materialDivider"
+        app:layout_constraintStart_toStartOf="@+id/materialDivider"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

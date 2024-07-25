@@ -4,8 +4,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
@@ -14,11 +16,16 @@ enum class CommonViewType(viewType: String) {
     LINEAR("ONE_LINE_TEXT"),
     GRID("TWO_LINE_TEXT"),
 }
+class MainRecyclerViewAdapter(private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
 
-class MainRecyclerViewAdapter(private val contact: MutableList<User>) : RecyclerView.Adapter<ViewHolder>(){
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
+
+    interface OnStarredChangeListener {
+        fun onStarredChanged()
+    }
+
     var itemClick : ItemClick? = null
 
     inner class LinearViewHolder(private val binding: ItemUserListBinding): ViewHolder(binding.root) {
@@ -54,6 +61,7 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>) : Recycler
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
+                listener.onStarredChanged()
                 notifyItemChanged(position)
             }
         }
@@ -101,4 +109,6 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>) : Recycler
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
+
+
 }
