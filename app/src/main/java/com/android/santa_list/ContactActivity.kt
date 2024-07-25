@@ -1,24 +1,17 @@
 package com.android.santa_list
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import androidx.fragment.app.findFragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
@@ -56,8 +49,8 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                         }
 
                         is MyPageFragment -> {
-                            Log.d("⏰ action Click", "마이 페이지입니다.")
-
+                            val myPageDialog = MyPageDialogFragment()
+                            myPageDialog.show(fragmentManager, "DialogFragment")
                         }
 
                         else -> {

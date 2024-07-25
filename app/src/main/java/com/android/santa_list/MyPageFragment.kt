@@ -1,13 +1,19 @@
 package com.android.santa_list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.commit
+import androidx.fragment.app.setFragmentResultListener
 import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.databinding.FragmentMyPageBinding
+import com.android.santa_list.dataClass.MyData
+import com.android.santa_list.dataClass.Dummy.MyData
+import com.android.santa_list.dataClass.Dummy.myData
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,16 +46,29 @@ class MyPageFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMyPageBinding.inflate(inflater)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mypageBtnCall.setOnClickListener {
-            val dialog = MyPageDialogFragment()
-            dialog.show(requireActivity().supportFragmentManager, "DialogFragment")
+        setFragmentResultListener("dataSend") { key, bundle ->
+            setMyPageData()
         }
+        setMyPageData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setMyPageData()
+    }
+    private fun setMyPageData () {
+        binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
+        binding.mypageTvName.text = myData[0].name
+        binding.mypageTvSetPhoneNumber.text = myData[0].email
+        binding.mypageTvSetEmail.text = myData[0].phone_number
+        binding.mypageTvSetGiftDate.text = myData[0].gift_date
+        Log.d("myDataCheck", myData.toString())
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

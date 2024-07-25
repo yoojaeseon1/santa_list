@@ -92,7 +92,7 @@
             tools:ignore="TextFields" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnBack"
+            android:id="@+id/btn_back"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -104,12 +104,12 @@
             android:textAllCaps="false"
             android:textColor="@color/grey"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/btnQuit"
+            app:layout_constraintEnd_toStartOf="@+id/btn_ok"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_gift_date" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnQuit"
+            android:id="@+id/btn_ok"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,10 +119,10 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnBack"
-            app:layout_constraintTop_toTopOf="@+id/btnBack" />
+            app:layout_constraintStart_toEndOf="@+id/btn_back"
+            app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
         <TextView
             android:id="@+id/detail_gift_date"
