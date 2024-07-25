@@ -1,15 +1,21 @@
 package com.android.santa_list
 
-import android.util.Log
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
@@ -18,7 +24,9 @@ enum class CommonViewType(viewType: String) {
     LINEAR("ONE_LINE_TEXT"),
     GRID("TWO_LINE_TEXT"),
 }
-class MainRecyclerViewAdapter(private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+class MainRecyclerViewAdapter(val context: Context?, private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+    private val santaUtil = SantaUtil.getInstance()
+
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
@@ -105,17 +113,24 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
         super.onAttachedToRecyclerView(recyclerView)
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            // 아이템 이동 로직
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: ViewHolder, target: ViewHolder): Boolean {
                 return false
             }
 
-            // 오른쪽으로 스와이프 할 경우
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            // TODO: 아래 코드 튜터님께 여쭤보기
+            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+                val test = context as Activity
+
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
-                    // 아이템 삭제 등의 처리
-                    Log.d("스와이핑!", "$position")
+                    if (context.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CALL_PHONE) } != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(test, arrayOf(Manifest.permission.CALL_PHONE), 1)
+                    } else {
+                        val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
+                        val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
+                        test.startActivity(intent)
+                        notifyItemChanged(position)
+                    }
                 }
             }
         })
@@ -130,6 +145,4 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 }
