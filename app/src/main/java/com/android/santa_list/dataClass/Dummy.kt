@@ -25,7 +25,8 @@ object Dummy {
 
     val presents: MutableList<Present> = mutableListOf()
     val presentLogs: MutableList<PresentLog> = mutableListOf()
-
+    
+    val myData = mutableListOf<MyData>()
 
     val jaeseon = User("id1", "유재선", "010-1234-5678", "jaeseon@gmail.com",UserGroup.SCHOOL, R.drawable.image_jaesun, is_starred = false)
     val hwamin = User("id2", "이화민", "010-1256-5678", "hwamin@gmail.com", UserGroup.SCHOOL, R.drawable.image_hwamin, is_starred = false)
@@ -33,7 +34,6 @@ object Dummy {
     val bora = User("id4", "김보라", "010-1255-5655", "bora@gmail.com", UserGroup.SCHOOL, R.drawable.image_bora, is_starred = false)
     val ingi = User("id5", "조인기", "010-1266-4567", "ingi@gmail.com", UserGroup.SCHOOL, R.drawable.image_ingi, is_starred = false)
 
-    // jaeseon이 로그인 되어 있다고 가정
     var loggedInUser = jaeseon
 
     val present1 = Present("케이크", R.drawable.image_chulsu)
@@ -47,6 +47,7 @@ object Dummy {
     val present9 = Present("캣타워")
     val addPresent = Present("선물추가", R.drawable.image_add_present)
 
+    val MyData = MyData("drawable://" + "${R.drawable.image_choco}", "default_name", "default_phone_number", "default_email", "default_gift_date")
 
     init {
 
@@ -112,6 +113,8 @@ object Dummy {
         presentLogs.add(PresentLog(ingi, hwamin, present1, created_date =  LocalDateTime.of(2023,5,18,4,0,0)))
         presentLogs.add(PresentLog(ingi, hyehyun, present3, created_date =  LocalDateTime.of(2022,6,19,4,0,0)))
         presentLogs.add(PresentLog(ingi, bora, present5, created_date =  LocalDateTime.of(2022,7,20,4,0,0)))
+
+        myData.add(MyData)
 
     }
 
