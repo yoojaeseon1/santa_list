@@ -9,7 +9,6 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -77,16 +76,14 @@ class ContactDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 //알림버튼 : 클릭 시 다이얼로그 응답에 따라 해당 시간에 알림, 알림 클릭시 디테일 페이지로 돌아옴
-        _binding?.detailIvAlert?.setOnClickListener {
-//            initAlarm()
-//            initNotification()
-            dialogAlarm()
-        }
+
+        alertListener(_binding?.detailIvAlert as View)
+        alertListener(_binding?.detailTvAlert as View)
+
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
-
-
+            giftListener()
         }
 
 
@@ -134,9 +131,18 @@ class ContactDetailFragment : Fragment() {
 
     }
 
-    //알람 함수
+    fun alertListener(view: View) {
+        view.setOnClickListener {
+
+//            initNotification()
+            dialogAlarm()
+        }
+    }
+
+
+    //알람리시버 설정 함수 : 사용자가 선택한 시간에 알림
     @SuppressLint("ScheduleExactAlarm")
-    fun initAlarm() {
+    fun setAlarmReceiver() {
         Toast.makeText(context, "알람설정완료", Toast.LENGTH_SHORT).show()
 
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
@@ -162,8 +168,8 @@ class ContactDetailFragment : Fragment() {
         )
     }
 
-
-    fun dialogAlarm() {
+//알림_다이얼로그 함수 : 사용자에게 알림시간을 받고 알람매니저를 호출
+    private fun dialogAlarm() {
 
         val alarmGroup = arrayOf(
             getString(R.string.alarm_second_5),
@@ -184,16 +190,14 @@ class ContactDetailFragment : Fragment() {
                     1 -> Toast.makeText(requireContext(), getString(R.string.alarm_day_before) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
                     2 -> Toast.makeText(requireContext(), getString(R.string.alarm_today) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
                 }
-
+                setAlarmReceiver()
             }
             .show()
-
-
     }
 
 
-    //알림 함수
-    private fun initNotification() {
+    //선물하기 버튼 함수
+    private fun giftListener() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.gift))
         builder.setMessage(getString(R.string.gift_shop))
