@@ -9,6 +9,7 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,17 +78,16 @@ class ContactDetailFragment : Fragment() {
 
 //알림버튼 : 클릭 시 다이얼로그 응답에 따라 해당 시간에 알림, 알림 클릭시 디테일 페이지로 돌아옴
         _binding?.detailIvAlert?.setOnClickListener {
-            initAlarm()
-            initNotification()
+//            initAlarm()
+//            initNotification()
             dialogAlarm()
-              }
+        }
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
 
 
         }
-
 
 
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loginedUser, friend!!)
@@ -157,11 +158,43 @@ class ContactDetailFragment : Fragment() {
         }
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis, pendingIntent)
+            calendar.timeInMillis, pendingIntent
+        )
     }
 
+
     fun dialogAlarm() {
-        val builder = AlertDialog.Builder(this.requireContext())
+
+        val alarmGroup = arrayOf(
+            getString(R.string.alarm_second_5),
+            getString(R.string.alarm_day_before),
+            getString(R.string.alarm_today)
+        )
+        var selectedAlarm = 0
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.alarm_title))
+            .setSingleChoiceItems(alarmGroup, selectedAlarm) { dialog, which ->
+                selectedAlarm = which
+            }
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
+            }
+            .setPositiveButton(getString(R.string.complete)) { dialog, which ->
+                when (selectedAlarm) {
+                    0 -> Toast.makeText(requireContext(), getString(R.string.alarm_second_5) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
+                    1 -> Toast.makeText(requireContext(), getString(R.string.alarm_day_before) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
+                    2 -> Toast.makeText(requireContext(), getString(R.string.alarm_today) + getString(R.string.alarm_selected), Toast.LENGTH_SHORT).show()
+                }
+
+            }
+            .show()
+
+
+    }
+
+
+    //알림 함수
+    private fun initNotification() {
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.gift))
         builder.setMessage(getString(R.string.gift_shop))
         builder.setIcon(R.drawable.ic_gift_grey)
@@ -183,37 +216,7 @@ class ContactDetailFragment : Fragment() {
         builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
         builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
         builder.show()
-
     }
-
-
-
-    //알림 함수
-    private fun initNotification() {
-    val builder = AlertDialog.Builder(requireContext())
-    builder.setTitle(getString(R.string.gift))
-    builder.setMessage(getString(R.string.gift_shop))
-    builder.setIcon(R.drawable.ic_gift_grey)
-
-    val btnListener = DialogInterface.OnClickListener { dialog, which ->
-        when (which) {
-            DialogInterface.BUTTON_POSITIVE -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
-                startActivity(intent)
-            }
-
-            DialogInterface.BUTTON_NEGATIVE -> {
-                val intent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
-                startActivity(intent)
-            }
-        }
-    }
-    builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
-    builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
-    builder.show()
-}
-
 
 
     companion object {

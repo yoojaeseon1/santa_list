@@ -23,14 +23,23 @@
 
     <string name="alert_on"><u>알림ON</u></string>
     <string name="alert_off"><u>알림OFF</u></string>
+    <string name="complete">완료</string>
+    <string name="cancel">취소</string>
+    <string name="alarm_title">알림 설정</string>
+    <string name="alarm_selected">&#160;알림이 설정되었습니다.</string>
+    <string name="alarm_second_5">5초 뒤</string>
+    <string name="alarm_day_before">하루 전</string>
+    <string name="alarm_today">당일</string>
+
     <string name="gift">선물하러 가기</string>
     <string name="gift_shop">어디에서 선물을 고를까요?</string>
     <string name="gift_shop_kakao">카카오톡 선물하기</string>
     <string name="gift_shop_coupang">쿠팡 선물하기</string>
+
     <string name="btn_message">문자 보내기</string>
     <string name="btn_call">전화 하기</string>
-    <string name="christmas_eve">크리스마스 이브입니다</string>
-    <string name="christmas">곧 산타로서 깜짝 선물을 할 때가 왔어요!&#160;&#160;</string>
+    <string name="christmas_eve">산타로서 선물할 때가 됐어요!</string>
+    <string name="christmas">소중한 사람에게 마음을 전하러 가볼까요?</string>
 
 
 
