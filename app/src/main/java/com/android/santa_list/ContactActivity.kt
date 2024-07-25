@@ -11,12 +11,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-import androidx.fragment.app.findFragment
-
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
@@ -38,8 +32,6 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
 
         // binding 관련된 코드들 추가할 때 여기서
         binding.run {
