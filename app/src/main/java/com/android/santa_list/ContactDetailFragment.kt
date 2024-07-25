@@ -63,20 +63,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         PresentListAdapter()
     }
 
-//    fun getReceivedPresentAdapter(): PresentListAdapter {
-//        return this.receivedPresentAdapter
-//    }
-//
-//    fun getGivePresentAdapter(): PresentListAdapter{
-//        return this.givePresentAdapter
-//    }
-//
-//    fun getWishPresentAdapter(): PresentListAdapter{
-//        return this.wishPresentAdapter
-//    }
-
-
-
 
     private var friend: User? = null
 
@@ -116,13 +102,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
 
                 val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
+
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -134,12 +116,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
                 val presentAddFragment = PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog")
             }
@@ -149,13 +126,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         val wishList = friend!!.wish_list
         wishPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-//                val presentAddFragment = PresentAddFragment()
                 val presentAddFragment = PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
-
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.frame_layout, presentAddFragment)
-//                    .addToBackStack(null)
-//                    .commit()
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog")
             }
