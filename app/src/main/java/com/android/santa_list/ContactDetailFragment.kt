@@ -97,7 +97,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
             giftListener()
         }
 
-
+        binding.detailTvName.text = friend?.name
+        binding.detailTvSetPhoneNumber.text = friend?.phone_number
+        binding.detailTvSetEmail.text = friend?.email
+        binding.detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend!!.event_date)
 
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
@@ -149,9 +152,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         binding.detailBtnCall.setOnClickListener {
 
-            if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), 1)
+            if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("contactDetailFragment", "don't have permission")
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    1
+                )
+            }
             else {
+                Log.d("contactDetailFragment", "have permission")
                 val phone_number = "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
                 val intent = Intent("android.intent.action.CALL", Uri.parse(phone_number))
                 startActivity(intent)
