@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 class PresentLog(val from: User,
                  val to: User,
                  val present: Present,
+                 val give_date: LocalDateTime = LocalDateTime.now(),
                  val id: Int = idCount++,
                  val created_date: LocalDateTime = LocalDateTime.now(),
                  var updated_date: LocalDateTime? = null) : Parcelable
@@ -27,5 +28,7 @@ class PresentLog(val from: User,
     companion object {
         var idCount = 1
     }
+
+
 
 }
