@@ -1,9 +1,9 @@
 package com.android.santa_list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -17,7 +17,6 @@ enum class CommonViewType(viewType: String) {
     GRID("TWO_LINE_TEXT"),
 }
 class MainRecyclerViewAdapter(private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
-
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
@@ -82,17 +81,15 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
         }
     }
 
-    // TODO : Holder 다르게 적용할 수 있는 부분
-//    override fun getItemViewType(position: Int): Int {
-////        Log.d("테스트입니다~", "${}")
-//        return if (position % 2 == 0) {
-//            CommonViewType.LINEAR.ordinal
-//        } else {
-//            CommonViewType.GRID.ordinal
-//        }
-//    }
+    override fun getItemViewType(position: Int): Int {
+        return when (recyclerView.layoutManager) {
+            is GridLayoutManager -> CommonViewType.GRID.ordinal
+            is LinearLayoutManager -> CommonViewType.LINEAR.ordinal
+            else -> throw IllegalArgumentException("Unknown item type")
+        }
+    }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }

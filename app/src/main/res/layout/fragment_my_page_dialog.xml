@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/shape_dialog_bg"
+        android:elevation="0dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="28dp">
 
@@ -39,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/image_choco" />
+                app:srcCompat="@drawable/image_add_image" />
         </LinearLayout>
 
         <EditText
