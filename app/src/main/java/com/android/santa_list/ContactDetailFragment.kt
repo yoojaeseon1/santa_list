@@ -151,7 +151,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
         binding.detailBtnCall.setOnClickListener {
-
             if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("contactDetailFragment", "don't have permission")
                 ActivityCompat.requestPermissions(

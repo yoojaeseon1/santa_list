@@ -67,7 +67,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
 
         recyclerView = binding.contactRecyclerView
-        adapter = MainRecyclerViewAdapter(contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
+        adapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
             override fun onStarredChanged() {
 //                TODO("Not yet implemented")
             }
