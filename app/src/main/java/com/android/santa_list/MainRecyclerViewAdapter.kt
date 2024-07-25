@@ -9,8 +9,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,9 +46,19 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
 
         fun bind(position: Int) {
             val contact = contact[position]
+            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
+            name.setOnClickListener {
+                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+                parentActivity.supportFragmentManager.commit {
+                    replace(R.id.frame_layout, contactDetailFragment)
+                    setReorderingAllowed(true)
+                    addToBackStack("")
+                }
+            }
+
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             isStarred.setOnClickListener {
