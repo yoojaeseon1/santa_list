@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#77000000"
+    android:gravity="center"
+    tools:context=".ContactDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_dialog_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/gift_shop_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/alarm_quest"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/btn_alert_dialog"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <RadioGroup
+            android:id="@+id/btn_alert_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/btn_alert_dialog1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="@string/alarm_second_5"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/drawable_alarm" />
+
+            <RadioButton
+                android:id="@+id/btn_alert_dialog2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="@string/alarm_day_before"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/drawable_alarm" />
+
+            <RadioButton
+                android:id="@+id/btn_alert_dialog3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="@string/alarm_today"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/drawable_alarm" />
+
+        </RadioGroup>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/detail_btn_dialog_back"
+            style="@style/detail_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+       android:layout_margin="16dp"
+            android:backgroundTint="@color/stroke"
+            android:gravity="center"
+            android:text="@string/dialog_cancle"
+            android:textColor="@color/grey"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/detail_btn_dialog_ok"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_alert_dialog" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/detail_btn_dialog_ok"
+            style="@style/detail_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_btn_dialog_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_btn_dialog_back"
+            app:layout_constraintTop_toTopOf="@+id/detail_btn_dialog_back" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
