@@ -89,11 +89,6 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
                 listener.onStarredChanged()
                 notifyItemChanged(position)
             }
-
-            image.setOnLongClickListener {
-                Log.d("tadsf", "asdf!")
-                return@setOnLongClickListener(true)
-            }
         }
     }
 
