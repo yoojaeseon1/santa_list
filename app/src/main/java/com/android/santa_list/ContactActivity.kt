@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.viewpager2.widget.ViewPager2
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
+class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, ChangeFragmentListener {
     private val binding: ActivityContactBinding by lazy {
         ActivityContactBinding.inflate(
             layoutInflater
@@ -49,6 +50,16 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private fun setFragment(fragment: Fragment) {
         fragmentManager.commit {
 //            replace(R.id.frame_layout, fragment) // ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
+            setReorderingAllowed(true)
+            addToBackStack("")
+        }
+    }
+
+    override fun changeFragment(user: User) {
+        //TODO : ContactDetailFramgnet 로 이동시키는 이동
+        val contactDetailFragment = ContactDetailFragment.newInstance(user)
+        this.supportFragmentManager.commit {
+            replace(R.id.frame_layout, contactDetailFragment)
             setReorderingAllowed(true)
             addToBackStack("")
         }

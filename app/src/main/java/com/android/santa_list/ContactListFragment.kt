@@ -1,5 +1,6 @@
 package com.android.santa_list
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,10 +20,15 @@ import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
 import com.android.santa_list.repository.PresentLogRepository
 
+interface ChangeFragmentListener {
+    fun changeFragment(user : User)
+}
+
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
 class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
     private val binding: FragmentContactListBinding by lazy { FragmentContactListBinding.inflate( layoutInflater ) }
+    private var changeFragmentListener : ChangeFragmentListener ?= null
     private lateinit var recyclerView: RecyclerView
     private lateinit var mainAdapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
@@ -32,8 +38,13 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { }
-
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        changeFragmentListener = context as ChangeFragmentListener
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +62,14 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
 
         presentLogRepository = PresentLogRepository()
 
-        mainAdapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
+        mainAdapter = MainRecyclerViewAdapter({ user ->
+            changeFragmentListener?.changeFragment(user)
+        },context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
             override fun onStarredChanged() {
                 isStarredList()
             }
         })
+
 
         ArrayAdapter.createFromResource(
             requireContext(),
@@ -141,7 +155,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     
     override fun onResume() {
         super.onResume()
-//        mainAdapter.notifyDataSetChanged() // 항상 워킹하지 않는 코드라고 warning 떠서 우선 주석 처리
+        mainAdapter.notifyDataSetChanged()
     }
 
     private fun isStarredList() {
@@ -186,14 +200,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactListFragment.
-         */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =

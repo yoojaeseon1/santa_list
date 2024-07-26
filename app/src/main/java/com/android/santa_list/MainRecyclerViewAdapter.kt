@@ -29,16 +29,21 @@ enum class CommonViewType(val viewType: Int) {
     GRID(1),
 }
 
-class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
-    private val santaUtil = SantaUtil.getInstance()
-
+class MainRecyclerViewAdapter(
+    private val onClick: (User) -> Unit,
+    val context: Context?,
+    var contact: MutableList<User>,
+    private val recyclerView: RecyclerView,
+    private val listener: OnStarredChangeListener
+) : RecyclerView.Adapter<ViewHolder>(){
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
-
     interface OnStarredChangeListener {
         fun onStarredChanged()
     }
+
+    private val santaUtil = SantaUtil.getInstance()
 
     var itemClick : ItemClick? = null
 
@@ -49,7 +54,6 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
         private val isStarred = binding.ivItemStar
 
         fun bind(position: Int) {
-            val parentActivity = context
             val contact = contact[position]
 
             image.setImageResource(contact.profile_image)
@@ -57,14 +61,9 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-//                parentActivity.replaceFragment()
-//                parentActivity.supportFragmentManager.commit {
-//                    replace(R.id.frame_layout, contactDetailFragment)
-//                    setReorderingAllowed(true)
-//                    addToBackStack("")
-//                }
+                onClick(contact)
             }
+
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
                 listener.onStarredChanged()
@@ -79,21 +78,13 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
         private val isStarred = binding.ivItemStar
 
         fun bind(position: Int) {
-            val parentActivity = context as AppCompatActivity
             val contact = contact[position]
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
-            name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
-                }
-            }
+            name.setOnClickListener { onClick(contact) }
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
