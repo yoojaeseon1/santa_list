@@ -27,20 +27,28 @@
 | 정혜현 | 조인기 | 김보라 | 이화민 | 유재선 |
 
 ## 기술 스택
-<ul class="custom_icon_ul" style="display: flex;">
-  <li style="width: 150px;">![노션](https://github.com/user-attachments/assets/579d509a-0992-40d2-b406-bff7a09632b6)</li>
+<div class="custom_icon_ul" style="display: flex;">
+   <img src="https://github.com/user-attachments/assets/579d509a-0992-40d2-b406-bff7a09632b6" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/8c07f3cb-67fd-4e63-925c-73e9b7bb79c9" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/996c75d2-8d49-4fe5-b054-16d0fad1d2f6" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/c2208ce1-675e-4a68-996d-671ea35ef259" style="width: 150px;display: block;" />
+  <!-- <li style="width: 150px;">![노션](https://github.com/user-attachments/assets/579d509a-0992-40d2-b406-bff7a09632b6)</li>
   <li style="width: 150px;">![안드로이드스튜디오](https://github.com/user-attachments/assets/8c07f3cb-67fd-4e63-925c-73e9b7bb79c9)</li>
   <li style="width: 150px;">![깃](https://github.com/user-attachments/assets/996c75d2-8d49-4fe5-b054-16d0fad1d2f6)</li>
-  <li style="width: 150px;">![그래들](https://github.com/user-attachments/assets/c2208ce1-675e-4a68-996d-671ea35ef259)</li>
-</ul>
+  <li style="width: 150px;">![그래들](https://github.com/user-attachments/assets/c2208ce1-675e-4a68-996d-671ea35ef259)</li> -->
+</div>
 
 ## 개발/협업 환경
-<ul class="custom_icon_ul" style="display: flex;">
-   <li style="width: 150px;">![코틀린](https://github.com/user-attachments/assets/70e37a85-7ff9-4764-baba-71ad8962a2cd)</li>
+<div class="custom_icon_ul" style="display: flex;">
+   <img src="https://github.com/user-attachments/assets/70e37a85-7ff9-4764-baba-71ad8962a2cd" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/0c9cc0da-c6ec-4cb1-91dd-52f2b97fcd83" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/9af2298f-f382-4837-9383-dbed130c543a" style="width: 150px;display: block;" />
+   <img src="https://github.com/user-attachments/assets/8cb65185-0e55-471f-ac74-9ae7aa7b7060" style="width: 150px;display: block;" />
+   <!-- <li style="width: 150px;">![코틀린](https://github.com/user-attachments/assets/70e37a85-7ff9-4764-baba-71ad8962a2cd)</li>
    <li style="width: 150px;">![피그마](https://github.com/user-attachments/assets/0c9cc0da-c6ec-4cb1-91dd-52f2b97fcd83)</li>
    <li style="width: 150px;">![슬랙](https://github.com/user-attachments/assets/9af2298f-f382-4837-9383-dbed130c543a)</li>
-   <li style="width: 150px;">![깃허브](https://github.com/user-attachments/assets/8cb65185-0e55-471f-ac74-9ae7aa7b7060)</li>
-</ul>
+   <li style="width: 150px;">![깃허브](https://github.com/user-attachments/assets/8cb65185-0e55-471f-ac74-9ae7aa7b7060)</li> -->
+</div>
  
 
 
