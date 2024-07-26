@@ -7,18 +7,17 @@ import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
+import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
-
-
-// TODO: Rename parameter arguments, choose names that match
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.android.santa_list.repository.PresentLogRepository
 
 /**
  * A simple [Fragment] subclass.
@@ -26,13 +25,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
-class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
-
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
-    private var param1: String? = null
-    private var param2: String? = null
-
+class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
     private val binding: FragmentContactListBinding by lazy {
         FragmentContactListBinding.inflate(
             layoutInflater
@@ -40,15 +35,13 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
+    private lateinit var presentLogRepository: PresentLogRepository
 
     private val contactList: MutableList<User> = Dummy.dummyUserList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        arguments?.let { }
 
     }
 
@@ -57,9 +50,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         savedInstanceState: Bundle?
     ): View {
         return binding.root
-
-//         Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_contact_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,21 +57,18 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
 
         recyclerView = binding.contactRecyclerView
-        adapter = MainRecyclerViewAdapter(contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
+        presentLogRepository = PresentLogRepository()
+
+        adapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
             override fun onStarredChanged() {
                 isStarredList()
             }
         })
-        
 
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                val user = contactList[position]
-//                user.is_starred = !user.is_starred
-//                Log.d("즐겨찾기", "${user.is_starred}")
                 isStarredList()
                 adapter.notifyItemChanged(position)
-
             }
         }
 
@@ -90,14 +77,75 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             onClickMore(popup)
         }
 
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.catetory_array,
+            android.R.layout.simple_spinner_item
+        ). also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.listFilteringSpinner.adapter = adapter
+        }
+
+        binding.listFilteringSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var filteredList = mutableListOf<User>()
+                when(position) {
+                    0 -> {
+                        Log.d("contactListFragment", "start filter 0")
+                        filteredList = contactList
+                    }
+                    1 -> { // 선물 해줄 사람(나한테 준 사람)
+                        filteredList = presentLogRepository.selectGiveUserList()
+//                        presentLogRepository.selectGiveUserList(contactList)
+                    }
+                    2 -> { // (내가) 선물 해준 사람
+                        filteredList = presentLogRepository.selectReceivedUserList()
+                    }
+                    3 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.FAMILY }.toMutableList()
+                    }
+                    4 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.FRIEND }.toMutableList()
+                    }
+                    5 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.COMPANY }.toMutableList()
+                    }
+                    6 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.SCHOOL }.toMutableList()
+                    }
+                }
+
+                adapter.contact = filteredList
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                recyclerView.adapter = adapter
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                return
+            }
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
-
     }
 
     override fun onStarredChanged() {
         isStarredList()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
     }
 
     private fun isStarredList() {
@@ -108,29 +156,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
-
     }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ContactListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
 
     private fun onClickMore(popup: PopupMenu) {
         val linearLayoutManager: RecyclerView.LayoutManager =
@@ -161,5 +187,22 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         }
 
         popup.show()
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment ContactListFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            ContactListFragment().apply {
+                arguments = Bundle().apply { }
+            }
     }
 }

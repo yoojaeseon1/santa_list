@@ -1,24 +1,37 @@
 package com.android.santa_list
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
 
-enum class CommonViewType(viewType: String) {
-    LINEAR("ONE_LINE_TEXT"),
-    GRID("TWO_LINE_TEXT"),
+enum class CommonViewType(val viewType: Int) {
+    LINEAR(0),
+    GRID(1),
 }
-class MainRecyclerViewAdapter(private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+
+class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+    private val santaUtil = SantaUtil.getInstance()
+
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
@@ -29,6 +42,7 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
 
     var itemClick : ItemClick? = null
 
+    // inner class로 하면 메모리 누수가 발생할 수 있음 -> inner를 삭제하면 된다고...
     inner class LinearViewHolder(private val binding: ItemUserListBinding): ViewHolder(binding.root) {
         private val image = binding.ivItemImage
         private val name = binding.tvItemName
@@ -36,9 +50,19 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
 
         fun bind(position: Int) {
             val contact = contact[position]
+            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
+            name.setOnClickListener {
+                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+                parentActivity.supportFragmentManager.commit {
+                    replace(R.id.frame_layout, contactDetailFragment)
+                    setReorderingAllowed(true)
+                    addToBackStack("")
+                }
+            }
+
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             isStarred.setOnClickListener {
@@ -72,12 +96,14 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val linearBinding = ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val gridBinding = ItemUserGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val enums = CommonViewType.entries.find { it.viewType == viewType } //immnutable로 반환해주기 때문에 훨씬 좋음!
 
-        return when (viewType) {
-            CommonViewType.LINEAR.ordinal -> {
+        // ordinal로 values에 직접 접근하면 array에 접근하는 거라서 확장성의 문제가 있고 성능에 좋지 못함
+        return when (enums) {
+            CommonViewType.LINEAR -> {
                 LinearViewHolder(linearBinding)
             }
-            CommonViewType.GRID.ordinal -> {
+            CommonViewType.GRID -> {
                 GridViewHolder(gridBinding)
             } else -> { LinearViewHolder(linearBinding) }
         }
@@ -106,17 +132,26 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
         super.onAttachedToRecyclerView(recyclerView)
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            // 아이템 이동 로직
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: ViewHolder, target: ViewHolder): Boolean {
                 return false
             }
 
-            // 오른쪽으로 스와이프 할 경우
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            // TODO: 아래 코드 튜터님께 여쭤보기
+            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+                val test = context as Activity
+
                 if (direction == ItemTouchHelper.RIGHT) {
                     val position = viewHolder.adapterPosition
-                    // 아이템 삭제 등의 처리
-                    Log.d("스와이핑!", "$position")
+                    if (context.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CALL_PHONE) } != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(test, arrayOf(Manifest.permission.CALL_PHONE), 1)
+                    } else {
+                        val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
+                        val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
+                        test.startActivity(intent)
+
+                        Log.d("MainRecyclerViewAdapter", "start swiping position = ${position}")
+                        notifyItemChanged(position)
+                    }
                 }
             }
         })
@@ -131,6 +166,4 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 }

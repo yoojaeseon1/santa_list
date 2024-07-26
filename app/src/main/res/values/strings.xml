@@ -19,6 +19,20 @@
 
     <!--Contact List Fragment-->
 
+    <string name="menu_filtering_list">내 친구 목록 > </string>
+    <string name="menu_filtering_category">전체보기 </string>
+
+    <string-array name="catetory_array">
+        <item>전체보기</item>
+        <item>선물 해줄 사람</item>
+        <item>선물 해준 사람</item>
+        <item>가족</item>
+        <item>친구</item>
+        <item>회사</item>
+        <item>학교</item>
+    </string-array>
+
+
     <!--Contact Detail Fragment-->
 
     <string name="alert_on"><u>알림ON</u></string>
