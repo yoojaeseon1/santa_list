@@ -229,7 +229,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/sonjul_go"
+                android:text="@string/present_history_mine"
                 app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
                 app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_present_date" />
@@ -250,7 +250,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/present_history"
+                android:text="@string/present_history_yours"
                 app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
                 app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />

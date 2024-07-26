@@ -6,9 +6,9 @@ import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -52,6 +52,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
     private val binding get() = _binding!!
     private val presentLogRepository = PresentLogRepository()
     private val santaUtil = SantaUtil.getInstance()
+    lateinit var alertDialogBuilder : MaterialAlertDialogBuilder
 
     val receivedPresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
@@ -91,38 +92,37 @@ class ContactDetailFragment : Fragment(), Parcelable {
 //알림버튼 : 클릭 시 다이얼로그 응답에 따라 해당 시간에 알림, 알림 클릭시 디테일 페이지로 돌아옴
 
 
-
         _binding?.toolbar?.action?.setOnClickListener {
-                val addContactDialog = AddContactDialogFragment()
+            val addContactDialog = AddContactDialogFragment()
             addContactDialog.show(requireFragmentManager(), "DialogFragment")
 
         }
 
         _binding?.detailIvFavorite?.setOnClickListener {
-
+            _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
         }
 
 
         _binding?.detailCbAlertIc?.setOnClickListener() {
-            if(_binding?.detailCbAlertIc?.isChecked as Boolean) {
+            if (_binding?.detailCbAlertIc?.isChecked as Boolean && alertDialogBuilder.) {
                 _binding?.detailCbAlertTv?.isChecked = true
                 _binding?.detailCbAlertTv?.text = getString(R.string.alert_on)
-            }
-            else if(_binding?.detailCbAlertIc?.isChecked == false) {
+            } else if (_binding?.detailCbAlertIc?.isChecked == false) {
                 _binding?.detailCbAlertTv?.isChecked = false
-                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)}
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)
+            }
             selectAlarm()
         }
         _binding?.detailCbAlertTv?.setOnClickListener() {
-            if(_binding?.detailCbAlertTv?.isChecked as Boolean) {
+            if (_binding?.detailCbAlertTv?.isChecked as Boolean) {
                 _binding?.detailCbAlertIc?.isChecked = true
-                _binding?.detailCbAlertTv?.text = getString(R.string.alert_on)}
-            else if(_binding?.detailCbAlertTv?.isChecked == false) {
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_on)
+            } else if (_binding?.detailCbAlertTv?.isChecked == false) {
                 _binding?.detailCbAlertIc?.isChecked = false
-                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)}
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)
+            }
             selectAlarm()
         }
-
 
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
@@ -139,7 +139,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "received", this@ContactDetailFragment)
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -152,7 +153,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "give", this@ContactDetailFragment)
 
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
@@ -165,7 +167,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
         wishPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 
-                val presentAddFragment = PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
+                val presentAddFragment =
+                    PresentAddFragment.newInstance(friend!!, "wish", this@ContactDetailFragment)
 
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
@@ -189,7 +192,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
         binding.detailBtnCall.setOnClickListener {
-            if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.CALL_PHONE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 Log.d("contactDetailFragment", "don't have permission")
 
                 ActivityCompat.requestPermissions(
@@ -198,9 +205,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     1
                 )
 
-            }
-
-            else {
+            } else {
                 Log.d("contactDetailFragment", "have permission")
                 val phone_number = "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
                 val intent = Intent("android.intent.action.CALL", Uri.parse(phone_number))
@@ -209,8 +214,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
     }
-
-
 
 
     //알림버튼_알람리시버 함수 : 사용자가 선택한 시간에 알림을 출력해주는 함수
@@ -257,14 +260,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             //하루 전
             1 -> calendar.apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.YEAR, santaDay[0])
-            set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
-            set(Calendar.DAY_OF_MONTH, santaDay[2] - 1)
-            set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
-            set(Calendar.MINUTE, santaDay[4])
-            set(Calendar.SECOND, santaDay[5])
-        }
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.YEAR, santaDay[0])
+                set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
+                set(Calendar.DAY_OF_MONTH, santaDay[2] - 1)
+                set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
+                set(Calendar.MINUTE, santaDay[4])
+                set(Calendar.SECOND, santaDay[5])
+            }
             //당일
             2 -> calendar.apply {
                 timeInMillis = System.currentTimeMillis()
@@ -291,8 +294,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
             getString(R.string.alarm_today)
         )
         var selectedAlarm = 0
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.alarm_title))
+        alertDialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.detail_dialog_alert)
+
+        alertDialogBuilder.setTitle(getString(R.string.alarm_title))
             .setSingleChoiceItems(alarmGroup, selectedAlarm) { dialog, which ->
                 selectedAlarm = which
             }
@@ -329,29 +333,51 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     //선물하기버튼 함수 : 카카오톡 또는 쿠팡으로 연동하는 함수
     private fun giftListener() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.gift))
-        builder.setMessage(getString(R.string.gift_shop))
-        builder.setIcon(R.drawable.ic_gift_grey)
+        val items =
+            arrayOf(getString(R.string.gift_shop_coupang), getString(R.string.gift_shop_kakao))
 
-        val btnListener = DialogInterface.OnClickListener { dialog, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
-                    startActivity(intent)
+        MaterialAlertDialogBuilder(requireContext(), R.style.detail_dialog_gift)
+            .setTitle(getString(R.string.gift))
+            .setItems(items) { dialog, which ->
+                when(which) {
+                    0 -> {val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
+                        startActivity(intent)}
+                    1 -> {val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
+                        startActivity(intent)}
                 }
-
-                DialogInterface.BUTTON_NEGATIVE -> {
-                    val intent =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
-                    startActivity(intent)
-                }
+                // Respond to item chosen
             }
-        }
-        builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
-        builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
-        builder.show()
+            .setNegativeButton(getString(R.string.dialog_cancle)) { dialog, which ->
+            }
+
+            .show()
+
     }
+
+
+//        val builder = AlertDialog.Builder(requireContext(),)
+//        builder.setTitle(getString(R.string.gift))
+//        builder.setMessage(getString(R.string.gift_shop))
+//        builder.setIcon(R.drawable.ic_gift_grey)
+//
+//        val btnListener = DialogInterface.OnClickListener { dialog, which ->
+//            when (which) {
+//                DialogInterface.BUTTON_POSITIVE -> {
+//                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gift.kakao.com"))
+//                    startActivity(intent)
+//                }
+//
+//                DialogInterface.BUTTON_NEGATIVE -> {
+//                    val intent =
+//                        Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coupang.com"))
+//                    startActivity(intent)
+//                }
+//            }
+//        }
+//        builder.setPositiveButton(getString(R.string.gift_shop_kakao), btnListener)
+//        builder.setNegativeButton(getString(R.string.gift_shop_coupang), btnListener)
+//        builder.show()
+//    }
 
 
     companion object {

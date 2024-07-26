@@ -29,7 +29,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val builder: NotificationCompat.Builder
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val channelId = "one-channel"
-                val channelName = "My Channel One"
+                val channelName = "산타데이 알림"
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
                 val channel = NotificationChannel(
                     channelId,
@@ -44,8 +44,8 @@ class AlarmReceiver : BroadcastReceiver() {
             builder.run {
                 setSmallIcon(R.drawable.ic_alert_on)
                 setWhen(System.currentTimeMillis())
-                setContentTitle("ddd")
-                setContentText("ddd")
+                setContentTitle("산타로서 선물할 때가 됐어요!")
+                setContentText("소중한 사람에게 마음을 전하러 가볼까요?")
                 setContentIntent(pendingIntent)
                 setAutoCancel(true)
             }
