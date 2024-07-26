@@ -154,7 +154,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
-
     }
 
     private fun onClickMore(popup: PopupMenu) {
@@ -187,7 +186,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
 
         popup.show()
     }
-
 
     companion object {
         /**
