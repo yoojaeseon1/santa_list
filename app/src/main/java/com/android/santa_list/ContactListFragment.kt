@@ -7,13 +7,18 @@ import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
+import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
+import com.android.santa_list.repository.PresentLogRepository
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,6 +45,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MainRecyclerViewAdapter
+    private lateinit var presentLogRepository: PresentLogRepository
 
     private val contactList: MutableList<User> = Dummy.dummyUserList()
 
@@ -67,12 +73,13 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
 
         recyclerView = binding.contactRecyclerView
+        presentLogRepository = PresentLogRepository()
+
         adapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
             override fun onStarredChanged() {
                 isStarredList()
             }
         })
-        
 
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
@@ -90,9 +97,67 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             onClickMore(popup)
         }
 
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.catetory_array,
+            android.R.layout.simple_spinner_item
+        ). also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.listFilteringSpinner.adapter = adapter
+        }
+
+        binding.listFilteringSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var filteredList = mutableListOf<User>()
+                when(position) {
+                    0 -> {
+                        filteredList = contactList
+                    }
+                    1 -> { // 선물 해줄 사람(나한테 준 사람)
+                        filteredList = presentLogRepository.selectGiveUserList()
+                    }
+                    2 -> { // (내가) 선물 해준 사람
+                        filteredList = presentLogRepository.selectReceivedUserList()
+                    }
+                    3 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.FAMILY }.toMutableList()
+                    }
+                    4 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.FRIEND }.toMutableList()
+                    }
+                    5 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.COMPANY }.toMutableList()
+                    }
+                    6 -> {
+                        filteredList =
+                            contactList.filter { it.group == UserGroup.SCHOOL }.toMutableList()
+                    }
+                }
+
+                adapter = MainRecyclerViewAdapter(context, filteredList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
+                    override fun onStarredChanged() {
+                        isStarredList()
+                    }
+                })
+                recyclerView.adapter = adapter
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                return
+            }
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
 
     }
 
