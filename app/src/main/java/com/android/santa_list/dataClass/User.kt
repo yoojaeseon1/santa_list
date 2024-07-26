@@ -1,9 +1,7 @@
 package com.android.santa_list.dataClass
 
-import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -42,6 +40,7 @@ data class User(val id: String,
 
 @Parcelize
 data class MyData (
+    var santa_number: String?,
     var uri: String?,
     var name: String?,
     var phone_number: String?,

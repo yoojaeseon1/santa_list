@@ -44,8 +44,8 @@ object Dummy {
 
     // jaeseon이 로그인 되어 있다고 가정
     var loggedInUser = jaeseon
-
-    val MyData = MyData("", "", "", "", arrayOf(null, null, null))
+  
+    val MyData = MyData("","", "", "", "", arrayOf(null, null, null))
 
     init {
         myData.add(MyData)
