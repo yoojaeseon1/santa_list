@@ -42,7 +42,6 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
                 tab.text = tabTitles[position]
             }.attach()
         }
-
         val contactListFragment = ContactListFragment()
         setFragment(contactListFragment)
     }

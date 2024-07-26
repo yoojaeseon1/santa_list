@@ -34,7 +34,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         )
     }
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MainRecyclerViewAdapter
+    private lateinit var mainAdapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
 
     private val contactList: MutableList<User> = Dummy.dummyUserList()
@@ -57,18 +57,22 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
 
         recyclerView = binding.contactRecyclerView
+//        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
+
         presentLogRepository = PresentLogRepository()
 
-        adapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
+        mainAdapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
             override fun onStarredChanged() {
                 isStarredList()
             }
         })
 
-        adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
+
+
+        mainAdapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 isStarredList()
-                adapter.notifyItemChanged(position)
+                mainAdapter.notifyItemChanged(position)
             }
         }
 
@@ -124,9 +128,9 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                     }
                 }
 
-                adapter.contact = filteredList
+                mainAdapter.contact = filteredList
                 recyclerView.layoutManager = LinearLayoutManager(context)
-                recyclerView.adapter = adapter
+                recyclerView.adapter = mainAdapter
 
             }
 
@@ -136,7 +140,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = mainAdapter
     }
 
     override fun onStarredChanged() {
@@ -145,7 +149,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        mainAdapter.notifyDataSetChanged()
     }
 
     private fun isStarredList() {
