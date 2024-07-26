@@ -1,11 +1,13 @@
 package com.android.santa_list
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,7 @@ enum class CommonViewType(viewType: String) {
     LINEAR("ONE_LINE_TEXT"),
     GRID("TWO_LINE_TEXT"),
 }
-class MainRecyclerViewAdapter(val context: Context?, private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
     private val santaUtil = SantaUtil.getInstance()
 
     interface ItemClick {
@@ -142,7 +144,10 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
                         val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
                         val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
                         test.startActivity(intent)
+
+                        Log.d("MainRecyclerViewAdapter", "start swiping position = ${position}")
                         notifyItemChanged(position)
+//                        notifyDataSetChanged()
                     }
                 }
             }
