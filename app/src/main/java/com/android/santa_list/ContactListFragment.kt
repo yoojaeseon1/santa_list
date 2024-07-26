@@ -65,6 +65,8 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             }
         })
 
+        Log.d("contactListFragment", "start itemclick")
+
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 isStarredList()
@@ -97,10 +99,12 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                 var filteredList = mutableListOf<User>()
                 when(position) {
                     0 -> {
+                        Log.d("contactListFragment", "start filter 0")
                         filteredList = contactList
                     }
                     1 -> { // 선물 해줄 사람(나한테 준 사람)
                         filteredList = presentLogRepository.selectGiveUserList()
+//                        presentLogRepository.selectGiveUserList(contactList)
                     }
                     2 -> { // (내가) 선물 해준 사람
                         filteredList = presentLogRepository.selectReceivedUserList()
@@ -123,11 +127,8 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                     }
                 }
 
-                adapter = MainRecyclerViewAdapter(context, filteredList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
-                    override fun onStarredChanged() {
-                        isStarredList()
-                    }
-                })
+                adapter.contact = filteredList
+                recyclerView.layoutManager = LinearLayoutManager(context)
                 recyclerView.adapter = adapter
 
             }
@@ -144,6 +145,11 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
 
     override fun onStarredChanged() {
         isStarredList()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
     }
 
     private fun isStarredList() {
