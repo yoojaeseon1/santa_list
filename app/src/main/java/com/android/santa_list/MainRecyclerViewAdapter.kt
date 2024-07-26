@@ -63,6 +63,7 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
+                listener.onStarredChanged()
                 notifyItemChanged(position)
             }
         }
