@@ -82,12 +82,7 @@ class MainRecyclerViewAdapter(private val onClick: (User) -> Unit, val context: 
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
-                }
+                onClick(contact)
             }
 
             isStarred.setOnClickListener {

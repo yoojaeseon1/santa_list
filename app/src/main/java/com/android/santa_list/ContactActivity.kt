@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -36,21 +37,21 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
         }
 
         with(binding) {
-            tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
+            tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
             viewPager = pager
             viewPager.adapter = ViewPager2Adapter(this@ContactActivity)
             viewPager.offscreenPageLimit = 2
-            TabLayoutMediator(tabLayout.tabLayout, viewPager) { tab, position ->
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]
             }.attach()
         }
-        val contactListFragment = ContactListFragment()
-        setFragment(contactListFragment)
+        /*val contactListFragment = ContactListFragment()
+        setFragment(contactListFragment)*/
     }
 
     private fun setFragment(fragment: Fragment) {
         fragmentManager.commit {
-//            replace(R.id.frame_layout, fragment) // ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
+         //   replace(R.id.frame_layout, fragment) // ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
             setReorderingAllowed(true)
             addToBackStack("")
         }
@@ -73,6 +74,23 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
 
     override fun onTabReselected(tab: TabLayout.Tab?) {}
     override fun changeFragment(user: User) {
-       //TODO : ContactDetailFramgnet 로 이동시키는 이동
+        //TODO 뒤로가기시 viewpager+ tablayout 보이게 처리 (hideViewPager() Call)
+        hideViewPager()
+
+        fragmentManager.beginTransaction()
+            .add(R.id.frame_layout, ContactDetailFragment.newInstance(user))
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showViewPager() = with(binding) {
+        pager.isVisible = true
+        tabLayout.isVisible = true
+    }
+
+    private fun hideViewPager() = with(binding) {
+        pager.isVisible = false
+        tabLayout.isVisible = false
     }
 }
