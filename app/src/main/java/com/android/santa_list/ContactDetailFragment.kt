@@ -98,6 +98,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         }
 
+        _binding?.detailIvFavorite?.setOnClickListener {
+
+        }
 
 
         _binding?.detailCbAlertIc?.setOnClickListener() {
