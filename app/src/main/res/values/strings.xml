@@ -10,6 +10,8 @@
     <string name="sonjul_go">입금 확인된 친구</string>
     <string name="present_history">내가 해준 선물</string>
     <string name="wish_list">친구의 위시리스트</string>
+    <string name="tab_item_1">연락처</string>
+    <string name="tab_item_2">내정보</string>
 
     <!--Menu Items-->
     <string name="menu_item_list">리스트뷰로 보기</string>
