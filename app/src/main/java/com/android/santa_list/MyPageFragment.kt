@@ -1,20 +1,18 @@
 package com.android.santa_list
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
-import com.android.santa_list.databinding.FragmentContactDetailBinding
+import com.android.santa_list.dataClass.Dummy.dummyUserList
 import com.android.santa_list.databinding.FragmentMyPageBinding
-import com.android.santa_list.dataClass.MyData
-import com.android.santa_list.dataClass.Dummy.MyData
 import com.android.santa_list.dataClass.Dummy.myData
+import java.util.Random
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +29,6 @@ class MyPageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentMyPageBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,7 +44,6 @@ class MyPageFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentMyPageBinding.inflate(inflater)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,10 +52,23 @@ class MyPageFragment : Fragment() {
             setMyPageData()
         }
         setMyPageData()
-             binding.toolBar.action.setOnClickListener {
-                 val myPageDialog = MyPageDialogFragment()
-                 myPageDialog.show(requireFragmentManager(), "DialogFragment")
-             }
+        binding.toolBar.action.setOnClickListener {
+            val myPageDialog = MyPageDialogFragment()
+            myPageDialog.show(requireFragmentManager(), "DialogFragment")
+        }
+
+        val random = Random()
+        val inputNumber = dummyUserList()[random.nextInt(dummyUserList().size)].phone_number
+        binding.mypageBtnCall.setOnClickListener {
+            val intentCall = Intent(Intent.ACTION_DIAL)
+            intentCall.data = Uri.parse("tel:$inputNumber")
+            startActivity(intentCall)
+        }
+        binding.mypageBtnMessage.setOnClickListener {
+            val intentMessage = Intent(Intent.ACTION_SENDTO)
+            intentMessage.data = Uri.parse("smsto:$inputNumber")
+            startActivity(intentMessage)
+        }
     }
 
     override fun onResume() {
@@ -67,6 +76,11 @@ class MyPageFragment : Fragment() {
         setMyPageData()
     }
     private fun setMyPageData () {
+        if (myData[0].santa_number.isNullOrBlank()) {
+            myData[0].santa_number = randomSantaNumber()
+        }
+
+        binding.mypageTvSetSantaNumber.text = myData[0].santa_number
         binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
         binding.mypageTvName.text = myData[0].name
         binding.mypageTvSetPhoneNumber.text = myData[0].email
@@ -76,7 +90,18 @@ class MyPageFragment : Fragment() {
         } else {
             binding.mypageTvSetGiftDate.text = "${myData[0].gift_date[0]}년 ${myData[0].gift_date[1]}월 ${myData[0].gift_date[2]}일"
         }
-
+    }
+    private fun randomSantaNumber () : String {
+        var santaNumber: String = ""
+        val random = Random()
+        repeat(6) {
+            santaNumber += random.nextInt(10).toString()
+        }
+        santaNumber += "-"
+        repeat(7) {
+            santaNumber += random.nextInt(10).toString()
+        }
+        return santaNumber
     }
     companion object {
         /**

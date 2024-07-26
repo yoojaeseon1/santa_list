@@ -47,7 +47,7 @@ object Dummy {
 //    val present9 = Present("캣타워")
 //    val addPresent = Present("선물추가", R.drawable.image_add_present)
 
-    val MyData = MyData("", "", "", "", arrayOf(null, null, null))
+    val MyData = MyData("","", "", "", "", arrayOf(null, null, null))
 
     init {
 

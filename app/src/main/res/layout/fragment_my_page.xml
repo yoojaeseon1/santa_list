@@ -42,7 +42,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/image_choco"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView2" />
+            app:layout_constraintTop_toTopOf="@+id/mypage_tv_santa_number" />
 
         <TextView
             android:id="@+id/mypage_tv_name"
@@ -53,8 +53,8 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
+            app:layout_constraintTop_toBottomOf="@+id/mypage_tv_set_santa_number" />
 
         <TextView
             android:id="@+id/mypage_tv_set_phone_number"
@@ -63,7 +63,7 @@
             android:text="@string/phone_number"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
             app:layout_constraintTop_toBottomOf="@+id/mypage_tv_phone_number" />
 
         <TextView
@@ -75,7 +75,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
             app:layout_constraintTop_toBottomOf="@+id/mypage_tv_name" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:text="@string/email"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
             app:layout_constraintTop_toBottomOf="@+id/mypage_tv_email" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
             app:layout_constraintTop_toBottomOf="@+id/mypage_tv_set_phone_number" />
 
         <TextView
@@ -129,27 +129,27 @@
             app:layout_constraintTop_toBottomOf="@+id/mypage_tv_gift_date" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/mypage_tv_santa_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="산타 등록번호"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/mypage_title" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/mypage_tv_set_santa_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="124356-3234567"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintStart_toStartOf="@+id/mypage_tv_santa_number"
+            app:layout_constraintTop_toBottomOf="@+id/mypage_tv_santa_number" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/mypage_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="산타 등록증"
