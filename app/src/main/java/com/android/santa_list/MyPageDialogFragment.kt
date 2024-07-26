@@ -1,6 +1,11 @@
 package com.android.santa_list
 
 import android.app.DatePickerDialog
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Color.argb
+import android.graphics.Color.rgb
+import android.graphics.ColorSpace.Rgb
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +24,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.android.santa_list.dataClass.Dummy.myData
 import com.android.santa_list.databinding.FragmentMyPageDialogBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import java.util.regex.Pattern
 
 /**
@@ -140,13 +151,42 @@ class MyPageDialogFragment : DialogFragment() {
         val picker = DatePickerDialog(requireContext(), listener, year, month, day)
         picker.show()
     }
+    // 이미지 크롭 선택
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // returned uri 사용
+            Glide.with(this)
+                .load(result.uriContent)
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+                .into(binding.dialogIv)
+            pickUri = result.uriContent
+        } else {
+            val exception = result.error
+        }
+    }
+
     // 이미지 선택
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         // 사진 선택 이후 돌아왔을 때 콜백
         if (uri != null) {
             // 선택된 사진이 있을 경우
             pickUri = uri
-            binding.dialogIv.setImageURI(uri)
+            cropImage.launch(
+                CropImageContractOptions(
+                    uri = uri, // 크롭할 이미지 uri
+                    cropImageOptions = CropImageOptions(
+                        outputCompressFormat = Bitmap.CompressFormat.PNG,//사진 확장자 변경
+                        // minCropResultHeight = 100,//사진 최소 세로크기
+                        // minCropResultWidth = 100,//사진 최소 가로크기
+                        aspectRatioY = 1,//세로 비율
+                        aspectRatioX = 1,//가로 비율
+                        fixAspectRatio = true,//커터? 크기 고정 여부
+                        // borderLineColor = argb(1,255,255,255) //커터? 태두리 색
+                        // 원하는 옵션 추가
+                    )
+                )
+            )
+//            binding.dialogIv.setImageURI(uri)
         } else {
             // 선택된 사진이 없을 경우
         }

@@ -42,6 +42,10 @@
                 <action android:name="android.intent.action.SANTA" />
             </intent-filter>
         </receiver>
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"
+            />
     </application>
 
 </manifest>
