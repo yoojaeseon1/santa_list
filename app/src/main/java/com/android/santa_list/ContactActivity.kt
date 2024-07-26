@@ -35,9 +35,9 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
         with(binding) {
             tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
-
             viewPager = pager
             viewPager.adapter = ViewPager2Adapter(this@ContactActivity)
+            viewPager.offscreenPageLimit = 2
             TabLayoutMediator(tabLayout.tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]
             }.attach()
@@ -58,11 +58,11 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         when (tab!!.position) {
             // 0번째 탭 눌렀을 때
             0 -> {
-                setFragment(ContactListFragment())
+                viewPager.setCurrentItem(0, false)
             }
             // 1번째 탭 눌렀을 때
             1 -> {
-                setFragment(MyPageFragment())
+                viewPager.setCurrentItem(1, false)
             }
         }
     }

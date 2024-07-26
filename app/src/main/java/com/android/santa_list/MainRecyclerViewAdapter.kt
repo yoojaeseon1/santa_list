@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.viewpager2.widget.ViewPager2
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
@@ -48,22 +49,22 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
         private val isStarred = binding.ivItemStar
 
         fun bind(position: Int) {
+            val parentActivity = context
             val contact = contact[position]
-            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
-            name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
-                }
-            }
-
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
+            name.setOnClickListener {
+                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+//                parentActivity.replaceFragment()
+//                parentActivity.supportFragmentManager.commit {
+//                    replace(R.id.frame_layout, contactDetailFragment)
+//                    setReorderingAllowed(true)
+//                    addToBackStack("")
+//                }
+            }
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
                 listener.onStarredChanged()
@@ -78,11 +79,21 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
         private val isStarred = binding.ivItemStar
 
         fun bind(position: Int) {
+            val parentActivity = context as AppCompatActivity
             val contact = contact[position]
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+
+            name.setOnClickListener {
+                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+                parentActivity.supportFragmentManager.commit {
+                    replace(R.id.frame_layout, contactDetailFragment)
+                    setReorderingAllowed(true)
+                    addToBackStack("")
+                }
+            }
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
