@@ -4,24 +4,26 @@ import com.android.santa_list.R
 import java.time.LocalDateTime
 
 object Dummy {
-    fun dummyUserList(): MutableList<User> {
-        return mutableListOf(
-            jaeseon,
-            hwamin,
-            hyehyun,
-            bora,
-            ingi,
-            choco,
-            hooon,
-            ddongddong,
-            chulsoooo,
-            white_dog,
-            crayon,
-            sponge,
-            glass,
-            thunder
-        )
-    }
+//    fun dummyUserList(): MutableList<User> {
+//        return mutableListOf(
+//            jaeseon,
+//            hwamin,
+//            hyehyun,
+//            bora,
+//            ingi,
+//            choco,
+//            hooon,
+//            ddongddong,
+//            chulsoooo,
+//            white_dog,
+//            crayon,
+//            sponge,
+//            glass,
+//            thunder
+//        )
+//    }
+
+
 
     val presentLogs: MutableList<PresentLog> = mutableListOf()
     val myData = mutableListOf<MyData>()
@@ -47,8 +49,27 @@ object Dummy {
   
     val MyData: MyData = MyData("20251225-52221-25","", "산타클로스", "010-1225-5221", "santa@gmail.com", arrayOf(null, null, null))
 
+    var dummyUsers: MutableList<User> = mutableListOf()
+
     init {
         myData.add(MyData)
+
+        dummyUsers = mutableListOf(
+            jaeseon,
+            hwamin,
+            hyehyun,
+            bora,
+            ingi,
+            choco,
+            hooon,
+            ddongddong,
+            chulsoooo,
+            white_dog,
+            crayon,
+            sponge,
+            glass,
+            thunder
+        )
     }
 
 }

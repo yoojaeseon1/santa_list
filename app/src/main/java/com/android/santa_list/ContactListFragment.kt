@@ -1,6 +1,7 @@
 package com.android.santa_list
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.android.santa_list.dataClass.User
 import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
 import com.android.santa_list.repository.PresentLogRepository
+import kotlinx.parcelize.Parcelize
 
 /**
  * A simple [Fragment] subclass.
@@ -27,17 +29,22 @@ import com.android.santa_list.repository.PresentLogRepository
 
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
-class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
-    private val binding: FragmentContactListBinding by lazy {
-        FragmentContactListBinding.inflate(
-            layoutInflater
-        )
-    }
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MainRecyclerViewAdapter
+@Parcelize
+class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener, Parcelable {
+//    private var binding: FragmentContactListBinding by lazy {
+//        FragmentContactListBinding.inflate(
+//            layoutInflater
+//        )
+//    }
+    private var _binding: FragmentContactListBinding? = null
+    private val binding get() = _binding!!
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
 
-    private val contactList: MutableList<User> = Dummy.dummyUserList()
+//    private val contactList: MutableList<User> = Dummy.dummyUserList()
+    private val contactList: MutableList<User> = Dummy.dummyUsers
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentContactListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -101,7 +109,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                     }
                     1 -> { // 선물 해줄 사람(나한테 준 사람)
                         filteredList = presentLogRepository.selectGiveUserList()
-//                        presentLogRepository.selectGiveUserList(contactList)
                     }
                     2 -> { // (내가) 선물 해준 사람
                         filteredList = presentLogRepository.selectReceivedUserList()
@@ -135,6 +142,11 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             }
         }
 
+        binding.btnAddUser.setOnClickListener {
+            val userAddFragment = UserAddFragment.newInstance(this@ContactListFragment)
+            userAddFragment.show(requireActivity().supportFragmentManager, "dialogFragment")
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }
@@ -143,14 +155,11 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
     }
     
-    override fun onResume() {
-        super.onResume()
-        adapter.notifyDataSetChanged()
-    }
+
 
     private fun isStarredList() {
         val recyclerView = binding.contactIsStarredRecyclerView
-        val isStarredList : MutableList<User> = Dummy.dummyUserList().filter { it.is_starred }.toMutableList()
+        val isStarredList : MutableList<User> = Dummy.dummyUsers.filter { it.is_starred }.toMutableList()
         val adapter = ContactIsStarredAdapter(isStarredList)
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -205,4 +214,28 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                 arguments = Bundle().apply { }
             }
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
+        Log.d("ContactListFragment", "onResume")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("ContactListFragment", "onStop")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("ContactListFragment", "onStart")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ContactListFragment", "onPause")
+    }
+
+
 }

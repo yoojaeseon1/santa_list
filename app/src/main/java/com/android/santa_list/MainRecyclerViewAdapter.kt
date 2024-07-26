@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -51,12 +52,15 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
         fun bind(position: Int) {
             val contact = contact[position]
             val parentActivity = context as AppCompatActivity
-
-            image.setImageResource(contact.profile_image)
+            if (contact.profile_image_uri.isEmpty())
+                image.setImageResource(contact.profile_image)
+            else
+                image.setImageURI(contact.profile_image_uri.toUri())
             name.text = contact.name
             name.setOnClickListener {
                 val contactDetailFragment = ContactDetailFragment.newInstance(contact)
                 parentActivity.supportFragmentManager.commit {
+                    Log.d("MainRecyclerViewAdapter", "click name")
                     replace(R.id.frame_layout, contactDetailFragment)
                     setReorderingAllowed(true)
                     addToBackStack("")

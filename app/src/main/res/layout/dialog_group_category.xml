@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_group_category"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <RadioGroup
+        android:id="@+id/rg_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/category_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 없음"
+            android:textSize="32sp"/>
+
+        <RadioButton
+            android:id="@+id/category_family"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가족"
+            android:textSize="32sp"/>
+
+        <RadioButton
+            android:id="@+id/category_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="직장"
+            android:textSize="32sp"/>
+
+        <RadioButton
+            android:id="@+id/category_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구"
+            android:textSize="32sp"/>
+
+        <RadioButton
+            android:id="@+id/category_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="학교"
+            android:textSize="32sp"/>
+
+
+    </RadioGroup>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

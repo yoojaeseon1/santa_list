@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.setFragmentResultListener
-import com.android.santa_list.dataClass.Dummy.dummyUserList
+import com.android.santa_list.dataClass.Dummy
+import com.android.santa_list.dataClass.Dummy.dummyUsers
+//import com.android.santa_list.dataClass.Dummy.dummyUserList
 import com.android.santa_list.databinding.FragmentMyPageBinding
 import com.android.santa_list.dataClass.Dummy.myData
 import java.util.Random
@@ -58,7 +60,7 @@ class MyPageFragment : Fragment() {
         }
 
         val random = Random()
-        val inputNumber = dummyUserList()[random.nextInt(dummyUserList().size)].phone_number
+        val inputNumber = dummyUsers[random.nextInt(dummyUsers.size)].phone_number
         binding.mypageBtnCall.setOnClickListener {
             val intentCall = Intent(Intent.ACTION_DIAL)
             intentCall.data = Uri.parse("tel:$inputNumber")
