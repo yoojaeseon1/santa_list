@@ -71,4 +71,8 @@
     <string name="btn_random_message">아무에게나 문자 보내기</string>
     <string name="btn_random_call">아무에게나 전화 하기</string>
 
+    <!--My Page Dialog Fragment-->
+    <string name="mypage_present_date">나에게 선물해 줄 날짜</string>
+    <string name="mypage_dialog_gift_date">나에게 선물 해줄 날짜</string>
+
 </resources>
