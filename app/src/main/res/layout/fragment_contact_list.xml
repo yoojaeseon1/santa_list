@@ -41,12 +41,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contact_isStarred_RecyclerView" />
 
+    <LinearLayout
+        android:id="@+id/filtering_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_filtering_list" />
+
+    <Spinner
+        android:id="@+id/list_filtering_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filtering_layout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/materialDivider"
-        app:layout_constraintTop_toTopOf="@+id/materialDivider"
-        app:layout_constraintStart_toStartOf="@+id/materialDivider"/>
+        app:layout_constraintEnd_toEndOf="@+id/materialDivider2"
+        app:layout_constraintTop_toTopOf="@+id/materialDivider2"
+        app:layout_constraintStart_toStartOf="@+id/materialDivider2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
