@@ -1,9 +1,6 @@
 package com.android.santa_list
 
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuInflater
-import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,9 +8,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
-import com.android.santa_list.dataClass.Dummy
+import androidx.viewpager2.widget.ViewPager2
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     private val binding: ActivityContactBinding by lazy {
@@ -22,6 +20,8 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
         )
     }
     private val fragmentManager: FragmentManager = supportFragmentManager
+    private lateinit var viewPager: ViewPager2
+    private val tabTitles = arrayOf("연락처", "내정보")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,70 +33,23 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             insets
         }
 
-        // binding 관련된 코드들 추가할 때 여기서
-        binding.run {
+        with(binding) {
             tabLayout.tabLayout.addOnTabSelectedListener(this@ContactActivity) // 다형성을 추가한 것
 
-
-            // 툴바의 action icon 클릭할 때 동작 하는 부분 >>
-            // TODO: ❗️❗️❗️ 각 프래그먼트로 작성한 함수 이동 해야 합니다 ❗️❗️❗️
-//            toolBar.action.setOnClickListener {
-//                val currentFragment: Fragment? = fragmentManager.findFragmentById(R.id.frame_layout)
-//                if (currentFragment != null) {
-//                    when (currentFragment) {
-//                        is ContactListFragment -> {
-//                            val popup = PopupMenu(this@ContactActivity, it)
-//
-//                            onClickMore(popup, currentFragment)
-//                        }
-//
-//                        is MyPageFragment -> {
-//                            Log.d("⏰ action Click", "마이 페이지입니다.")
-//                        }
-//
-//                        else -> {
-//                            Log.d("⏰ action Click", "다른 화면입니다.")
-//                        }
-//                    }
-//                }
-//            }
-
-            // 툴바의 action icon 클릭할 때 동작 하는 부분
-//             toolBar.action.setOnClickListener {
-//                 val currentFragment: Fragment? = fragmentManager.findFragmentById(R.id.frame_layout)
-//                 if (currentFragment != null) {
-//                     when (currentFragment) {
-//                         is ContactListFragment -> {
-//                             val popup: PopupMenu = PopupMenu(this@ContactActivity, it)
-//                             onClickMore(popup)
-//                         }
-
-//                         is MyPageFragment -> {
-//                             val myPageDialog = MyPageDialogFragment()
-//                             myPageDialog.show(fragmentManager, "DialogFragment")
-//                         }
-
-//                         else -> {
-//                             Log.d("⏰ action Click", "다른 화면입니다.")
-//                         }
-//                     }
-//                 }
-//             }
-
+            viewPager = pager
+            viewPager.adapter = ViewPager2Adapter(this@ContactActivity)
+            TabLayoutMediator(tabLayout.tabLayout, viewPager) { tab, position ->
+                tab.text = tabTitles[position]
+            }.attach()
         }
 
-
-//        val contactDetailFragment = ContactDetailFragment.newInstance(Dummy.hwamin)
-        // 임시 개발용
         val contactListFragment = ContactListFragment()
         setFragment(contactListFragment)
-
-
     }
 
     private fun setFragment(fragment: Fragment) {
         fragmentManager.commit {
-            replace(R.id.frame_layout, fragment)
+//            replace(R.id.frame_layout, fragment) << ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
             setReorderingAllowed(true)
             addToBackStack("")
         }
@@ -111,7 +64,6 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
             // 1번째 탭 눌렀을 때
             1 -> {
                 setFragment(MyPageFragment())
-//                binding.toolBar.action.setImageResource(R.drawable.ic_edit)
             }
         }
     }

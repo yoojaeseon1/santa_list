@@ -24,10 +24,11 @@ import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
 
-enum class CommonViewType(viewType: String) {
-    LINEAR("ONE_LINE_TEXT"),
-    GRID("TWO_LINE_TEXT"),
+enum class CommonViewType(val viewType: Int) {
+    LINEAR(0),
+    GRID(1),
 }
+
 class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
     private val santaUtil = SantaUtil.getInstance()
 
@@ -41,6 +42,7 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
 
     var itemClick : ItemClick? = null
 
+    // inner class로 하면 메모리 누수가 발생할 수 있음 -> inner를 삭제하면 된다고...
     inner class LinearViewHolder(private val binding: ItemUserListBinding): ViewHolder(binding.root) {
         private val image = binding.ivItemImage
         private val name = binding.tvItemName
@@ -94,12 +96,14 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val linearBinding = ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val gridBinding = ItemUserGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val enums = CommonViewType.entries.find { it.viewType == viewType } //immnutable로 반환해주기 때문에 훨씬 좋음!
 
-        return when (viewType) {
-            CommonViewType.LINEAR.ordinal -> {
+        // ordinal로 values에 직접 접근하면 array에 접근하는 거라서 확장성의 문제가 있고 성능에 좋지 못함
+        return when (enums) {
+            CommonViewType.LINEAR -> {
                 LinearViewHolder(linearBinding)
             }
-            CommonViewType.GRID.ordinal -> {
+            CommonViewType.GRID -> {
                 GridViewHolder(gridBinding)
             } else -> { LinearViewHolder(linearBinding) }
         }
@@ -147,7 +151,6 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
 
                         Log.d("MainRecyclerViewAdapter", "start swiping position = ${position}")
                         notifyItemChanged(position)
-//                        notifyDataSetChanged()
                     }
                 }
             }
