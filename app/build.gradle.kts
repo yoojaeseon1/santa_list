@@ -41,7 +41,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -49,9 +48,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("androidx.fragment:fragment-ktx:1.8.1")
     implementation("androidx.activity:activity-ktx:1.6.0")
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 }

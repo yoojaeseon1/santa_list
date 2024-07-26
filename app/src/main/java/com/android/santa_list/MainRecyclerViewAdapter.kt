@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,27 +19,35 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.viewpager2.widget.ViewPager2
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
 
-enum class CommonViewType(viewType: String) {
-    LINEAR("ONE_LINE_TEXT"),
-    GRID("TWO_LINE_TEXT"),
+enum class CommonViewType(val viewType: Int) {
+    LINEAR(0),
+    GRID(1),
 }
-class MainRecyclerViewAdapter(val context: Context?, private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
-    private val santaUtil = SantaUtil.getInstance()
 
+class MainRecyclerViewAdapter(
+    private val onClick: (User) -> Unit,
+    val context: Context?,
+    var contact: MutableList<User>,
+    private val recyclerView: RecyclerView,
+    private val listener: OnStarredChangeListener
+) : RecyclerView.Adapter<ViewHolder>(){
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
-
     interface OnStarredChangeListener {
         fun onStarredChanged()
     }
 
+    private val santaUtil = SantaUtil.getInstance()
+
     var itemClick : ItemClick? = null
 
+    // inner class로 하면 메모리 누수가 발생할 수 있음 -> inner를 삭제하면 된다고...
     inner class LinearViewHolder(private val binding: ItemUserListBinding): ViewHolder(binding.root) {
         private val image = binding.ivItemImage
         private val name = binding.tvItemName
@@ -46,20 +55,14 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
 
         fun bind(position: Int) {
             val contact = contact[position]
-            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
-            name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
-                }
-            }
-
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+
+            name.setOnClickListener {
+                onClick(contact)
+            }
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
@@ -81,6 +84,8 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
             name.text = contact.name
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
+            name.setOnClickListener { onClick(contact) }
+
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
                 listener.onStarredChanged()
@@ -92,12 +97,14 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val linearBinding = ItemUserListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val gridBinding = ItemUserGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val enums = CommonViewType.entries.find { it.viewType == viewType } //immnutable로 반환해주기 때문에 훨씬 좋음!
 
-        return when (viewType) {
-            CommonViewType.LINEAR.ordinal -> {
+        // ordinal로 values에 직접 접근하면 array에 접근하는 거라서 확장성의 문제가 있고 성능에 좋지 못함
+        return when (enums) {
+            CommonViewType.LINEAR -> {
                 LinearViewHolder(linearBinding)
             }
-            CommonViewType.GRID.ordinal -> {
+            CommonViewType.GRID -> {
                 GridViewHolder(gridBinding)
             } else -> { LinearViewHolder(linearBinding) }
         }
@@ -142,6 +149,8 @@ class MainRecyclerViewAdapter(val context: Context?, private val contact: Mutabl
                         val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
                         val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
                         test.startActivity(intent)
+
+                        Log.d("MainRecyclerViewAdapter", "start swiping position = ${position}")
                         notifyItemChanged(position)
                     }
                 }

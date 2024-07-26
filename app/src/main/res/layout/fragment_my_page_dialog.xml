@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/sel_dialog_et_bg"
-            android:hint="@string/dialog_gift_date"
+            android:hint="@string/mypage_dialog_gift_date"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="16sp"

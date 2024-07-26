@@ -10,6 +10,8 @@
     <string name="present_history_mine">내가 친구에게 받은 선물</string>
     <string name="present_history_yours">내가 친구에게 준 선물</string>
     <string name="wish_list">친구의 위시리스트</string>
+    <string name="tab_item_1">연락처</string>
+    <string name="tab_item_2">내정보</string>
 
     <!--Menu Items-->
     <string name="menu_item_list">리스트뷰로 보기</string>
@@ -18,6 +20,20 @@
     <string name="menu_item_2">전화번호</string>
 
     <!--Contact List Fragment-->
+    <string name="is_star">즐겨찾기 한 친구</string>
+    <string name="menu_filtering_list">내 친구 목록</string>
+    <string name="menu_filtering_category">전체보기 </string>
+
+    <string-array name="catetory_array">
+        <item>전체보기</item>
+        <item>선물 해줄 사람</item>
+        <item>선물 해준 사람</item>
+        <item>가족</item>
+        <item>친구</item>
+        <item>회사</item>
+        <item>학교</item>
+    </string-array>
+
 
     <!--Contact Detail Fragment-->
 
@@ -56,5 +72,9 @@
     <!--My Page Fragment-->
     <string name="btn_random_message">아무에게나 문자 보내기</string>
     <string name="btn_random_call">아무에게나 전화 하기</string>
+
+    <!--My Page Dialog Fragment-->
+    <string name="mypage_present_date">나에게 선물해 줄 날짜</string>
+    <string name="mypage_dialog_gift_date">나에게 선물 해줄 날짜</string>
 
 </resources>
