@@ -65,13 +65,10 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             }
         })
 
-        Log.d("contactListFragment", "start itemclick")
-
         adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 isStarredList()
                 adapter.notifyItemChanged(position)
-
             }
         }
 
@@ -140,7 +137,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
     }
 
     override fun onStarredChanged() {

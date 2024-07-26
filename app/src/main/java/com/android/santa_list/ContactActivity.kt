@@ -49,7 +49,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private fun setFragment(fragment: Fragment) {
         fragmentManager.commit {
-//            replace(R.id.frame_layout, fragment) << ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
+//            replace(R.id.frame_layout, fragment) // ViewPager2 동작할 때 UI 이상하게 출력되는 원인이므로 주석 처리
             setReorderingAllowed(true)
             addToBackStack("")
         }
