@@ -69,7 +69,7 @@ class MyPageDialogFragment : DialogFragment() {
             if (myData[0].gift_date[0] != null) {
                 detailGiftDate.text = "${myData[0].gift_date[0]}년 ${myData[0].gift_date[1]}월 ${myData[0].gift_date[2]}일"
             } else {
-                detailGiftDate.hint = "날짜를 설정해 주세요."
+                detailGiftDate.hint = "나에게 선물 해줄 날짜"
             }
 
             // 이미지 선택
