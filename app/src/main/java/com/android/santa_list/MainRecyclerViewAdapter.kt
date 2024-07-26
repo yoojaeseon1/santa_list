@@ -1,7 +1,6 @@
 package com.android.santa_list
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.viewpager2.widget.ViewPager2
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemUserGridBinding
 import com.android.santa_list.databinding.ItemUserListBinding
@@ -29,16 +29,21 @@ enum class CommonViewType(val viewType: Int) {
     GRID(1),
 }
 
-class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
-    private val santaUtil = SantaUtil.getInstance()
-
+class MainRecyclerViewAdapter(
+    private val onClick: (User) -> Unit,
+    val context: Context?,
+    var contact: MutableList<User>,
+    private val recyclerView: RecyclerView,
+    private val listener: OnStarredChangeListener
+) : RecyclerView.Adapter<ViewHolder>(){
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
-
     interface OnStarredChangeListener {
         fun onStarredChanged()
     }
+
+    private val santaUtil = SantaUtil.getInstance()
 
     var itemClick : ItemClick? = null
 
@@ -50,20 +55,14 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
 
         fun bind(position: Int) {
             val contact = contact[position]
-            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
-            name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
-                }
-            }
-
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+
+            name.setOnClickListener {
+                onClick(contact)
+            }
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
@@ -84,6 +83,8 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
             image.setImageResource(contact.profile_image)
             name.text = contact.name
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+
+            name.setOnClickListener { onClick(contact) }
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred

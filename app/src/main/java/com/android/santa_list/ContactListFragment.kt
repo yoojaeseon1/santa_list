@@ -1,5 +1,6 @@
 package com.android.santa_list
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,11 +20,9 @@ import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
 import com.android.santa_list.repository.PresentLogRepository
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ContactListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+interface ChangeFragmentListener {
+    fun changeFragment(user: User)
+}
 
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
@@ -33,8 +32,9 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             layoutInflater
         )
     }
+    private var changeFragmentListener: ChangeFragmentListener? = null
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MainRecyclerViewAdapter
+    private lateinit var mainAdapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
 
     private val contactList: MutableList<User> = Dummy.dummyUserList()
@@ -42,7 +42,13 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { }
+    }
 
+    // 프래그먼트가 액티비티에 붙어있을 때 호출되는 메서드
+    // 프래그먼트가 액티비티의 UI에 추가되기 직전에 실행
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        changeFragmentListener = context as ChangeFragmentListener
     }
 
     override fun onCreateView(
@@ -57,100 +63,126 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         isStarredList()
 
         recyclerView = binding.contactRecyclerView
+//        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
+
         presentLogRepository = PresentLogRepository()
 
-        adapter = MainRecyclerViewAdapter(context, contactList, recyclerView, object: MainRecyclerViewAdapter.OnStarredChangeListener{
-            override fun onStarredChanged() {
-                isStarredList()
-            }
-        })
+        mainAdapter = MainRecyclerViewAdapter(
+            { user ->
+                changeFragmentListener?.changeFragment(user)
+            },
+            context,
+            contactList,
+            recyclerView,
+            object : MainRecyclerViewAdapter.OnStarredChangeListener {
+                override fun onStarredChanged() {
+                    isStarredList()
+                }
+            })
 
-        adapter.itemClick = object : MainRecyclerViewAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                isStarredList()
-                adapter.notifyItemChanged(position)
-            }
-        }
-
-        binding.toolBar.action.setOnClickListener {
-            val popup = PopupMenu(context, it)
-            onClickMore(popup)
-        }
 
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.catetory_array,
             android.R.layout.simple_spinner_item
-        ). also { adapter ->
+        ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.listFilteringSpinner.adapter = adapter
         }
 
-        binding.listFilteringSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                var filteredList = mutableListOf<User>()
-                when(position) {
-                    0 -> {
-                        Log.d("contactListFragment", "start filter 0")
-                        filteredList = contactList
-                    }
-                    1 -> { // 선물 해줄 사람(나한테 준 사람)
-                        filteredList = presentLogRepository.selectGiveUserList()
-//                        presentLogRepository.selectGiveUserList(contactList)
-                    }
-                    2 -> { // (내가) 선물 해준 사람
-                        filteredList = presentLogRepository.selectReceivedUserList()
-                    }
-                    3 -> {
-                        filteredList =
-                            contactList.filter { it.group == UserGroup.FAMILY }.toMutableList()
-                    }
-                    4 -> {
-                        filteredList =
-                            contactList.filter { it.group == UserGroup.FRIEND }.toMutableList()
-                    }
-                    5 -> {
-                        filteredList =
-                            contactList.filter { it.group == UserGroup.COMPANY }.toMutableList()
-                    }
-                    6 -> {
-                        filteredList =
-                            contactList.filter { it.group == UserGroup.SCHOOL }.toMutableList()
-                    }
+        with(mainAdapter) {
+            itemClick = object : MainRecyclerViewAdapter.ItemClick {
+                override fun onClick(view: View, position: Int) {
+                    isStarredList()
+                    mainAdapter.notifyItemChanged(position)
                 }
-
-                adapter.contact = filteredList
-                recyclerView.layoutManager = LinearLayoutManager(context)
-                recyclerView.adapter = adapter
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                return
             }
         }
 
+        with(binding) {
+            toolBar.action.setOnClickListener {
+                val popup = PopupMenu(context, it)
+                onClickMore(popup)
+            }
+
+            listFilteringSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        var filteredList = mutableListOf<User>()
+                        when (position) {
+                            0 -> {
+                                Log.d("contactListFragment", "start filter 0")
+                                filteredList = contactList
+                            }
+
+                            1 -> { // 선물 해줄 사람(나한테 준 사람)
+                                filteredList = presentLogRepository.selectGiveUserList()
+//                        presentLogRepository.selectGiveUserList(contactList)
+                            }
+
+                            2 -> { // (내가) 선물 해준 사람
+                                filteredList = presentLogRepository.selectReceivedUserList()
+                            }
+
+                            3 -> {
+                                filteredList =
+                                    contactList.filter { it.group == UserGroup.FAMILY }
+                                        .toMutableList()
+                            }
+
+                            4 -> {
+                                filteredList =
+                                    contactList.filter { it.group == UserGroup.FRIEND }
+                                        .toMutableList()
+                            }
+
+                            5 -> {
+                                filteredList =
+                                    contactList.filter { it.group == UserGroup.COMPANY }
+                                        .toMutableList()
+                            }
+
+                            6 -> {
+                                filteredList =
+                                    contactList.filter { it.group == UserGroup.SCHOOL }
+                                        .toMutableList()
+                            }
+                        }
+
+                        mainAdapter.contact = filteredList
+                        recyclerView.layoutManager = LinearLayoutManager(context)
+                        recyclerView.adapter = mainAdapter
+
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        return
+                    }
+                }
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = mainAdapter
     }
 
     override fun onStarredChanged() {
         isStarredList()
     }
-    
+
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        mainAdapter.notifyDataSetChanged()
     }
 
     private fun isStarredList() {
         val recyclerView = binding.contactIsStarredRecyclerView
-        val isStarredList : MutableList<User> = Dummy.dummyUserList().filter { it.is_starred }.toMutableList()
+        val isStarredList: MutableList<User> =
+            Dummy.dummyUserList().filter { it.is_starred }.toMutableList()
         val adapter = ContactIsStarredAdapter(isStarredList)
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -190,14 +222,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactListFragment.
-         */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
