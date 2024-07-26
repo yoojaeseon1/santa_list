@@ -29,7 +29,7 @@ enum class CommonViewType(val viewType: Int) {
     GRID(1),
 }
 
-class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+class MainRecyclerViewAdapter(private val onClick: (User) -> Unit, val context: Context?, var contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
     private val santaUtil = SantaUtil.getInstance()
 
     interface ItemClick {
@@ -57,14 +57,9 @@ class MainRecyclerViewAdapter(val context: Context?, var contact: MutableList<Us
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-//                parentActivity.replaceFragment()
-//                parentActivity.supportFragmentManager.commit {
-//                    replace(R.id.frame_layout, contactDetailFragment)
-//                    setReorderingAllowed(true)
-//                    addToBackStack("")
-//                }
+                onClick(contact)
             }
+
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
                 listener.onStarredChanged()

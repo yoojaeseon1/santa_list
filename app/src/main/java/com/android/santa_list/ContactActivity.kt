@@ -1,6 +1,7 @@
 package com.android.santa_list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,11 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.viewpager2.widget.ViewPager2
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
+class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, ChangeFragmentListener {
     private val binding: ActivityContactBinding by lazy {
         ActivityContactBinding.inflate(
             layoutInflater
@@ -70,4 +72,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
     override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
     override fun onTabReselected(tab: TabLayout.Tab?) {}
+    override fun changeFragment(user: User) {
+       //TODO : ContactDetailFramgnet 로 이동시키는 이동
+    }
 }
