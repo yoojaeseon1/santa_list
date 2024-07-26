@@ -31,7 +31,6 @@ class ContactIsStarredAdapter(private val contact: MutableList<User>) : Recycler
         holder.image.setImageResource(contact.profile_image)
         holder.name.text = contact.name
 
-
     }
 
     interface  ItemClick {
@@ -46,11 +45,8 @@ class ContactIsStarredAdapter(private val contact: MutableList<User>) : Recycler
         val name = binding.tvItemIsStarredName
     }
 
-
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
-
 
 }
