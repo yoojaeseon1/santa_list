@@ -99,7 +99,7 @@ class AddContactDialogFragment : DialogFragment() {
             dialogCalendal()
         }
         // 버튼 클릭시 이벤트
-        val btnOk = binding.detailBtnDialogOk
+        val btnOk = binding.alertBtnDialogBack
         btnOk.setOnClickListener {
 
             when {
@@ -121,7 +121,7 @@ class AddContactDialogFragment : DialogFragment() {
             val resultBundle = bundleOf("dataSend" to "dataSend")
             setFragmentResult("dataSend", resultBundle)
         }
-        val btnBack = binding.detailBtnDialogBack
+        val btnBack = binding.alertBtnDialogBack
         btnBack.setOnClickListener() {
             dismiss()
         }

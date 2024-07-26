@@ -169,37 +169,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/present_date"
-                app:layout_constraintEnd_toStartOf="@+id/detail_cb_alert_ic"
+                app:layout_constraintEnd_toStartOf="@+id/detail_cb_alert"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
                 app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_date" />
 
             <!--   알림버튼   -->
-
             <CheckBox
-                android:id="@+id/detail_cb_alert_ic"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/sel_detail_alert_ic"
+                android:id="@+id/detail_cb_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:gravity="center"
+                android:text="@string/alert_off"
                 android:button="@android:color/transparent"
-                android:checked="false"
+                android:textColor="@drawable/sel_alert_detail_text"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/sel_detail_alert_ic"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintBottom_toBottomOf="@+id/detail_tv_set_present_date"
                 app:layout_constraintStart_toEndOf="@+id/detail_tv_set_present_date"
                 app:layout_constraintTop_toTopOf="@+id/detail_tv_set_present_date" />
-
-            <CheckBox
-                android:id="@+id/detail_cb_alert_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@android:color/transparent"
-                android:checked="false"
-                android:text="@string/alert_off"
-                android:textColor="@drawable/sel_alert_detail_text"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/detail_cb_alert_ic"
-                app:layout_constraintStart_toEndOf="@+id/detail_cb_alert_ic"
-                app:layout_constraintTop_toTopOf="@+id/detail_cb_alert_ic" />
 
             <TextView
                 android:id="@+id/detail_tv_gift"

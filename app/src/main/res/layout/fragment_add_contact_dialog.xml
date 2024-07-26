@@ -93,7 +93,7 @@
             tools:ignore="TextFields" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/detail_btn_dialog_back"
+            android:id="@+id/alert_btn_dialog_back"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,12 +105,12 @@
             android:textAllCaps="false"
             android:textColor="@color/grey"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/detail_btn_dialog_ok"
+            app:layout_constraintEnd_toStartOf="@+id/alert_btn_dialog_complete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_btn_dialog_present_day" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/detail_btn_dialog_ok"
+            android:id="@+id/alert_btn_dialog_complete"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -120,10 +120,10 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_btn_dialog_back"
+            app:layout_constraintBottom_toBottomOf="@+id/alert_btn_dialog_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/detail_btn_dialog_back"
-            app:layout_constraintTop_toTopOf="@+id/detail_btn_dialog_back" />
+            app:layout_constraintStart_toEndOf="@+id/alert_btn_dialog_back"
+            app:layout_constraintTop_toTopOf="@+id/alert_btn_dialog_back" />
 
         <TextView
             android:id="@+id/detail_btn_dialog_present_day"
