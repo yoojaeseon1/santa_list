@@ -2,6 +2,7 @@ package com.android.santa_list
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.android.santa_list.dataClass.User
 import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentContactListBinding
 import com.android.santa_list.repository.PresentLogRepository
+import kotlinx.parcelize.Parcelize
 
 interface ChangeFragmentListener {
     fun changeFragment(user: User)
@@ -26,7 +28,8 @@ interface ChangeFragmentListener {
 
 // 단일 책임의 원칙과, 최소 놀람의 법칙 (내 코드를 모르는 개발자가 봐도 덜 놀라야 됨...)
 // AAC? 안드로이드 아키텍처!의 뷰모델은 LifeCycle가 돌아가는 동안 data를 유지함 (Data Holding 역할)
-class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener {
+@Parcelize
+class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeListener, Parcelable {
     private val binding: FragmentContactListBinding by lazy {
         FragmentContactListBinding.inflate(
             layoutInflater
@@ -34,10 +37,10 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
     private var changeFragmentListener: ChangeFragmentListener? = null
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mainAdapter: MainRecyclerViewAdapter
+    lateinit var mainAdapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
 
-    private val contactList: MutableList<User> = Dummy.dummyUserList()
+    private val contactList: MutableList<User> = Dummy.dummyUsers
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,6 +167,11 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                         return
                     }
                 }
+
+            btnAddUser.setOnClickListener {
+                val userAddFragment = UserAddFragment.newInstance(this@ContactListFragment)
+                userAddFragment.show(requireActivity().supportFragmentManager, "dialogFragment")
+            }
         }
 
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -182,7 +190,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     private fun isStarredList() {
         val recyclerView = binding.contactIsStarredRecyclerView
         val isStarredList: MutableList<User> =
-            Dummy.dummyUserList().filter { it.is_starred }.toMutableList()
+            Dummy.dummyUsers.filter { it.is_starred }.toMutableList()
         val adapter = ContactIsStarredAdapter(isStarredList)
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
