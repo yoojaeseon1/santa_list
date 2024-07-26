@@ -93,9 +93,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
         _binding?.toolbar?.action?.setOnClickListener {
-
-
-
+                val addContactDialog = AddContactDialogFragment()
+            addContactDialog.show(requireFragmentManager(), "DialogFragment")
 
         }
 
