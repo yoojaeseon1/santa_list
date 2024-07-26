@@ -26,24 +26,20 @@
 | ![image_hyehyun](https://github.com/user-attachments/assets/94143fc9-4693-4987-8079-a16f5898c7fc) | ![image_ingi](https://github.com/user-attachments/assets/af073fbb-15bb-447d-a43b-7557e8adc496) | ![image_bora](https://github.com/user-attachments/assets/45d8a18a-af76-4562-9468-add2048b46cb) | ![image_hwamin](https://github.com/user-attachments/assets/26a7f86e-991a-47de-8f49-a686e86aa503) | ![image_jaesun](https://github.com/user-attachments/assets/77cbcc22-d0de-48d2-a253-58c443092c0b) |
 | 정혜현 | 조인기 | 김보라 | 이화민 | 유재선 |
 
-<style>
-  .custom_icon_ul {display: flex;}
-  .custom_icon_ul li * {width: 150px;}
-</style>
 ## 기술 스택
-<ul class="custom_icon_ul">
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f616e64726f696473747564696f2f23334444433834](https://github.com/user-attachments/assets/0ad4b6e5-92bf-4a9f-af69-ab74e32dd71b)</li>
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f677261646c652f23303233303341](https://github.com/user-attachments/assets/b13f099a-a0d6-46bc-a538-f258ee579928)</li>
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f6b6f746c696e2f23374635324646](https://github.com/user-attachments/assets/aa5e1ee0-5360-44a1-a0ec-8b3e780e0861)</li>
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f6769742f23463035303332](https://github.com/user-attachments/assets/74c0572d-747e-4d77-838e-4f5dd264fbb6)</li>
+<ul class="custom_icon_ul" style="display: flex;">
+  <li style="width: 150px;">![노션](https://github.com/user-attachments/assets/579d509a-0992-40d2-b406-bff7a09632b6)</li>
+  <li style="width: 150px;">![안드로이드스튜디오](https://github.com/user-attachments/assets/8c07f3cb-67fd-4e63-925c-73e9b7bb79c9)</li>
+  <li style="width: 150px;">![깃](https://github.com/user-attachments/assets/996c75d2-8d49-4fe5-b054-16d0fad1d2f6)</li>
+  <li style="width: 150px;">![그래들](https://github.com/user-attachments/assets/c2208ce1-675e-4a68-996d-671ea35ef259)</li>
 </ul>
 
 ## 개발/협업 환경
-<ul class="custom_icon_ul">
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f6e6f74696f6e2f23303030303030](https://github.com/user-attachments/assets/cce47a5e-7312-4eb3-b9c3-021192a3695e)</li>
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f6769746875622f23313831373137](https://github.com/user-attachments/assets/3f483b13-d0bf-4b53-95c3-49dcdab2530d)</li>
-  <li>![68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f736c61636b2f23344131353442](https://github.com/user-attachments/assets/f065807e-5829-4655-9e3f-61d66eb69173)</li>
-  <li>![7564187_figma_logo_brand_icon](https://github.com/user-attachments/assets/9f158a9b-a85c-4c48-9c2f-a6e84df0cf8f)</li>
+<ul class="custom_icon_ul" style="display: flex;">
+   <li style="width: 150px;">![코틀린](https://github.com/user-attachments/assets/70e37a85-7ff9-4764-baba-71ad8962a2cd)</li>
+   <li style="width: 150px;">![피그마](https://github.com/user-attachments/assets/0c9cc0da-c6ec-4cb1-91dd-52f2b97fcd83)</li>
+   <li style="width: 150px;">![슬랙](https://github.com/user-attachments/assets/9af2298f-f382-4837-9383-dbed130c543a)</li>
+   <li style="width: 150px;">![깃허브](https://github.com/user-attachments/assets/8cb65185-0e55-471f-ac74-9ae7aa7b7060)</li>
 </ul>
  
 
