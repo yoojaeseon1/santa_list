@@ -1,56 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PresentAddFragment">
+    android:background="#77000000"
+    android:gravity="center">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="40dp"
+        android:id="@+id/layout_fix_dialog"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg"
+        android:elevation="0dp"
+        android:paddingHorizontal="20dp"
         android:paddingVertical="28dp">
 
-        <ImageView
-            android:id="@+id/iv_add_present"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/image_add_present"
-            android:layout_margin="100dp"
-            android:scaleType="centerCrop"
+        <LinearLayout
+            android:id="@+id/detail_add_dialg_container"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:background="@drawable/sel_btn_detail_bg"
+            android:orientation="vertical"
+            android:padding="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_add_present"
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                android:layout_gravity="center"
+                android:background="@drawable/sel_btn_iv_bg"
+                android:clipToOutline="true"
+                android:contentDescription="@string/dialog_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/image_add_image" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/et_present_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:autofillHints=""
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_name"
+            android:inputType="text"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:hint="선물명"
             android:textSize="16sp"
-            android:inputType="text"
-            android:background="@drawable/sel_dialog_et_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_add_present"
-            tools:ignore="TextFields" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_add_dialg_container" />
 
         <TextView
             android:id="@+id/tv_present_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="선물 받은 날짜"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:hint="선물 받은 날짜"
             android:textSize="16sp"
-            android:background="@drawable/sel_dialog_et_bg"
             app:layout_constraintEnd_toEndOf="@+id/et_present_name"
             app:layout_constraintStart_toStartOf="@+id/et_present_name"
-            app:layout_constraintTop_toBottomOf="@+id/et_present_name"/>
+            app:layout_constraintTop_toBottomOf="@+id/et_present_name" />
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_present_cancel"
@@ -58,10 +79,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="4dp"
             android:backgroundTint="@color/stroke"
-            android:text="취소"
+            android:gravity="center"
+            android:text="@string/dialog_cancle"
+            android:textAllCaps="false"
+            android:textColor="@color/grey"
             android:textSize="20sp"
-            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toStartOf="@+id/btn_present_complete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_present_date" />
@@ -71,7 +95,11 @@
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="확인"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_present_cancel"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,11 +107,5 @@
             app:layout_constraintTop_toTopOf="@+id/btn_present_cancel" />
 
 
-
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</LinearLayout>

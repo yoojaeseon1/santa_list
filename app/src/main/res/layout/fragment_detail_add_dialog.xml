@@ -8,7 +8,7 @@
     android:gravity="center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_fix_dialog"
+        android:id="@+id/detail_add_dialg"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
         android:paddingVertical="28dp">
 
         <LinearLayout
-            android:id="@+id/dialog_iv_container"
+            android:id="@+id/detail_add_dialg_container"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:background="@drawable/sel_btn_detail_bg"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/dialog_iv"
+                android:id="@+id/detail_iv_add_dialg"
                 android:layout_width="match_parent"
                 android:layout_height="121dp"
                 android:layout_gravity="center"
@@ -44,7 +44,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/detail_et_name"
+            android:id="@+id/detail_et_add_dialg_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -57,10 +57,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_iv_container" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_add_dialg_container" />
 
         <EditText
-            android:id="@+id/detail_et_tel"
+            android:id="@+id/detail_et_add_dialg_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -71,12 +71,12 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
-            app:layout_constraintStart_toStartOf="@+id/detail_et_name"
-            app:layout_constraintTop_toBottomOf="@+id/detail_et_name" />
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_name" />
 
         <EditText
-            android:id="@+id/detail_et_email"
+            android:id="@+id/detail_et_add_dialg_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -87,13 +87,13 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/detail_et_name"
-            app:layout_constraintStart_toStartOf="@+id/detail_et_name"
-            app:layout_constraintTop_toBottomOf="@+id/detail_et_tel"
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_phone_number"
             tools:ignore="TextFields" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_back"
+            android:id="@+id/alert_btn_dialog_back"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,12 +105,12 @@
             android:textAllCaps="false"
             android:textColor="@color/grey"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+            app:layout_constraintEnd_toStartOf="@+id/alert_btn_dialog_complete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_gift_date" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_btn_dialog_present_day" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_ok"
+            android:id="@+id/alert_btn_dialog_complete"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -120,22 +120,22 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+            app:layout_constraintBottom_toBottomOf="@+id/alert_btn_dialog_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_back"
-            app:layout_constraintTop_toTopOf="@+id/btn_back" />
+            app:layout_constraintStart_toEndOf="@+id/alert_btn_dialog_back"
+            app:layout_constraintTop_toTopOf="@+id/alert_btn_dialog_back" />
 
         <TextView
-            android:id="@+id/detail_gift_date"
+            android:id="@+id/detail_btn_dialog_present_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/sel_dialog_et_bg"
-            android:hint="@string/mypage_dialog_gift_date"
+            android:hint="@string/dialog_gift_date"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/detail_et_email"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_email"
             tools:layout_editor_absoluteX="120dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

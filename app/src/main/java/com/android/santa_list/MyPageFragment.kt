@@ -86,8 +86,8 @@ class MyPageFragment : Fragment() {
         binding.mypageTvSetSantaNumber.text = myData[0].santa_number
         binding.mypageIvProfile.setImageURI(myData[0].uri?.toUri())
         binding.mypageTvName.text = myData[0].name
-        binding.mypageTvSetPhoneNumber.text = myData[0].email
-        binding.mypageTvSetEmail.text = myData[0].phone_number
+        binding.mypageTvSetPhoneNumber.text = myData[0].phone_number
+        binding.mypageTvSetEmail.text = myData[0].email
         if (myData[0].gift_date[0] == null) {
             binding.mypageTvSetGiftDate.text = ""
         } else {

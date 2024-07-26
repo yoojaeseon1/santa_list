@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="@string/present_date"
+            android:text="@string/mypage_present_date"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"

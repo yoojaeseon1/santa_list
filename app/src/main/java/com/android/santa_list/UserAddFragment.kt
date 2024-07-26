@@ -3,7 +3,6 @@ package com.android.santa_list
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.icu.util.Calendar
 import android.net.Uri
@@ -14,16 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.dataClass.UserGroup
-import com.android.santa_list.databinding.DialogGroupCategoryBinding
 import com.android.santa_list.databinding.FragmentUserAddBinding
 import java.util.regex.Pattern
 
@@ -135,7 +131,7 @@ class UserAddFragment : DialogFragment() {
                         "id",
                         name,
                         tel,
-                        name,
+                        email,
                         userGroup,
                         profile_image_uri = pickURI.toString()
                     )
@@ -192,7 +188,7 @@ class UserAddFragment : DialogFragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onDestroy() {
         super.onDestroy()
-        contactListFragment?.adapter?.notifyDataSetChanged()
+        contactListFragment?.mainAdapter?.notifyDataSetChanged()
     }
 
 }
