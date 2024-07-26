@@ -1,9 +1,20 @@
 package com.android.santa_list
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -15,11 +26,17 @@ enum class CommonViewType(viewType: String) {
     LINEAR("ONE_LINE_TEXT"),
     GRID("TWO_LINE_TEXT"),
 }
+class MainRecyclerViewAdapter(val context: Context?, private val contact: MutableList<User>, private val recyclerView: RecyclerView, private val listener: OnStarredChangeListener) : RecyclerView.Adapter<ViewHolder>(){
+    private val santaUtil = SantaUtil.getInstance()
 
-class MainRecyclerViewAdapter(private val contact: MutableList<User>, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>(){
     interface ItemClick {
         fun onClick(view : View, position : Int)
     }
+
+    interface OnStarredChangeListener {
+        fun onStarredChanged()
+    }
+
     var itemClick : ItemClick? = null
 
     inner class LinearViewHolder(private val binding: ItemUserListBinding): ViewHolder(binding.root) {
@@ -29,13 +46,24 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
 
         fun bind(position: Int) {
             val contact = contact[position]
+            val parentActivity = context as AppCompatActivity
 
             image.setImageResource(contact.profile_image)
             name.text = contact.name
+            name.setOnClickListener {
+                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+                parentActivity.supportFragmentManager.commit {
+                    replace(R.id.frame_layout, contactDetailFragment)
+                    setReorderingAllowed(true)
+                    addToBackStack("")
+                }
+            }
+
             isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
+                listener.onStarredChanged()
                 notifyItemChanged(position)
             }
         }
@@ -55,6 +83,7 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
 
             isStarred.setOnClickListener {
                 contact.is_starred = !contact.is_starred
+                listener.onStarredChanged()
                 notifyItemChanged(position)
             }
         }
@@ -91,6 +120,35 @@ class MainRecyclerViewAdapter(private val contact: MutableList<User>, private va
             is LinearViewHolder -> holder.bind(position)
             is GridViewHolder -> holder.bind(position)
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: ViewHolder, target: ViewHolder): Boolean {
+                return false
+            }
+
+            // TODO: 아래 코드 튜터님께 여쭤보기
+            override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+                val test = context as Activity
+
+                if (direction == ItemTouchHelper.RIGHT) {
+                    val position = viewHolder.adapterPosition
+                    if (context.let { ContextCompat.checkSelfPermission(it, Manifest.permission.CALL_PHONE) } != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(test, arrayOf(Manifest.permission.CALL_PHONE), 1)
+                    } else {
+                        val phoneNumber = "tel:" + santaUtil.removePhoneHyphen(contact[position].phone_number)
+                        val intent = Intent(Intent.ACTION_CALL, Uri.parse(phoneNumber))
+                        test.startActivity(intent)
+                        notifyItemChanged(position)
+                    }
+                }
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     override fun getItemCount(): Int {

@@ -75,6 +75,7 @@ class MyPageFragment : Fragment() {
         super.onResume()
         setMyPageData()
     }
+
     private fun setMyPageData () {
         if (myData[0].santa_number.isNullOrBlank()) {
             myData[0].santa_number = randomSantaNumber()
