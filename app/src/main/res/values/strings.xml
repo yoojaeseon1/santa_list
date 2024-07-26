@@ -7,8 +7,8 @@
     <string name="phone_number">전화번호</string>
     <string name="email">이메일</string>
     <string name="present_date">선물해 줄 날짜</string>
-    <string name="sonjul_go">입금 확인된 친구</string>
-    <string name="present_history">내가 해준 선물</string>
+    <string name="present_history_mine">내가 친구에게 받은 선물</string>
+    <string name="present_history_yours">내가 친구에게 준 선물</string>
     <string name="wish_list">친구의 위시리스트</string>
     <string name="tab_item_1">연락처</string>
     <string name="tab_item_2">내정보</string>
@@ -42,6 +42,7 @@
     <string name="complete">완료</string>
     <string name="cancel">취소</string>
     <string name="alarm_title">알림 설정</string>
+    <string name="alarm_quest">언제 알려드릴까요?</string>
     <string name="alarm_selected">&#160;알림이 설정되었습니다.</string>
     <string name="alarm_second_5">5초 뒤</string>
     <string name="alarm_day_before">하루 전</string>
@@ -49,14 +50,13 @@
 
     <string name="gift">선물하러 가기</string>
     <string name="gift_shop">어디에서 선물을 고를까요?</string>
-    <string name="gift_shop_kakao">카카오톡 선물하기</string>
-    <string name="gift_shop_coupang">쿠팡 선물하기</string>
+    <string name="gift_shop_kakao">카카오톡\n선물하기</string>
+    <string name="gift_shop_coupang">쿠팡\n선물하기</string>
 
     <string name="btn_message">문자 보내기</string>
     <string name="btn_call">전화 하기</string>
-    <string name="christmas_eve">산타로서 선물할 때가 됐어요!</string>
+    <string name="christmas_eve">&#160;&#160;산타로서 선물할 때가 됐어요!&#160;&#160;</string>
     <string name="christmas">소중한 사람에게 마음을 전하러 가볼까요?</string>
-
 
 
     <!--Add Contact Dialog-->

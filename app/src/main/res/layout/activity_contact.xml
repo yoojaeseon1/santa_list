@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -16,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
@@ -57,4 +59,32 @@
             android:text="@string/tab_item_2" />
     </com.google.android.material.tabs.TabLayout>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/main"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".ContactActivity"-->
+<!--    android:background="@color/white">-->
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frame_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--    </FrameLayout>-->
+
+<!--    <include-->
+<!--        android:id="@+id/tab_layout"-->
+<!--        layout="@layout/tab_layout" />-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

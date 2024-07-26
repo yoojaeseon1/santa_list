@@ -24,33 +24,28 @@ class AlarmReceiver : BroadcastReceiver() {
                 context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or
                         PendingIntent.FLAG_IMMUTABLE
             )
-
             val manager =
                 context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                //버전체크
                 val channelId = "one-channel"
-                val channelName = "My Channel One"
+                val channelName = "산타데이 알림"
                 val importance = NotificationManager.IMPORTANCE_DEFAULT
                 val channel = NotificationChannel(
                     channelId,
                     channelName,
                     importance
                 )
-                //채널 등록
                 manager.createNotificationChannel(channel)
-                //채널을 이용하여 빌더 생성
                 builder = NotificationCompat.Builder(context, channelId)
             } else {
-                //버전 이하
                 builder = NotificationCompat.Builder(context)
             }
             builder.run {
                 setSmallIcon(R.drawable.ic_alert_on)
                 setWhen(System.currentTimeMillis())
-                setContentTitle("ddd")
-                setContentText("ddd")
+                setContentTitle("산타로서 선물할 때가 됐어요!")
+                setContentText("소중한 사람에게 마음을 전하러 가볼까요?")
                 setContentIntent(pendingIntent)
                 setAutoCancel(true)
             }
