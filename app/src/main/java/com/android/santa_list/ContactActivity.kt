@@ -74,7 +74,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
 
     override fun onTabReselected(tab: TabLayout.Tab?) {}
     override fun changeFragment(user: User) {
-        //TODO 뒤로가기시 viewpager+ tablayout 보이게 처리 (hideViewPager() Call)
+        //TODO 뒤로가기시 viewpager+ tablayout 보이게 처리 (showViewPager() Call)
         hideViewPager()
 
         fragmentManager.beginTransaction()
@@ -85,11 +85,13 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
     }
 
     private fun showViewPager() = with(binding) {
+        frameLayout.isVisible = false
         pager.isVisible = true
         tabLayout.isVisible = true
     }
 
     private fun hideViewPager() = with(binding) {
+        frameLayout.isVisible = true
         pager.isVisible = false
         tabLayout.isVisible = false
     }
