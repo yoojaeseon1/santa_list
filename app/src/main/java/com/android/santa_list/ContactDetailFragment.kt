@@ -127,12 +127,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
             giftListener()
         }
 
-        val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
+        binding.detailTvName.text = friend?.name
+        binding.detailTvSetPhoneNumber.text = friend?.phone_number
+        binding.detailTvSetEmail.text = friend?.email
+        binding.detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend!!.event_date)
+
+        val receivedPresents = presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
+
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-
                 val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
-
                 presentAddFragment.show(
                     requireActivity().supportFragmentManager, "addPresentDialog"
                 )
@@ -141,7 +145,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         receivedPresentAdapter.submitList(santaUtil.makePresentList(receivedPresents))
 
 
-        val givePresents = presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
+        val givePresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         givePresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
 
@@ -182,7 +186,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
         binding.detailBtnCall.setOnClickListener {
-
             if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("contactDetailFragment", "don't have permission")
 
