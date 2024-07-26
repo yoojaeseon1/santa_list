@@ -90,19 +90,48 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 //알림버튼 : 클릭 시 다이얼로그 응답에 따라 해당 시간에 알림, 알림 클릭시 디테일 페이지로 돌아옴
 
-        alertListener(_binding?.detailIvAlert as View)
-        alertListener(_binding?.detailTvAlert as View)
+
+
+        _binding?.toolbar?.action?.setOnClickListener {
+
+
+
+
+        }
+
+
+
+        _binding?.detailCbAlertIc?.setOnClickListener() {
+            if(_binding?.detailCbAlertIc?.isChecked as Boolean) {
+                _binding?.detailCbAlertTv?.isChecked = true
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_on)
+            }
+            else if(_binding?.detailCbAlertIc?.isChecked == false) {
+                _binding?.detailCbAlertTv?.isChecked = false
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)}
+            selectAlarm()
+        }
+        _binding?.detailCbAlertTv?.setOnClickListener() {
+            if(_binding?.detailCbAlertTv?.isChecked as Boolean) {
+                _binding?.detailCbAlertIc?.isChecked = true
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_on)}
+            else if(_binding?.detailCbAlertTv?.isChecked == false) {
+                _binding?.detailCbAlertIc?.isChecked = false
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)}
+            selectAlarm()
+        }
+
 
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
             giftListener()
         }
-        
+
         val receivedPresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
         receivedPresentAdapter.imageClick = object : PresentListAdapter.ImageClick {
             override fun onClick() {
-                
+
                 val presentAddFragment = PresentAddFragment.newInstance(friend!!, "received",this@ContactDetailFragment)
 
                 presentAddFragment.show(
@@ -154,7 +183,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
         binding.detailBtnCall.setOnClickListener {
-            
+
             if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("contactDetailFragment", "don't have permission")
 
@@ -176,13 +205,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     }
 
-    fun alertListener(view: View) {
-        view.setOnClickListener {
 
-//            initNotification()
-            selectAlarm()
-        }
-    }
 
 
     //알림버튼_알람리시버 함수 : 사용자가 선택한 시간에 알림을 출력해주는 함수
@@ -269,6 +292,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 selectedAlarm = which
             }
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
+                _binding?.detailCbAlertIc?.isChecked = false
+                _binding?.detailCbAlertTv?.isChecked = false
+                _binding?.detailCbAlertTv?.text = getString(R.string.alert_off)
             }
             .setPositiveButton(getString(R.string.complete)) { dialog, which ->
                 when (selectedAlarm) {

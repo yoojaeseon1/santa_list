@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#77000000"
     android:gravity="center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_fix_dialog"
+        android:id="@+id/detail_add_dialg"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -28,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iv_add_present"
+                android:id="@+id/detail_iv_add_dialg"
                 android:layout_width="match_parent"
                 android:layout_height="121dp"
                 android:layout_gravity="center"
@@ -43,7 +44,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/et_present_name"
+            android:id="@+id/detail_et_add_dialg_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -58,23 +59,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_add_dialg_container" />
 
-        <TextView
-            android:id="@+id/tv_present_date"
+        <EditText
+            android:id="@+id/detail_et_add_dialg_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
             android:background="@drawable/sel_dialog_et_bg"
-            android:hint="선물 받은 날짜"
+            android:hint="@string/dialog_tel"
+            android:inputType="text"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/et_present_name"
-            app:layout_constraintStart_toStartOf="@+id/et_present_name"
-            app:layout_constraintTop_toBottomOf="@+id/et_present_name" />
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_name" />
 
+        <EditText
+            android:id="@+id/detail_et_add_dialg_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_email"
+            android:inputType="text"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintStart_toStartOf="@+id/detail_et_add_dialg_name"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_phone_number"
+            tools:ignore="TextFields" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_present_cancel"
+            android:id="@+id/detail_btn_dialog_back"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -86,12 +105,12 @@
             android:textAllCaps="false"
             android:textColor="@color/grey"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/btn_present_complete"
+            app:layout_constraintEnd_toStartOf="@+id/detail_btn_dialog_ok"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_present_date" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_btn_dialog_present_day" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_present_complete"
+            android:id="@+id/detail_btn_dialog_ok"
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -101,11 +120,23 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_present_cancel"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_btn_dialog_back"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_present_cancel"
-            app:layout_constraintTop_toTopOf="@+id/btn_present_cancel" />
+            app:layout_constraintStart_toEndOf="@+id/detail_btn_dialog_back"
+            app:layout_constraintTop_toTopOf="@+id/detail_btn_dialog_back" />
 
+        <TextView
+            android:id="@+id/detail_btn_dialog_present_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sel_dialog_et_bg"
+            android:hint="@string/dialog_gift_date"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/detail_et_add_dialg_email"
+            tools:layout_editor_absoluteX="120dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -38,7 +38,7 @@
 
     <string name="btn_message">문자 보내기</string>
     <string name="btn_call">전화 하기</string>
-    <string name="christmas_eve">산타로서 선물할 때가 됐어요!</string>
+    <string name="christmas_eve">&#160;&#160;산타로서 선물할 때가 됐어요!&#160;&#160;</string>
     <string name="christmas">소중한 사람에게 마음을 전하러 가볼까요?</string>
 
 
