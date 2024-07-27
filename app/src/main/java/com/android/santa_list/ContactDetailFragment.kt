@@ -20,10 +20,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationUtils
-import android.view.animation.ScaleAnimation
-import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
@@ -35,8 +32,6 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import java.lang.StringBuilder
-import java.time.LocalDateTime
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -108,7 +103,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             Handler(Looper.getMainLooper()).postDelayed({
                 val giftShopDialogFragment = GiftShopDialogFragment()
                 giftShopDialogFragment.show(requireFragmentManager(), "DialogFragment")
-            },180)
+            }, 180)
         }
 
         //툴바버튼 : 클릭 시 친구정보 편집
@@ -128,7 +123,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         }
 
-        //알림버튼 : 5초뒤, 하루전, 당일 중 사용자 입력에 따라 알림 출력
+        //알림버튼 : 세가지 기능 중 사용자 상태에 따라 실행 (알림 권한 요청 / 알림 취소 / 알림 예약)
         _binding?.detailCbAlert?.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !NotificationManagerCompat.from(
                     requireContext()
@@ -142,7 +137,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
         }
-        //알림함수 호출
 
 
         binding.detailTvName.text = friend?.name
@@ -258,17 +252,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     }
 
-
     //선물버튼 애니메이션 함수
     fun btnGiftAnimation() {
         val scaleOut = AnimationUtils.loadAnimation(requireContext(), R.anim.ainm_detail_gift)
         _binding?.detailIvGift?.startAnimation(scaleOut)
     }
-
-
-
-
-
 
     //클릭 유무에 맞게 알림버튼을 변경해주는 함수
     private fun isNotCheck() {
@@ -298,14 +286,12 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     getString(R.string.alarm_need_permission),
                     Toast.LENGTH_LONG
                 ).show()
-
             }
             .show()
         isNotCheck()
     }
 
-
-    //알림 취소하는 함수
+    //알림을 삭제하는 함수(UI만)
     private fun cancelAlarm() {
         MaterialAlertDialogBuilder(
             requireContext(), R.style.detail_dialog_alert
@@ -321,7 +307,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             .show()
     }
 
-    //사용자가 선택한 항목의 알림시간대로 등록하는 함수
+    //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
     private fun setAlarm() {
         val santaDay = arrayOf(2024, 7, 25, 21, 19, 0)
         isCheck()
@@ -333,7 +319,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
                     Toast.LENGTH_SHORT
                 ).show()
-                setAlarmReceiver()
+                reserveAlarm()
             }
             //하루전
             2 -> {
@@ -351,7 +337,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     set(Calendar.MINUTE, santaDay[4])
                     set(Calendar.SECOND, santaDay[5])
                 }
-                setAlarmReceiver()
+                reserveAlarm()
             }
             //당일
             3 -> {
@@ -369,9 +355,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     set(Calendar.MINUTE, santaDay[4])
                     set(Calendar.SECOND, santaDay[5])
                 }
-                setAlarmReceiver()
+                reserveAlarm()
             }
-
             else -> {
                 isNotCheck()
                 selectedAlarm = 0
@@ -381,7 +366,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     //알람리시버에 알림을 예약하는 함수
     @SuppressLint("ScheduleExactAlarm")
-    private fun setAlarmReceiver() {
+    private fun reserveAlarm() {
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -390,7 +375,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
             intent,
             PendingIntent.FLAG_MUTABLE
         )
-
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis, pendingIntent
