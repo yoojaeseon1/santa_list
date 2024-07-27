@@ -88,7 +88,6 @@ class AlertDialogFragment : DialogFragment() {
                 ContactDetailFragment.newInstance(param1!!, selectedAlarm)
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
-            Log.d("보냅니다", "${selectedAlarm}")
             val resultBundle = bundleOf("dataSend" to "dataSend")
             setFragmentResult("dataSend", resultBundle)
             dismiss()

@@ -17,10 +17,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentContactDetailBinding
@@ -56,6 +56,29 @@ class ContactDetailFragment : Fragment(), Parcelable {
     private val santaUtil = SantaUtil.getInstance()
     private var selectedAlarm = 7
 
+    private val back_pressed_call_back = object : OnBackPressedCallback(true) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        override fun handleOnBackPressed() {
+
+            val fragments = requireActivity().supportFragmentManager.fragments
+            var contact_list_fragment = ContactListFragment()
+
+            for (fragment in fragments) {
+                if(fragment is ContactListFragment) {
+                    contact_list_fragment = fragment
+                    break
+                }
+            }
+
+            if(isEnabled) {
+                isEnabled = false
+                contact_list_fragment.initRecyclerView(Dummy.dummy_users)
+                contact_list_fragment.isStarredList()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
 
     val receivedPresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
@@ -70,20 +93,21 @@ class ContactDetailFragment : Fragment(), Parcelable {
     }
 
 
-    private var friend: User? = null
+    private var friend = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-//            selectedAlarm = it.getInt(ARG_PARAM3)
-            friend = it.getParcelable(ARG_PARAM1, User::class.java)
-            Log.d("7dla?", "${friend}, ${it.getInt(ARG_PARAM3)}")
+            selectedAlarm = it.getInt(ARG_PARAM3)
+            friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
 
-            setFragmentResultListener("dataSend") { key, bundle ->
-                Log.d("받습니다", "${friend}, ${it.getInt(ARG_PARAM3)}")
-                friend = it.getParcelable(ARG_PARAM1, User::class.java)
-                setAlarm()
-            }
+//            Log.d("7dla?", "${friend}, ${it.getInt(ARG_PARAM3)}")
+
+//            Log.d("받습니다", "${friend}, ${it.getInt(ARG_PARAM3)}")
+//            setFragmentResultListener("dataSend") { key, bundle ->
+//                friend = it.getParcelable(ARG_PARAM1, User::class.java)
+//                setAlarm()
+//            }
         }
 
 
@@ -102,6 +126,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(friend.is_starred) {
+            binding.detailIvFavorite.setImageResource(R.drawable.icon_star)
+            bestFriend = true
+        } else {
+            binding.detailIvFavorite.setImageResource(R.drawable.icon_empt_star)
+            bestFriend = false
+        }
+
 
         //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
@@ -117,11 +149,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
+            Log.d("contactDetailFragment", "bestFriend = ${bestFriend}")
             if (bestFriend) {
-                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
+                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
+                friend.is_starred = false
                 bestFriend = false
             } else {
-                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
+                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
+                friend.is_starred = true
                 bestFriend = true
             }
         }
@@ -130,7 +165,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         _binding?.detailCbAlert?.setOnClickListener {
             if (selectedAlarm != null && selectedAlarm != 0) cancelAlarm()
             else {
-                val alertDialog = AlertDialogFragment.newInstance(friend!!)
+                val alertDialog = AlertDialogFragment.newInstance(friend)
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
         }
@@ -139,21 +174,21 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
 
-        binding.detailTvName.text = friend?.name
-        binding.detailTvSetPhoneNumber.text = friend?.phone_number
-        binding.detailTvSetEmail.text = friend?.email
+        binding.detailTvName.text = friend.name
+        binding.detailTvSetPhoneNumber.text = friend.phone_number
+        binding.detailTvSetEmail.text = friend.email
         binding.detailTvSetPresentDate.text =
-            santaUtil.makeDateFormat(friend!!.event_date)
+            santaUtil.makeDateFormat(friend.event_date)
 
         val receivedPresents =
-            presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
+            presentLogRepository.selectPresentList(friend, Dummy.loggedInUser)
 
         receivedPresentAdapter.imageClick =
             object : PresentListAdapter.ImageClick {
                 override fun onClick() {
                     val presentAddFragment =
                         PresentAddFragment.newInstance(
-                            friend!!,
+                            friend,
                             "received",
                             this@ContactDetailFragment
                         )
@@ -190,14 +225,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         givePresentAdapter.submitList(santaUtil.makePresentList(givePresents))
 
-        val wishList = friend!!.wish_list
+        val wishList = friend.wish_list
         wishPresentAdapter.imageClick =
             object : PresentListAdapter.ImageClick {
                 override fun onClick() {
 
                     val presentAddFragment =
                         PresentAddFragment.newInstance(
-                            friend!!,
+                            friend,
                             "wish",
                             this@ContactDetailFragment
                         )
@@ -216,7 +251,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
         binding.detailBtnMessage.setOnClickListener {
-            val smsUri = Uri.parse("smsto:" + friend?.phone_number)
+            val smsUri = Uri.parse("smsto:" + friend.phone_number)
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.setData(smsUri)
             intent.putExtra("sms_body", "")
@@ -240,7 +275,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             } else {
                 Log.d("contactDetailFragment", "have permission")
                 val phone_number =
-                    "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
+                    "tel:" + santaUtil.removePhoneHyphen(friend.phone_number)
                 val intent = Intent(
                     "android.intent.action.CALL",
                     Uri.parse(phone_number)
@@ -248,7 +283,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 startActivity(intent)
             }
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), back_pressed_call_back)
 
     }
 
@@ -408,7 +443,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
     }
 
-
     override fun onStart() {
         super.onStart()
         Log.d("ContactDetailFragment", "onStart()")
@@ -416,6 +450,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     override fun onResume() {
         super.onResume()
+        setAlarm()
         Log.d("ContactDetailFragment", "onResume()")
     }
 
@@ -427,5 +462,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onPause() {
         super.onPause()
         Log.d("ContactDetailFragment", "onPause()")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("ContactDetailFragment", "onDetach()")
     }
 }

@@ -21,6 +21,7 @@ import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.dataClass.UserGroup
 import com.android.santa_list.databinding.FragmentUserAddBinding
+import java.time.LocalDateTime
 import java.util.regex.Pattern
 
 // TODO: Rename parameter arguments, choose names that match
@@ -57,7 +58,7 @@ class UserAddFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("UserAddFragment", "onCreate = ${Dummy.dummyUsers.size}")
+        Log.d("UserAddFragment", "onCreate = ${Dummy.dummy_users.size}")
         arguments?.let {
             contactListFragment = it.getParcelable(ARG_PARAM1, ContactListFragment::class.java)
         }
@@ -74,6 +75,7 @@ class UserAddFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val now = LocalDateTime.now()
 
         binding.dialogIv.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -135,7 +137,7 @@ class UserAddFragment : DialogFragment() {
                         userGroup,
                         profile_image_uri = pickURI.toString()
                     )
-                    Dummy.dummyUsers.add(user)
+                    Dummy.dummy_users.add(user)
                     requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
                 }
             }
@@ -188,7 +190,8 @@ class UserAddFragment : DialogFragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onDestroy() {
         super.onDestroy()
-        contactListFragment?.mainAdapter?.notifyDataSetChanged()
+//        contactListFragment?.mainAdapter?.notifyDataSetChanged()
+        contactListFragment?.notifyDataSetChanged()
     }
 
 }

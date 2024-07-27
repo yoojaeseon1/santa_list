@@ -28,10 +28,10 @@ object Dummy {
   
     val initMyData: MyData = MyData("20251225-52221-25","", "산타클로스", "010-1225-5221", "santa@gmail.com", arrayOf(null, null, null))
 
-    var dummyUsers: MutableList<User> = mutableListOf()
+    var dummy_users: MutableList<User> = mutableListOf()
 
     init {
-        dummyUsers = mutableListOf(
+        dummy_users = mutableListOf(
             jaeseon,
             hwamin,
             hyehyun,
