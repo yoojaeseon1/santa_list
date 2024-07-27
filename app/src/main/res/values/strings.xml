@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">산타의 리스트</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--Common-->
     <string name="phone_number">전화번호</string>
     <string name="email">이메일</string>
-    <string name="present_date">선물해 줄 날짜</string>
+    <string name="present_date">선물 해줄 날짜</string>
     <string name="present_history_mine">내가 친구에게 받은 선물</string>
     <string name="present_history_yours">내가 친구에게 준 선물</string>
     <string name="wish_list">친구의 위시리스트</string>

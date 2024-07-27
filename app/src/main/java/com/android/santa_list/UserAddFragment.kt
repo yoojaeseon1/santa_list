@@ -24,17 +24,10 @@ import com.android.santa_list.databinding.FragmentUserAddBinding
 import java.time.LocalDateTime
 import java.util.regex.Pattern
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserAddFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UserAddFragment : DialogFragment() {
-    // TODO: Rename and change types of parameters
+
     private var contactListFragment: ContactListFragment? = null
 
     private var _binding: FragmentUserAddBinding? = null
@@ -68,7 +61,6 @@ class UserAddFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentUserAddBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -151,15 +143,7 @@ class UserAddFragment : DialogFragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserAddFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: ContactListFragment) =
             UserAddFragment().apply {

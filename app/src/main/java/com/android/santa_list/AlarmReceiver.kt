@@ -10,8 +10,7 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -52,9 +51,6 @@ class AlarmReceiver : BroadcastReceiver() {
             }
             manager.notify(1, builder.build())
             Toast.makeText(context, "산타로서 선물할 때가 됐어요!", Toast.LENGTH_SHORT).show()
-
         }
     }
-
-
 }

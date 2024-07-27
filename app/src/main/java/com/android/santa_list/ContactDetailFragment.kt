@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -37,25 +36,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-private const val ARG_PARAM3 = "param3"
-const val TAG = "ContactDetailFragment"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ContactDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+private const val ARG_PARAM1 = "param1"
+
+private const val ARG_PARAM3 = "param3"
+
 
 @Parcelize
 class ContactDetailFragment : Fragment(), Parcelable {
-    // TODO: Rename and change types of parameters
 
-    var param2: User = User()
-    var bestFriend = false
+    var best_friend = false
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
     private val presentLogRepository = PresentLogRepository()
@@ -125,10 +115,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         if(friend.is_starred) {
             binding.detailIvFavorite.setImageResource(R.drawable.icon_star)
-            bestFriend = true
+            best_friend = true
         } else {
             binding.detailIvFavorite.setImageResource(R.drawable.icon_empt_star)
-            bestFriend = false
+            best_friend = false
         }
 
         initFriendData()
@@ -150,15 +140,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
-            Log.d("contactDetailFragment", "bestFriend = ${bestFriend}")
-            if (bestFriend) {
+            if (best_friend) {
                 _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
                 friend.is_starred = false
-                bestFriend = false
+                best_friend = false
             } else {
                 _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
                 friend.is_starred = true
-                bestFriend = true
+                best_friend = true
             }
         }
 
