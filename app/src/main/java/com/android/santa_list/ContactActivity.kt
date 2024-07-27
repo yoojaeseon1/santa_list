@@ -20,6 +20,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
     private lateinit var viewPager: ViewPager2
     private val tabTitles = arrayOf("연락처", "내정보")
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,7 +38,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
             viewPager.offscreenPageLimit = 2
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]
-            }.attach()
+                       }.attach()
         }
 
         this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
