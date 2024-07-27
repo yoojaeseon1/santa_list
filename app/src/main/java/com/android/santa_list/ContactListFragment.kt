@@ -157,7 +157,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                                         .toMutableList()
                             }
                         }
-
+                        filteredList.sortWith{ o1, o2 -> o1.name.compareTo(o2.name) }
                         mainAdapter.contact = filteredList
                         recyclerView.layoutManager = LinearLayoutManager(context)
                         recyclerView.adapter = mainAdapter
@@ -252,6 +252,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
 
     fun notifyDataSetChanged() {
+
         mainAdapter.notifyDataSetChanged()
     }
 
