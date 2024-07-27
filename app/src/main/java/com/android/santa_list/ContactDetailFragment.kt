@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -52,14 +53,38 @@ const val TAG = "ContactDetailFragment"
 class ContactDetailFragment : Fragment(), Parcelable {
     // TODO: Rename and change types of parameters
 
-    var param2: User? = null
+    var param2: User = User()
     var bestFriend = false
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
     private val presentLogRepository = PresentLogRepository()
     private val santaUtil = SantaUtil.getInstance()
-    private var selectedAlarm = 0
     private val calendar = Calendar.getInstance()
+    private var selectedAlarm = 7
+
+    private val back_pressed_call_back = object : OnBackPressedCallback(true) {
+
+        @SuppressLint("NotifyDataSetChanged")
+        override fun handleOnBackPressed() {
+
+            val fragments = requireActivity().supportFragmentManager.fragments
+            var contact_list_fragment = ContactListFragment()
+
+            for (fragment in fragments) {
+                if(fragment is ContactListFragment) {
+                    contact_list_fragment = fragment
+                    break
+                }
+            }
+
+            if(isEnabled) {
+                isEnabled = false
+                contact_list_fragment.initRecyclerView(Dummy.dummy_users)
+                contact_list_fragment.isStarredList()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
 
     val receivedPresentAdapter: PresentListAdapter by lazy {
         PresentListAdapter()
@@ -74,12 +99,12 @@ class ContactDetailFragment : Fragment(), Parcelable {
     }
 
 
-    private var friend: User? = null
+    private var friend = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            friend = it.getParcelable(ARG_PARAM1, User::class.java)
+            friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
             selectedAlarm = it.getInt(ARG_PARAM3)
         }
     }
@@ -96,6 +121,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(friend.is_starred) {
+            binding.detailIvFavorite.setImageResource(R.drawable.icon_star)
+            bestFriend = true
+        } else {
+            binding.detailIvFavorite.setImageResource(R.drawable.icon_empt_star)
+            bestFriend = false
+        }
 
         initFriendData()
 
@@ -116,11 +149,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
+            Log.d("contactDetailFragment", "bestFriend = ${bestFriend}")
             if (bestFriend) {
-                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
+                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
+                friend.is_starred = false
                 bestFriend = false
             } else {
-                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
+                _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
+                friend.is_starred = true
                 bestFriend = true
             }
         }
@@ -141,17 +177,20 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
 
-
-
+        binding.detailTvName.text = friend.name
+        binding.detailTvSetPhoneNumber.text = friend.phone_number
+        binding.detailTvSetEmail.text = friend.email
+        binding.detailTvSetPresentDate.text =
+            santaUtil.makeDateFormat(friend.event_date)
         val receivedPresents =
-            presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
+            presentLogRepository.selectPresentList(friend, Dummy.loggedInUser)
 
         receivedPresentAdapter.imageClick =
             object : PresentListAdapter.ImageClick {
                 override fun onClick() {
                     val presentAddFragment =
                         PresentAddFragment.newInstance(
-                            friend!!,
+                            friend,
                             "received",
                             this@ContactDetailFragment
                         )
@@ -188,14 +227,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         givePresentAdapter.submitList(santaUtil.makePresentList(givePresents))
 
-        val wishList = friend!!.wish_list
+        val wishList = friend.wish_list
         wishPresentAdapter.imageClick =
             object : PresentListAdapter.ImageClick {
                 override fun onClick() {
 
                     val presentAddFragment =
                         PresentAddFragment.newInstance(
-                            friend!!,
+                            friend,
                             "wish",
                             this@ContactDetailFragment
                         )
@@ -212,7 +251,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
         binding.detailBtnMessage.setOnClickListener {
-            val smsUri = Uri.parse("smsto:" + friend?.phone_number)
+            val smsUri = Uri.parse("smsto:" + friend.phone_number)
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.setData(smsUri)
             intent.putExtra("sms_body", "")
@@ -236,7 +275,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             } else {
                 Log.d("contactDetailFragment", "have permission")
                 val phone_number =
-                    "tel:" + santaUtil.removePhoneHyphen(friend!!.phone_number)
+                    "tel:" + santaUtil.removePhoneHyphen(friend.phone_number)
                 val intent = Intent(
                     "android.intent.action.CALL",
                     Uri.parse(phone_number)
@@ -244,7 +283,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 startActivity(intent)
             }
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), back_pressed_call_back)
 
     }
 
@@ -440,7 +479,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
     }
 
-
     override fun onStart() {
         super.onStart()
         Log.d("ContactDetailFragment", "onStart()")
@@ -461,5 +499,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onPause() {
         super.onPause()
         Log.d("ContactDetailFragment", "onPause()")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("ContactDetailFragment", "onDetach()")
     }
 }

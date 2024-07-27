@@ -37,10 +37,10 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     }
     private var changeFragmentListener: ChangeFragmentListener? = null
     private lateinit var recyclerView: RecyclerView
-    lateinit var mainAdapter: MainRecyclerViewAdapter
+    private lateinit var mainAdapter: MainRecyclerViewAdapter
     private lateinit var presentLogRepository: PresentLogRepository
 
-    private val contactList: MutableList<User> = Dummy.dummyUsers
+    private val contactList: MutableList<User> = Dummy.dummy_users
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +64,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isStarredList()
+        Log.d("ContactListFragment", "onViewCreated")
 
         recyclerView = binding.contactRecyclerView
 //        recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL))
@@ -184,13 +185,14 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
 
     override fun onResume() {
         super.onResume()
+        Log.d("ContactListFragment", "onResume")
         mainAdapter.notifyDataSetChanged()
     }
 
-    private fun isStarredList() {
+    fun isStarredList() {
         val recyclerView = binding.contactIsStarredRecyclerView
         val isStarredList: MutableList<User> =
-            Dummy.dummyUsers.filter { it.is_starred }.toMutableList()
+            Dummy.dummy_users.filter { it.is_starred }.toMutableList()
         val adapter = ContactIsStarredAdapter(isStarredList)
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -237,4 +239,20 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                 arguments = Bundle().apply { }
             }
     }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("ContactListFragment", "onPause")
+    }
+
+    fun initRecyclerView(user_list: MutableList<User>) {
+        mainAdapter.contact = user_list
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = mainAdapter
+    }
+
+    fun notifyDataSetChanged() {
+        mainAdapter.notifyDataSetChanged()
+    }
+
 }

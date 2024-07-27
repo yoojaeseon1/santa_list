@@ -21,11 +21,11 @@ import java.time.LocalDateTime
  * @property updated_date 계정 정보 수정일
  */
 @Parcelize
-data class User(val id: String,
-                var name: String,
-                var phone_number: String,
-                var email: String,
-                var group: UserGroup,
+data class User(val id: String = "",
+                var name: String = "",
+                var phone_number: String = "",
+                var email: String = "",
+                var group: UserGroup = UserGroup.NONE,
                 var profile_image: Int = -1,
                 var profile_image_uri:String = "",
                 var is_starred: Boolean = false,
