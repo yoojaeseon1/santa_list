@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -175,6 +176,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 alertDialog.isCancelable = false
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
+
         }
 
 
@@ -349,6 +351,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         MaterialAlertDialogBuilder(
             requireContext(), R.style.detail_dialog_alert
         )
+            .setCancelable(false)
             .setTitle(getString(R.string.alarm_ask_delete))
             .setNegativeButton(getString(R.string.delete)) { dialog, which ->
                 isNotCheck()
