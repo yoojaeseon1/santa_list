@@ -37,7 +37,7 @@ private const val ARG_PARAM2 = "param2"
 class AlertDialogFragment : DialogFragment() {
     private var _binding: FragmentAlertDialogBinding? = null
     val binding get() = _binding!!
-
+    private var selectedAlarm = 0
 
     private var param1: User? = null
 
@@ -61,59 +61,42 @@ class AlertDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("dd" , "${param1}")
+        Log.d("dd", "${param1}")
 
-        var selectedAlarm = 100
-
-
-
-
+        //5초뒤
         _binding?.btnAlertDialog1?.setOnClickListener {
             selectedAlarm = 1
             Log.d("TAG", "${selectedAlarm}")
         }
-
+        //하루 전
         _binding?.btnAlertDialog2?.setOnClickListener {
             selectedAlarm = 2
             Log.d("TAG", "${selectedAlarm}")
         }
-
+        //당일
         _binding?.btnAlertDialog3?.setOnClickListener {
             selectedAlarm = 3
             Log.d("TAG", "${selectedAlarm}")
         }
-
+        //완료
         _binding?.alertBtnDialogComplete?.setOnClickListener {
-            val dialogResult =
-                ContactDetailFragment.newInstance(param1!!, selectedAlarm)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
-            Log.d("보냅니다", "${selectedAlarm}")
-            val resultBundle = bundleOf("dataSend" to "dataSend")
-            setFragmentResult("dataSend", resultBundle)
-            dismiss()
+            exit()
         }
+        //취소
         _binding?.alertBtnDialogBack?.setOnClickListener {
-            selectedAlarm = 777
-            dismiss()
-
-            val resultBundle = bundleOf("dataSend" to "dataSend")
-            setFragmentResult("dataSend", resultBundle)
-
+            selectedAlarm = 0
+            exit()
         }
-
-
-//        val btnBackListener = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                selectedAlarm = 0
-//                dismiss()
-//            }
-//        }
-//        onBackPressedDispatcher.addCallback(this, btnBackListener)
-
     }
 
-
+    //디테일페이지로 돌아가는 함수
+    private fun exit() {
+        val dialogResult =
+            ContactDetailFragment.newInstance(param1!!, selectedAlarm)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
+        dismiss()
+    }
 
 
     companion object {
@@ -136,7 +119,7 @@ class AlertDialogFragment : DialogFragment() {
 
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(user : User) =
+        fun newInstance(user: User) =
             AlertDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, user)
