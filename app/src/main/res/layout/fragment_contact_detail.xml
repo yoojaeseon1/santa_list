@@ -88,6 +88,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -216,24 +217,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/detail_tv_gift" />
 
             <TextView
-                android:id="@+id/detail_tv_sonjul_go"
+                android:id="@+id/detail_tv_present_history_mine"
                 style="@style/detail_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/present_history_mine"
                 app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
                 app:layout_constraintTop_toBottomOf="@+id/detail_tv_set_present_date" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/detail_recycler_view_sonjul_go"
+                android:id="@+id/detail_recycler_view_present_history_mine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
-                app:layout_constraintTop_toBottomOf="@+id/detail_tv_sonjul_go"
+                app:layout_constraintTop_toBottomOf="@+id/detail_tv_present_history_mine"
                 app:spanCount="4" />
 
             <TextView
@@ -245,12 +247,13 @@
                 android:text="@string/present_history_yours"
                 app:layout_constraintEnd_toEndOf="@+id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_phone_number"
-                app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_sonjul_go" />
+                app:layout_constraintTop_toBottomOf="@+id/detail_recycler_view_present_history_mine" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recycler_view_present_history"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"
@@ -274,6 +277,7 @@
                 android:id="@+id/detail_recycler_wish_present"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/detail_tv_phone_number"
                 app:layout_constraintStart_toStartOf="@+id/detail_tv_present_date"

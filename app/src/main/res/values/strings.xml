@@ -13,6 +13,12 @@
     <string name="tab_item_1">연락처</string>
     <string name="tab_item_2">내정보</string>
 
+    <string name="please_check_image">프로필 이미지를 확인해주세요.</string>
+    <string name="please_check_name">이름을 확인해 주세요.</string>
+    <string name="please_check_phone_number">전화번호를 확인해 주세요.</string>
+    <string name="please_check_email">이메일을 확인해 주세요.</string>
+    <string name="please_check_date">날짜를 선택해 주세요.</string>
+
     <!--Menu Items-->
     <string name="menu_item_list">리스트뷰로 보기</string>
     <string name="menu_item_grid">그리드뷰로 보기</string>
@@ -40,9 +46,14 @@
     <string name="alert_on"><u>알림ON</u></string>
     <string name="alert_off"><u>알림OFF</u></string>
     <string name="complete">완료</string>
+    <string name="move">설정하러 가기</string>
+    <string name="delete">삭제</string>
     <string name="cancel">취소</string>
     <string name="alarm_title">알림 설정</string>
     <string name="alarm_quest">언제 알려드릴까요?</string>
+    <string name="alarm_ask_delete">알림을 삭제하시겠습니까?</string>
+    <string name="alarm_ask_permission">알림권한 설정이 필요합니다.</string>
+    <string name="alarm_need_permission">알림을 원하시면 설정에서 알림 권한을 \n허용해주시기 바랍니다.</string>
     <string name="alarm_selected">&#160;알림이 설정되었습니다.</string>
     <string name="alarm_second_5">5초 뒤</string>
     <string name="alarm_day_before">하루 전</string>
