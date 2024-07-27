@@ -171,7 +171,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
             else if (selectedAlarm == 4) cancelAlarm()
             else {
                 isCheck()
-                val alertDialog = AlertDialogFragment.newInstance(friend!!)
+                val alertDialog = AlertDialogFragment.newInstance(friend)
+                alertDialog.isCancelable = false
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
         }
@@ -215,7 +216,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
                     val presentAddFragment =
                         PresentAddFragment.newInstance(
-                            friend!!,
+                            friend,
                             "give",
                             this@ContactDetailFragment
                         )

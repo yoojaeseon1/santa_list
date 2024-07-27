@@ -19,6 +19,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
     private val fragmentManager: FragmentManager = supportFragmentManager
     private lateinit var viewPager: ViewPager2
     private val tabTitles = arrayOf("연락처", "내정보")
+    private val tabIcons = arrayOf(R.drawable.ic_phone_selected, R.drawable.ic_my_unselected)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
             viewPager.offscreenPageLimit = 2
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]
+                tab.setIcon(tabIcons[position])
             }.attach()
         }
 
