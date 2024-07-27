@@ -10,16 +10,23 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
@@ -27,8 +34,6 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import java.lang.StringBuilder
-import java.time.LocalDateTime
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,12 +53,13 @@ const val TAG = "ContactDetailFragment"
 class ContactDetailFragment : Fragment(), Parcelable {
     // TODO: Rename and change types of parameters
 
-    var param2: User? = null
+    var param2: User = User()
     var bestFriend = false
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
     private val presentLogRepository = PresentLogRepository()
     private val santaUtil = SantaUtil.getInstance()
+    private val calendar = Calendar.getInstance()
     private var selectedAlarm = 7
 
     private val back_pressed_call_back = object : OnBackPressedCallback(true) {
@@ -98,19 +104,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            selectedAlarm = it.getInt(ARG_PARAM3)
             friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
-
-//            Log.d("7dla?", "${friend}, ${it.getInt(ARG_PARAM3)}")
-
-//            Log.d("받습니다", "${friend}, ${it.getInt(ARG_PARAM3)}")
-//            setFragmentResultListener("dataSend") { key, bundle ->
-//                friend = it.getParcelable(ARG_PARAM1, User::class.java)
-//                setAlarm()
-//            }
+            selectedAlarm = it.getInt(ARG_PARAM3)
         }
-
-
     }
 
     override fun onCreateView(
@@ -134,18 +130,22 @@ class ContactDetailFragment : Fragment(), Parcelable {
             bestFriend = false
         }
 
+        initFriendData()
 
-        //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
+
+            //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
-            val giftShopDialogFragment = GiftShopDialogFragment()
-            giftShopDialogFragment.show(requireFragmentManager(), "DialogFragment")
+            btnGiftAnimation()
+            Handler(Looper.getMainLooper()).postDelayed({
+                val giftShopDialogFragment = GiftShopDialogFragment()
+                giftShopDialogFragment.show(requireFragmentManager(), "DialogFragment")
+            }, 180)
         }
 
         //툴바버튼 : 클릭 시 친구정보 편집
         _binding?.toolbar?.action?.setOnClickListener {
-            val addContactDialog = AddContactDialogFragment()
+            val addContactDialog = AddContactDialogFragment.newInstance(friend!!)
             addContactDialog.show(requireFragmentManager(), "DialogFragment")
-
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
@@ -161,17 +161,20 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         }
 
-        //알림버튼 : 5초뒤, 하루전, 당일 중 사용자 입력에 따라 알림 출력
+        //알림버튼 : 세가지 기능 중 사용자 상태에 따라 실행 (알림 권한 요청 / 알림 취소 / 알림 예약)
         _binding?.detailCbAlert?.setOnClickListener {
-            if (selectedAlarm != null && selectedAlarm != 0) cancelAlarm()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !NotificationManagerCompat.from(
+                    requireContext()
+                ).areNotificationsEnabled()
+            )
+                requireAlarmPermission()
+            else if (selectedAlarm == 4) cancelAlarm()
             else {
-                val alertDialog = AlertDialogFragment.newInstance(friend)
+                isCheck()
+                val alertDialog = AlertDialogFragment.newInstance(friend!!)
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
         }
-        //알림함수 호출
-
-
 
 
         binding.detailTvName.text = friend.name
@@ -179,7 +182,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         binding.detailTvSetEmail.text = friend.email
         binding.detailTvSetPresentDate.text =
             santaUtil.makeDateFormat(friend.event_date)
-
         val receivedPresents =
             presentLogRepository.selectPresentList(friend, Dummy.loggedInUser)
 
@@ -244,9 +246,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
 
-        binding.detailRecyclerViewSonjulGo.adapter = receivedPresentAdapter
-        binding.detailRecyclerViewPresentHistory.adapter = givePresentAdapter
-        binding.detailRecyclerWishPresent.adapter = wishPresentAdapter
+
 
 
 
@@ -287,21 +287,144 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
     }
 
-    //알림 취소하는 함수
-    private fun cancelAlarm() {
+    //정보 입력해주는 함수
+    fun initFriendData() {
+        with(binding)
+        {detailTvName.text = friend?.name
+        detailTvSetPhoneNumber.text = friend?.phone_number
+        detailTvSetEmail.text = friend?.email
+            detailRecyclerViewPresentHistoryMine.adapter = receivedPresentAdapter
+            detailRecyclerViewPresentHistory.adapter = givePresentAdapter
+            detailRecyclerWishPresent.adapter = wishPresentAdapter
+            detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend!!.event_date)
+    }
+    if(friend?.profile_image_uri != "") binding.detailIvProfile.setImageURI(friend?.profile_image_uri?.toUri())
+        else binding.detailIvProfile.setImageResource(friend!!.profile_image)
+    }
 
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.gift))
-            .setNegativeButton(getString(R.string.dialog_cancle)) { dialog, which ->
+
+
+    //선물버튼 애니메이션 함수
+    fun btnGiftAnimation() {
+        val scaleOut = AnimationUtils.loadAnimation(requireContext(), R.anim.ainm_detail_gift)
+        _binding?.detailIvGift?.startAnimation(scaleOut)
+    }
+
+    //클릭 유무에 맞게 알림버튼을 변경해주는 함수
+    private fun isNotCheck() {
+        binding.detailCbAlert.isChecked = false
+        binding.detailCbAlert.text = getString(R.string.alert_off)
+    }
+    private fun isCheck() {
+        binding.detailCbAlert.isChecked = true
+        binding.detailCbAlert.text = getString(R.string.alert_on)
+    }
+
+    //알림권한 허가를 요청하는 함수
+    private fun requireAlarmPermission() {
+        MaterialAlertDialogBuilder(
+            requireContext(), R.style.detail_dialog_alert
+        )
+            .setTitle(getString(R.string.alarm_ask_permission))
+            .setNegativeButton(getString(R.string.move)) { dialog, which ->
+                val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                }
+                startActivity(intent)
+            }
+            .setPositiveButton(getString(R.string.cancel)) { dialog, which ->
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alarm_need_permission),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            .show()
+        isNotCheck()
+    }
+
+    //알림을 삭제하는 함수(UI만)
+    private fun cancelAlarm() {
+        MaterialAlertDialogBuilder(
+            requireContext(), R.style.detail_dialog_alert
+        )
+            .setTitle(getString(R.string.alarm_ask_delete))
+            .setNegativeButton(getString(R.string.delete)) { dialog, which ->
+                isNotCheck()
+                selectedAlarm = 0
+            }
+            .setPositiveButton(getString(R.string.dialog_cancle)) { dialog, which ->
+                isCheck()
             }
             .show()
     }
-
-    //사용자 설정대로 알림 예약하는 함수
-    @SuppressLint("ScheduleExactAlarm")
+    //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
     private fun setAlarm() {
-        val calendar = Calendar.getInstance()
-        val santaDay = arrayOf(2024, 7, 25, 21, 19, 0)
+        val year = friend?.event_date?.year
+        val month = friend?.event_date?.monthValue
+        val day = friend?.event_date?.dayOfMonth
+
+        isCheck()
+        when (selectedAlarm) {
+            //5초뒤
+            1 -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
+                    Toast.LENGTH_SHORT
+                ).show()
+                reserveAlarm()
+                selectedAlarm = 4
+            }
+            //하루전
+            2 -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alarm_day_before) + getString(R.string.alarm_selected),
+                    Toast.LENGTH_SHORT
+                ).show()
+                calendar.apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.YEAR, year ?: 0)
+                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, (day ?: 0) -1)
+                    set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }
+                reserveAlarm()
+                selectedAlarm = 4
+            }
+            //당일
+            3 -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alarm_today) + getString(R.string.alarm_selected),
+                    Toast.LENGTH_SHORT
+                ).show()
+                calendar.apply {
+                    timeInMillis = System.currentTimeMillis()
+                    set(Calendar.YEAR, year ?: 0)
+                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, day ?: 0)
+                    set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }
+                reserveAlarm()
+                selectedAlarm = 4
+            }
+            4 -> {}
+            else -> {
+                isNotCheck()
+                selectedAlarm = 0
+            }
+        }
+    }
+
+    //알람리시버에 알림을 예약하는 함수
+    @SuppressLint("ScheduleExactAlarm")
+    private fun reserveAlarm() {
         val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -310,96 +433,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
             intent,
             PendingIntent.FLAG_MUTABLE
         )
-
-        if (selectedAlarm == 0 || selectedAlarm == 4 || selectedAlarm == null)
-            _binding?.detailCbAlert?.apply {
-                setChecked(false)
-                text = getString(R.string.alert_off)
-            } else {
-            when (selectedAlarm) {
-                1 -> {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    _binding?.detailCbAlert?.apply {
-                        isChecked = true
-                        text = getString(R.string.alert_off)
-                    }
-
-                    val localDateTime = StringBuilder(LocalDateTime.now().toString())
-                    val localDateTimeArray = arrayOf("", "", "", "", "", "0")
-                    localDateTime.forEachIndexed { index, i ->
-                        when (index) {
-                            in 0..3 -> localDateTimeArray[0] += i.toString()
-                            in 5..6 -> localDateTimeArray[1] += i.toString()
-                            in 8..9 -> localDateTimeArray[2] += i.toString()
-                            in 11..12 -> localDateTimeArray[3] += i.toString()
-                            in 14..15 -> localDateTimeArray[4] += i.toString()
-                        }
-                    }
-                    val now = localDateTimeArray.map { it.toInt() }.toIntArray()
-                    calendar.apply {
-                        timeInMillis = System.currentTimeMillis()
-                        set(Calendar.YEAR, now[0])
-                        set(Calendar.MONTH, now[1] - 1) //0부터 시작한다
-                        set(Calendar.DAY_OF_MONTH, now[2])
-                        set(Calendar.HOUR_OF_DAY, now[3]) //24시간으로 지정한다
-                        set(Calendar.MINUTE, now[4])
-                        set(Calendar.SECOND, now[5] + 30)
-                    }
-                }
-                //하루전
-                2 -> {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.alarm_day_before) + getString(R.string.alarm_selected),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    _binding?.detailCbAlert?.apply {
-                        isChecked = true
-                        text = getString(R.string.alert_off)
-                    }
-                    calendar.apply {
-                        timeInMillis = System.currentTimeMillis()
-                        set(Calendar.YEAR, santaDay[0])
-                        set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
-                        set(Calendar.DAY_OF_MONTH, santaDay[2] - 1)
-                        set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
-                        set(Calendar.MINUTE, santaDay[4])
-                        set(Calendar.SECOND, santaDay[5])
-                    }
-                }
-                //당일
-                3 -> {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.alarm_today) + getString(R.string.alarm_selected),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    _binding?.detailCbAlert?.apply {
-                        isChecked = true
-                        text = getString(R.string.alert_off)
-                    }
-                    calendar.apply {
-                        timeInMillis = System.currentTimeMillis()
-                        set(Calendar.YEAR, santaDay[0])
-                        set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
-                        set(Calendar.DAY_OF_MONTH, santaDay[2])
-                        set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
-                        set(Calendar.MINUTE, santaDay[4])
-                        set(Calendar.SECOND, santaDay[5])
-                    }
-                }
-            }
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis, pendingIntent
-            )
-        }
-
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis, pendingIntent
+        )
     }
 
 
@@ -433,7 +470,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
 
 
-
         @JvmStatic
         fun newInstance(user: User) =
             ContactDetailFragment().apply {
@@ -451,6 +487,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onResume() {
         super.onResume()
         setAlarm()
+        initFriendData()
         Log.d("ContactDetailFragment", "onResume()")
     }
 

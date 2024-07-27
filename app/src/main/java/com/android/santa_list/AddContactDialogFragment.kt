@@ -14,20 +14,16 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
-import com.android.santa_list.MyPageDialogFragment.FragmentInterfacer
 import com.android.santa_list.dataClass.Dummy.myData
+import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentAddContactDialogBinding
-import com.android.santa_list.databinding.FragmentMyPageDialogBinding
+import java.time.LocalDateTime
 import java.util.regex.Pattern
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [AddContactDialogFragment.newInstance] factory method to
@@ -37,25 +33,15 @@ class AddContactDialogFragment : DialogFragment() {
     private var _binding: FragmentAddContactDialogBinding? = null
     val binding get() = _binding!!
     private var pickURI: Uri? = null
-    val selectDate: Array<Int?> = arrayOfNulls<Int>(3)
+    private val selectDate = arrayOf(0,0,0)
 
-    interface FragmentInterfacer {
-        fun onButtonClick(input: String)
-    }
-    private var fragmentInterfacer: com.android.santa_list.AddContactDialogFragment.FragmentInterfacer? = null
-    fun setFragmentInterfacer(fragmentInterfacer: com.android.santa_list.AddContactDialogFragment.FragmentInterfacer?) {
-        this.fragmentInterfacer = fragmentInterfacer
-    }
-
-    private var param1: String? = null
-    private var param2: String? = null
+    private var friend: User? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            friend = it.getParcelable(ARG_PARAM1, User::class.java)
         }
     }
 
@@ -63,7 +49,6 @@ class AddContactDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentAddContactDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -71,55 +56,38 @@ class AddContactDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 이미지 불러오기
+        //기존 데이터 연결
+        getProfile()
 
-        if (myData[0].uri != "") {
-            binding.detailIvAddDialg.setImageURI(myData[0].uri!!.toUri())
-        } else {
-            binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
-        }
-        binding.detailEtAddDialgEmail.setText(myData[0].email ?: "") // 이메일을 설정해 주세요.
-        binding.detailEtAddDialgPhoneNumber.setText(myData[0].phone_number ?: "") // 전화번호를 설정해 주세요.
-        binding.detailEtAddDialgName.setText(myData[0].name ?: "") // 이름을 설정해 주세요.
-        if (myData[0].gift_date[0] != null) {
-            binding.detailBtnDialogPresentDay.text = "${myData[0].gift_date[0]}년 ${myData[0].gift_date[1]}월 ${myData[0].gift_date[2]}일"
-        } else {
-            binding.detailBtnDialogPresentDay.hint = "날짜를 설정해 주세요."
-        }
-
-        // 이미지 선택
+        // 이미지 추가 클릭 : 사용자 카메라 또는 갤러리에서 이미지 업로드
         binding.detailIvAddDialg.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            Log.d("whatHappen","현재 누르고있습니다")
         }
-        // 전화번호 자동 하이픈 ( - )
-        binding.detailEtAddDialgPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-        // 달력 다이얼로그 출력
+        // 선물 해줄 날짜 클릭 : 달력 다이얼로그 호출
         binding.detailBtnDialogPresentDay.setOnClickListener {
-            dialogCalendal()
+            dialogCalendar()
         }
-        // 버튼 클릭시 이벤트
-        val btnOk = binding.alertBtnDialogBack
-        btnOk.setOnClickListener {
-
+        // 완료 버튼 : 유효성검사에 따른 토스트메시지
+        binding.alertBtnDialogComplete.setOnClickListener {
             when {
-                pickURI == null -> Toast.makeText(this.requireContext(), "프로필 이미지를 확인해주세요.", Toast.LENGTH_SHORT).show()
-                binding.detailEtAddDialgName.text.isNullOrBlank() -> Toast.makeText(this.requireContext(), "이름을 확인해 주세요.", Toast.LENGTH_SHORT).show()
-                binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> Toast.makeText(this.requireContext(), "전화번호를 확인해 주세요.", Toast.LENGTH_SHORT).show()
+                binding.detailEtAddDialgName.text.isNullOrBlank() -> Toast.makeText(this.requireContext(), getString(R.string.please_check_name), Toast.LENGTH_SHORT).show()
+                binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> Toast.makeText(this.requireContext(), getString(R.string.please_check_phone_number), Toast.LENGTH_SHORT).show()
                 !Pattern.matches("[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", binding.detailEtAddDialgEmail.text) -> Toast.makeText(this.requireContext(), "이메일의 형식이 올바르지 않거나, 비어있습니다.", Toast.LENGTH_SHORT).show()
-                selectDate[0] == null -> Toast.makeText(this.requireContext(), "날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show()
+                selectDate[0] == null -> Toast.makeText(this.requireContext(), getString(R.string.please_check_date), Toast.LENGTH_SHORT).show()
                 else -> {
-                    myData[0].gift_date = selectDate
-                    myData[0].email = binding.detailEtAddDialgEmail.text.toString()
-                    myData[0].phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
-                    myData[0].uri = pickURI?.toString()
-                    myData[0].name = binding.detailEtAddDialgName.text.toString()
+                    friend?.profile_image_uri = pickURI.toString()
+                    friend?.name = binding.detailEtAddDialgName.text.toString()
+                    friend?.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
+                    friend?.email = binding.detailEtAddDialgEmail.text.toString()
+                    friend?.event_date = LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0,0,0)
+
+                    val dialogResult =
+                        ContactDetailFragment.newInstance(friend!!)
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
                     dismiss()
                 }
             }
-            // 마이페이지 프래그먼트로 돌아갈 때 데이터 다시 적용 실행시키기
-            val resultBundle = bundleOf("dataSend" to "dataSend")
-            setFragmentResult("dataSend", resultBundle)
         }
         val btnBack = binding.alertBtnDialogBack
         btnBack.setOnClickListener() {
@@ -127,8 +95,24 @@ class AddContactDialogFragment : DialogFragment() {
         }
     }
 
+fun getProfile() {
+    if (myData[0].uri != "") {
+        binding.detailIvAddDialg.setImageURI(friend?.profile_image_uri!!.toUri())
+    } else {
+        binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
+    }
+    with(binding) {
+        detailEtAddDialgEmail.setText(friend?.email ?: "")
+        detailEtAddDialgPhoneNumber.setText(friend?.phone_number ?: "")
+        detailEtAddDialgName.setText(friend?.name ?: "")
+        detailEtAddDialgPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+    }
+}
+
+
+
     // 달력 다이얼로그 출력
-    private fun dialogCalendal () {
+    private fun dialogCalendar() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -170,11 +154,10 @@ class AddContactDialogFragment : DialogFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(user: User) =
             AddContactDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putParcelable(ARG_PARAM1, user)
                 }
             }
     }

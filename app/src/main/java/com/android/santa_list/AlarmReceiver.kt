@@ -10,20 +10,21 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
-
-
         if (intent != null) {
-            val intent = Intent(context, ContactActivity::class.java).apply {
+            val activityIntent = Intent(context, ContactActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             val pendingIntent = PendingIntent.getActivity(
-                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or
+                context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT or
                         PendingIntent.FLAG_IMMUTABLE
             )
+
             val manager =
                 context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder
@@ -50,7 +51,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 setAutoCancel(true)
             }
             manager.notify(1, builder.build())
-            Toast.makeText(context, "alarm", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "산타로서 선물할 때가 됐어요!", Toast.LENGTH_SHORT).show()
+
         }
     }
 
