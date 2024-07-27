@@ -51,20 +51,7 @@ class SantaUtil {
     }
 
     fun makePresentList(presents: MutableList<Present>): MutableList<Present>{
-//        if(presents.size <= 7) {
-//            val subList = presents.toMutableList()
-////            subList.add(Dummy.addPresent)
-//
-//            if(subList.size == 5)
-//                subList.removeAt(subList.size - 2)
-//
-//            return subList
-//        } else {
-//            val subList = presents.subList(0, 7)
-////            subList.add(Dummy.addPresent)
-//
-//            return subList
-//        }
+
         var subList = mutableListOf<Present>()
         subList.add(Present(""))
 
@@ -72,9 +59,6 @@ class SantaUtil {
             subList.addAll(presents.subList(0,6))
         else
             subList.addAll(presents)
-//            subList = presents.toMutableList()
-
-//        subList.add(0, Present(""))
 
         return subList
 

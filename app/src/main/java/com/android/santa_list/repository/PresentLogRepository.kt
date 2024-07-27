@@ -30,11 +30,7 @@ class PresentLogRepository {
 
         val filteredList = filteredUser.toMutableList()
 
-        filteredList.sortedWith(object : Comparator<User> {
-            override fun compare(o1: User, o2: User): Int {
-                return o1.name.compareTo(o2.name)
-            }
-        })
+        filteredList.sortWith { o1, o2 -> o1.name.compareTo(o2.name) }
 
         return filteredList
     }
