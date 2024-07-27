@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentAlertDialogBinding
@@ -75,6 +76,7 @@ class AlertDialogFragment : DialogFragment() {
             selectedAlarm = 0
             exit()
         }
+
     }
 
     //디테일페이지로 돌아가는 함수

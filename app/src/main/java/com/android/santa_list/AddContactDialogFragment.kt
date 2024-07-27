@@ -75,7 +75,7 @@ class AddContactDialogFragment : DialogFragment() {
                 !Pattern.matches("[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", binding.detailEtAddDialgEmail.text) -> Toast.makeText(this.requireContext(), "이메일의 형식이 올바르지 않거나, 비어있습니다.", Toast.LENGTH_SHORT).show()
                 selectDate[0] == null -> Toast.makeText(this.requireContext(), getString(R.string.please_check_date), Toast.LENGTH_SHORT).show()
                 else -> {
-                    friend?.profile_image_uri = pickURI.toString()
+                    if(friend?.profile_image_uri != "") friend?.profile_image_uri = pickURI.toString()
                     friend?.name = binding.detailEtAddDialgName.text.toString()
                     friend?.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
                     friend?.email = binding.detailEtAddDialgEmail.text.toString()

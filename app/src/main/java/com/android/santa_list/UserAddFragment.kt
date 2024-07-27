@@ -87,8 +87,8 @@ class UserAddFragment : DialogFragment() {
         }
 
         binding.tvAddGroupCategory.setOnClickListener {
-            val builder = AlertDialog.Builder(requireActivity())
-            builder.setTitle("그룹 선택")
+            val builder = AlertDialog.Builder(requireActivity(), R.style.detail_dialog_alert)
+            builder.setTitle(getString(R.string.group_title))
 
             val inflater = layoutInflater.inflate(R.layout.dialog_group_category, null)
             builder.setView(inflater)

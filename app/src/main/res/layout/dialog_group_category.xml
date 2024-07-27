@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_group_category"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <RadioGroup
         android:id="@+id/rg_category"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,44 +24,71 @@
 
         <RadioButton
             android:id="@+id/category_none"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="해당 없음"
-            android:textSize="32sp"/>
+            android:layout_margin="4dp"
+            android:background="@drawable/sel_alert_rb_bg"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/group_none"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/category_family"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="가족"
-            android:textSize="32sp"/>
+            android:layout_margin="4dp"
+            android:background="@drawable/sel_alert_rb_bg"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/group_family"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/category_company"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="직장"
-            android:textSize="32sp"/>
+            android:layout_margin="4dp"
+            android:background="@drawable/sel_alert_rb_bg"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/group_work"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/category_friend"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="친구"
-            android:textSize="32sp"/>
+            android:layout_margin="4dp"
+            android:background="@drawable/sel_alert_rb_bg"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/group_friend"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <RadioButton
             android:id="@+id/category_school"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="학교"
-            android:textSize="32sp"/>
-
+            android:layout_margin="4dp"
+            android:background="@drawable/sel_alert_rb_bg"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:text="@string/group_school"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
     </RadioGroup>
 
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

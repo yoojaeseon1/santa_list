@@ -69,6 +69,14 @@
     <string name="christmas_eve">&#160;&#160;산타로서 선물할 때가 됐어요!&#160;&#160;</string>
     <string name="christmas">소중한 사람에게 마음을 전하러 가볼까요?</string>
 
+    <!--Group Category Dialog-->
+    <string name="group_title">그룹 선택</string>
+    <string name="group_none">해당없음</string>
+    <string name="group_family">가족</string>
+    <string name="group_work">직장</string>
+    <string name="group_friend">친구</string>
+    <string name="group_school">학교</string>
+
 
     <!--Add Contact Dialog-->
     <string name="dialog_image">dialog image</string>
