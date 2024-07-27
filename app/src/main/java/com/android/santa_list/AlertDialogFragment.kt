@@ -1,28 +1,16 @@
 package com.android.santa_list
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
-import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
-import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
 import com.android.santa_list.dataClass.User
-import com.android.santa_list.databinding.FragmentAddContactDialogBinding
 import com.android.santa_list.databinding.FragmentAlertDialogBinding
-import com.android.santa_list.databinding.FragmentGiftShopDialogBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -24,6 +24,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT or
                         PendingIntent.FLAG_IMMUTABLE
             )
+
             val manager =
                 context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val builder: NotificationCompat.Builder

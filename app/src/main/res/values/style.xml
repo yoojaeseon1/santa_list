@@ -22,7 +22,7 @@
     <!-- Contact Detail Alert Dialog-->
 
     <style name="detail_dialog_alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorSurface">@color/white</item>
+        <item name="android:background">@color/white</item>
         <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>

@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
@@ -96,8 +97,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initFriendData()
 
-        //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
+
+            //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
             btnGiftAnimation()
             Handler(Looper.getMainLooper()).postDelayed({
@@ -108,9 +111,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         //툴바버튼 : 클릭 시 친구정보 편집
         _binding?.toolbar?.action?.setOnClickListener {
-            val addContactDialog = AddContactDialogFragment()
+            val addContactDialog = AddContactDialogFragment.newInstance(friend!!)
             addContactDialog.show(requireFragmentManager(), "DialogFragment")
-
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
@@ -130,7 +132,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 ).areNotificationsEnabled()
             )
                 requireAlarmPermission()
-            else if (selectedAlarm == 1 || selectedAlarm == 2 || selectedAlarm == 3) cancelAlarm()
+            else if (selectedAlarm == 4) cancelAlarm()
             else {
                 isCheck()
                 val alertDialog = AlertDialogFragment.newInstance(friend!!)
@@ -139,11 +141,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
 
 
-        binding.detailTvName.text = friend?.name
-        binding.detailTvSetPhoneNumber.text = friend?.phone_number
-        binding.detailTvSetEmail.text = friend?.email
-        binding.detailTvSetPresentDate.text =
-            santaUtil.makeDateFormat(friend!!.event_date)
+
 
         val receivedPresents =
             presentLogRepository.selectPresentList(friend!!, Dummy.loggedInUser)
@@ -209,9 +207,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
 
-        binding.detailRecyclerViewPresentHistoryMine.adapter = receivedPresentAdapter
-        binding.detailRecyclerViewPresentHistory.adapter = givePresentAdapter
-        binding.detailRecyclerWishPresent.adapter = wishPresentAdapter
+
 
 
 
@@ -251,6 +247,23 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
     }
+
+    //정보 입력해주는 함수
+    fun initFriendData() {
+        with(binding)
+        {detailTvName.text = friend?.name
+        detailTvSetPhoneNumber.text = friend?.phone_number
+        detailTvSetEmail.text = friend?.email
+            detailRecyclerViewPresentHistoryMine.adapter = receivedPresentAdapter
+            detailRecyclerViewPresentHistory.adapter = givePresentAdapter
+            detailRecyclerWishPresent.adapter = wishPresentAdapter
+            detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend!!.event_date)
+    }
+    if(friend?.profile_image_uri != "") binding.detailIvProfile.setImageURI(friend?.profile_image_uri?.toUri())
+        else binding.detailIvProfile.setImageResource(friend!!.profile_image)
+    }
+
+
 
     //선물버튼 애니메이션 함수
     fun btnGiftAnimation() {
@@ -306,10 +319,12 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             .show()
     }
-
     //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
     private fun setAlarm() {
-        val santaDay = arrayOf(2024, 7, 25, 21, 19, 0)
+        val year = friend?.event_date?.year
+        val month = friend?.event_date?.monthValue
+        val day = friend?.event_date?.dayOfMonth
+
         isCheck()
         when (selectedAlarm) {
             //5초뒤
@@ -320,6 +335,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     Toast.LENGTH_SHORT
                 ).show()
                 reserveAlarm()
+                selectedAlarm = 4
             }
             //하루전
             2 -> {
@@ -330,14 +346,15 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 ).show()
                 calendar.apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, santaDay[0])
-                    set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, santaDay[2] - 1)
-                    set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
-                    set(Calendar.MINUTE, santaDay[4])
-                    set(Calendar.SECOND, santaDay[5])
+                    set(Calendar.YEAR, year ?: 0)
+                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, (day ?: 0) -1)
+                    set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
                 }
                 reserveAlarm()
+                selectedAlarm = 4
             }
             //당일
             3 -> {
@@ -348,15 +365,17 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 ).show()
                 calendar.apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, santaDay[0])
-                    set(Calendar.MONTH, santaDay[1] - 1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, santaDay[2])
-                    set(Calendar.HOUR_OF_DAY, santaDay[3]) //24시간으로 지정한다
-                    set(Calendar.MINUTE, santaDay[4])
-                    set(Calendar.SECOND, santaDay[5])
+                    set(Calendar.YEAR, year ?: 0)
+                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, day ?: 0)
+                    set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
                 }
                 reserveAlarm()
+                selectedAlarm = 4
             }
+            4 -> {}
             else -> {
                 isNotCheck()
                 selectedAlarm = 0
@@ -430,6 +449,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onResume() {
         super.onResume()
         setAlarm()
+        initFriendData()
         Log.d("ContactDetailFragment", "onResume()")
     }
 
