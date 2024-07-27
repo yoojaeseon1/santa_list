@@ -32,7 +32,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
         <RadioGroup
             android:id="@+id/btn_alert_dialog"
             android:layout_width="0dp"
@@ -48,8 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:button="@android:color/transparent"
                 android:background="@drawable/sel_alert_rb_bg"
+                android:button="@android:color/transparent"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:text="@string/alarm_second_5"
@@ -62,8 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:button="@android:color/transparent"
                 android:background="@drawable/sel_alert_rb_bg"
+                android:button="@android:color/transparent"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:text="@string/alarm_day_before"
@@ -76,8 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:button="@android:color/transparent"
                 android:background="@drawable/sel_alert_rb_bg"
+                android:button="@android:color/transparent"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:text="@string/alarm_today"
@@ -94,8 +93,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="@color/stroke"
             android:gravity="center"
             android:text="@string/dialog_cancle"
@@ -111,8 +110,8 @@
             style="@style/detail_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/dialog_ok"
             android:textAllCaps="false"

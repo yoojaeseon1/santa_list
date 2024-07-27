@@ -1,83 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#77000000"
     android:gravity="center">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="280dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/shape_dialog_bg"
-    android:elevation="0dp"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="28dp">
-
-
-    <TextView
-        android:id="@+id/gift_shop_tv_title"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:text="@string/gift_shop"
-        android:textColor="@color/primary"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/gift_shop_tv_coupang"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/gift_shop_tv_coupang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:text="@string/gift_shop_coupang"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:drawableTopCompat="@drawable/drawable_gift_shop_coupang"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/gift_shop_tv_kakao"
-        app:layout_constraintTop_toBottomOf="@id/gift_shop_tv_title" />
-
-    <TextView
-        android:id="@+id/gift_shop_tv_kakao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:text="@string/gift_shop_kakao"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:drawableTopCompat="@drawable/drawable_gift_shop_kakao"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/gift_shop_tv_coupang"
-        app:layout_constraintTop_toBottomOf="@id/gift_shop_tv_title" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/gift_shop_btn_cancle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="@string/dialog_cancle"
-        android:textAllCaps="false"
-        android:textColor="@color/primary"
-        app:layout_constraintEnd_toEndOf="@+id/gift_shop_tv_kakao"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="@+id/gift_shop_tv_coupang"
-        app:layout_constraintTop_toBottomOf="@+id/gift_shop_tv_kakao" />
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg"
+        android:elevation="0dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="28dp">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/gift_shop_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/gift_shop"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/gift_shop_tv_coupang"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/gift_shop_tv_coupang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:text="@string/gift_shop_coupang"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:drawableTopCompat="@drawable/drawable_gift_shop_coupang"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/gift_shop_tv_kakao"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gift_shop_tv_title" />
+
+        <TextView
+            android:id="@+id/gift_shop_tv_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:text="@string/gift_shop_kakao"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:drawableTopCompat="@drawable/drawable_gift_shop_kakao"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@id/gift_shop_tv_coupang"
+            app:layout_constraintTop_toBottomOf="@id/gift_shop_tv_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gift_shop_btn_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/dialog_cancle"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            app:layout_constraintEnd_toEndOf="@+id/gift_shop_tv_kakao"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="@+id/gift_shop_tv_coupang"
+            app:layout_constraintTop_toBottomOf="@+id/gift_shop_tv_kakao" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

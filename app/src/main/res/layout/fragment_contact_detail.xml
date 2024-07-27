@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactDetailFragment"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".ContactDetailFragment">
 
 
     <include
@@ -46,42 +46,42 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/detail_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/detail_iv_favorite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/detail_iv_favorite"
-            app:layout_constraintTop_toTopOf="@+id/detail_iv_favorite" />
+    <TextView
+        android:id="@+id/detail_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/app_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_iv_favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_iv_favorite"
+        app:layout_constraintTop_toTopOf="@+id/detail_iv_favorite" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/detail_btn_message"
-            style="@style/detail_btn"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/btn_message"
-            app:layout_constraintEnd_toStartOf="@+id/detail_btn_call"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_btn_message"
+        style="@style/detail_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/btn_message"
+        app:layout_constraintEnd_toStartOf="@+id/detail_btn_call"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/detail_btn_call"
-            style="@style/detail_btn"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/btn_call"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/detail_btn_message"
-            app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/detail_btn_call"
+        style="@style/detail_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/btn_call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_btn_message"
+        app:layout_constraintTop_toBottomOf="@+id/detail_iv_profile" />
 
 
     <!--스크롤뷰-->
@@ -142,8 +142,8 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/detail_tv_gift" />
+                app:layout_constraintBottom_toTopOf="@+id/detail_tv_gift"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/detail_tv_set_email"
@@ -183,14 +183,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
+                android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="@string/alert_off"
-                android:button="@android:color/transparent"
                 android:textColor="@drawable/sel_alert_detail_text"
                 android:textSize="14sp"
                 app:drawableStartCompat="@drawable/sel_detail_alert_ic"
-                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintBottom_toBottomOf="@+id/detail_tv_set_present_date"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toEndOf="@+id/detail_tv_set_present_date"
                 app:layout_constraintTop_toTopOf="@+id/detail_tv_set_present_date" />
 

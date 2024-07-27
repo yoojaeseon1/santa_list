@@ -3,39 +3,25 @@ package com.android.santa_list
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.FragmentAlertDialogBinding
 
+private const val ARG_FRIEND = "FRIEND"
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GiftShopDialogFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AlertDialogFragment : DialogFragment() {
     private var _binding: FragmentAlertDialogBinding? = null
     val binding get() = _binding!!
     private var selectedAlarm = 0
-
-    private var param1: User? = null
-
+    private var friend: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getParcelable(ARG_PARAM1, User::class.java)
-
+            friend = it.getParcelable(ARG_FRIEND, User::class.java)
         }
     }
 
@@ -43,29 +29,24 @@ class AlertDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentAlertDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("dd", "${param1}")
 
         //5초뒤
         _binding?.btnAlertDialog1?.setOnClickListener {
             selectedAlarm = 1
-            Log.d("TAG", "${selectedAlarm}")
         }
         //하루 전
         _binding?.btnAlertDialog2?.setOnClickListener {
             selectedAlarm = 2
-            Log.d("TAG", "${selectedAlarm}")
         }
         //당일
         _binding?.btnAlertDialog3?.setOnClickListener {
             selectedAlarm = 3
-            Log.d("TAG", "${selectedAlarm}")
         }
         //완료
         _binding?.alertBtnDialogComplete?.setOnClickListener {
@@ -76,43 +57,23 @@ class AlertDialogFragment : DialogFragment() {
             selectedAlarm = 0
             exit()
         }
-
     }
 
     //디테일페이지로 돌아가는 함수
     private fun exit() {
         val dialogResult =
-            ContactDetailFragment.newInstance(param1!!, selectedAlarm)
+            ContactDetailFragment.newInstance(friend!!, selectedAlarm)
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
         dismiss()
     }
 
-
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GiftShopDialogFragment.
-         */
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GiftShopDialogFragment.
-         */
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(user: User) =
             AlertDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, user)
+                    putParcelable(ARG_FRIEND, user)
                 }
             }
     }

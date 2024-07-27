@@ -8,8 +8,8 @@
         android:id="@+id/image_present"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="centerCrop"
         android:background="@drawable/shape_dialog_bg"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
