@@ -63,30 +63,31 @@ class MainRecyclerViewAdapter(
                 image.setImageURI(contact.profile_image_uri.toUri())
 
             name.text = contact.name
-            name.setOnClickListener {
-                val contactDetailFragment = ContactDetailFragment.newInstance(contact)
-                parentActivity.supportFragmentManager.commit {
-                    Log.d("MainRecyclerViewAdapter", "click name")
-                    replace(R.id.frame_layout, contactDetailFragment)
-                    setReorderingAllowed(true)
-                    addToBackStack("")
+
+            isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
+            val clickListener = View.OnClickListener { view ->
+                when (view.id) {
+                    binding.ivItemStar.id -> {
+                        contact.is_starred = !contact.is_starred
+                        listener.onStarredChanged()
+                        notifyItemChanged(position)
+                    }
+                    else -> {
+                        val contactDetailFragment = ContactDetailFragment.newInstance(contact)
+                        parentActivity.supportFragmentManager.commit {
+                            Log.d("MainRecyclerViewAdapter", "click name")
+                            replace(R.id.frame_layout, contactDetailFragment)
+                            setReorderingAllowed(true)
+                            addToBackStack("")
+                            onClick(contact)
+                        }
+                    }
                 }
             }
+            binding.ivItemImage.setOnClickListener(clickListener)
+            binding.tvItemName.setOnClickListener(clickListener)
+            binding.ivItemStar.setOnClickListener(clickListener)
 
-
-//            image.setImageResource(contact.profile_image)
-            name.text = contact.name
-            isStarred.setImageResource(if (contact.is_starred) R.drawable.icon_star else R.drawable.icon_empt_star)
-
-            name.setOnClickListener {
-                onClick(contact)
-            }
-
-            isStarred.setOnClickListener {
-                contact.is_starred = !contact.is_starred
-                listener.onStarredChanged()
-                notifyItemChanged(position)
-            }
         }
     }
 
