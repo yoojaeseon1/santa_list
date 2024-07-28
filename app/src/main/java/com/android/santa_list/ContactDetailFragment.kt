@@ -72,6 +72,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
             if(isEnabled) {
                 isEnabled = false
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .remove(this@ContactDetailFragment)
+                    .commit()
                 contact_list_fragment.initRecyclerView(Dummy.dummy_users)
                 contact_list_fragment.isStarredList()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
