@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
@@ -34,24 +35,25 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 private const val ARG_PARAM1 = "param1"
 
-private const val ARG_PARAM3 = "param3"
+private const val ARG_SELECTED_ALARM = "selectedAlarm"
 
 
 @Parcelize
 class ContactDetailFragment : Fragment(), Parcelable {
 
-    var best_friend = false
+    var bestFriend = false
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
     private val presentLogRepository = PresentLogRepository()
     private val santaUtil = SantaUtil.getInstance()
     private val calendar = Calendar.getInstance()
-    private var selectedAlarm = 7
+    private var selectedAlarm = 0
 
     private val back_pressed_call_back = object : OnBackPressedCallback(true) {
 
@@ -91,12 +93,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
     private var friend = User()
+    val eventDayYear = friend?.event_date?.year
+    val eventDayMonth = friend?.event_date?.monthValue
+    val eventDayDay = friend?.event_date?.dayOfMonth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
-            selectedAlarm = it.getInt(ARG_PARAM3)
+            selectedAlarm = it.getInt(ARG_SELECTED_ALARM)
         }
     }
 
@@ -115,14 +121,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
         if(friend.is_starred) {
             binding.detailIvFavorite.setImageResource(R.drawable.icon_star)
-            best_friend = true
+            bestFriend = true
         } else {
             binding.detailIvFavorite.setImageResource(R.drawable.icon_empt_star)
-            best_friend = false
+            bestFriend = false
         }
 
+        //해당 친구 정보 불러오기
         initFriendData()
-
 
             //선물하기버튼 : 클릭 시 다이얼로그 응답에 따라 카카오톡, 쿠팡으로 이동
         _binding?.detailIvGift?.setOnClickListener {
@@ -140,14 +146,14 @@ class ContactDetailFragment : Fragment(), Parcelable {
         }
         //즐겨찾기버튼 : 클릭 시 즐겨찾기 친구로 등록
         _binding?.detailIvFavorite?.setOnClickListener {
-            if (best_friend) {
+            if (bestFriend) {
                 _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_empt_star)
                 friend.is_starred = false
-                best_friend = false
+                bestFriend = false
             } else {
                 _binding?.detailIvFavorite?.setImageResource(R.drawable.icon_star)
                 friend.is_starred = true
-                best_friend = true
+                bestFriend = true
             }
         }
 
@@ -294,8 +300,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
         else binding.detailIvProfile.setImageResource(friend.profile_image)
     }
 
-
-
     //선물버튼 애니메이션 함수
     fun btnGiftAnimation() {
         val scaleOut = AnimationUtils.loadAnimation(requireContext(), R.anim.ainm_detail_gift)
@@ -353,10 +357,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
     }
     //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
     private fun setAlarm() {
-        val year = friend?.event_date?.year
-        val month = friend?.event_date?.monthValue
-        val day = friend?.event_date?.dayOfMonth
-
         isCheck()
         when (selectedAlarm) {
             //5초뒤
@@ -378,9 +378,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 ).show()
                 calendar.apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, year ?: 0)
-                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, (day ?: 0) -1)
+                    set(Calendar.YEAR, eventDayYear ?: 0)
+                    set(Calendar.MONTH, (eventDayMonth ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, (eventDayDay ?: 0) -1)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)
@@ -397,9 +397,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 ).show()
                 calendar.apply {
                     timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, year ?: 0)
-                    set(Calendar.MONTH, (month ?: 0) -1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, day ?: 0)
+                    set(Calendar.YEAR, eventDayYear ?: 0)
+                    set(Calendar.MONTH, (eventDayMonth ?: 0) -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, eventDayDay ?: 0)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)
@@ -414,6 +414,8 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         }
     }
+
+
 
     //알람리시버에 알림을 예약하는 함수
     @SuppressLint("ScheduleExactAlarm")
@@ -431,6 +433,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             calendar.timeInMillis, pendingIntent
         )
     }
+
 
 
     companion object {
@@ -458,7 +461,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             ContactDetailFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, user)
-                    putInt(ARG_PARAM3, param3)
+                    putInt(ARG_SELECTED_ALARM, param3)
                 }
             }
 
