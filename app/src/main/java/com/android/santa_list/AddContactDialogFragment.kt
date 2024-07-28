@@ -90,8 +90,10 @@ class AddContactDialogFragment : DialogFragment() {
 
                 else -> {
 //                    if (friend?.profile_image_uri != "") { friend?.profile_image_uri = pickURI.toString() }
-                    friend.profile_image_uri = pickURI.toString()
-                    friend.profile_image = -1
+                    if(pickURI != null) {
+                        friend.profile_image_uri = pickURI.toString()
+                        friend.profile_image = -1
+                    }
                     friend.name = binding.detailEtAddDialgName.text.toString()
                     friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
                     friend.email = binding.detailEtAddDialgEmail.text.toString()
