@@ -68,7 +68,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
         tabLayout.isVisible = true
     }
 
-    private fun hideViewPager() = with(binding) {
+    fun hideViewPager() = with(binding) {
         frameLayout.isVisible = true
         pager.isVisible = false
         tabLayout.isVisible = false

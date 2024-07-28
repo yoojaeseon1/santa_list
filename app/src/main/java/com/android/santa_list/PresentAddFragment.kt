@@ -112,7 +112,7 @@ class PresentAddFragment : DialogFragment() {
         binding.tvPresentDate.setOnClickListener {
             val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 this.year = year
-                this.month = month
+                this.month = month + 1
                 this.day = dayOfMonth
                 binding.tvPresentDate.text = "${year}년 ${month + 1}월 ${day}일"
             }
