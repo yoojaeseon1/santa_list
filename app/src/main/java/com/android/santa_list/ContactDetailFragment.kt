@@ -97,9 +97,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
     private var friend = User()
-    val eventDayYear = friend?.event_date?.year
-    val eventDayMonth = friend?.event_date?.monthValue
-    val eventDayDay = friend?.event_date?.dayOfMonth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +105,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
             friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
             selectedAlarm = it.getInt(ARG_SELECTED_ALARM)
         }
+
     }
 
     override fun onCreateView(
@@ -375,16 +373,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             //하루전
             2 -> {
+                val alarm_date = friend.event_date.minusDays(1)
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.alarm_day_before) + getString(R.string.alarm_selected),
                     Toast.LENGTH_SHORT
                 ).show()
                 calendar.apply {
-                    timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, eventDayYear ?: 0)
-                    set(Calendar.MONTH, (eventDayMonth ?: 0) -1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, (eventDayDay ?: 0) -1)
+                    set(Calendar.YEAR, alarm_date.year)
+                    set(Calendar.MONTH, alarm_date.monthValue - 1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, alarm_date.dayOfMonth)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)
@@ -394,16 +392,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             //당일
             3 -> {
+                val alarm_date = friend.event_date
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.alarm_today) + getString(R.string.alarm_selected),
                     Toast.LENGTH_SHORT
                 ).show()
                 calendar.apply {
-                    timeInMillis = System.currentTimeMillis()
-                    set(Calendar.YEAR, eventDayYear ?: 0)
-                    set(Calendar.MONTH, (eventDayMonth ?: 0) -1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, eventDayDay ?: 0)
+                    set(Calendar.YEAR, alarm_date.year)
+                    set(Calendar.MONTH, alarm_date.monthValue -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, alarm_date.dayOfMonth)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)

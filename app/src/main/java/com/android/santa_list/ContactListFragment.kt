@@ -1,5 +1,6 @@
 package com.android.santa_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
@@ -251,8 +252,9 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         recyclerView.adapter = mainAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun notifyDataSetChanged() {
-
+        mainAdapter.contact.sortWith{ o1, o2 -> o1.name.compareTo(o2.name) }
         mainAdapter.notifyDataSetChanged()
     }
 
