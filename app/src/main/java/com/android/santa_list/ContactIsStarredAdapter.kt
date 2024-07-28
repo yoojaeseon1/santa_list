@@ -3,6 +3,7 @@ package com.android.santa_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemIsStarredListBinding
@@ -27,8 +28,11 @@ class ContactIsStarredAdapter(private val contact: MutableList<User>) : Recycler
         }
 
         val contact = contact[position]
+        if(contact.profile_image >= 0)
+            holder.image.setImageResource(contact.profile_image)
+        else
+            holder.image.setImageURI(contact.profile_image_uri.toUri())
 
-        holder.image.setImageResource(contact.profile_image)
         holder.name.text = contact.name
 
     }
