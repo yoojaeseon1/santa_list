@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -68,6 +69,10 @@ class UserAddFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val now = LocalDateTime.now()
+
+
+        // 핸드폰 번호 입력시 자동 하이픈 추가
+        binding.etAddTel.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         binding.dialogIv.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
