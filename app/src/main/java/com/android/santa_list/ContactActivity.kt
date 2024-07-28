@@ -19,7 +19,8 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
     private val fragmentManager: FragmentManager = supportFragmentManager
     private lateinit var viewPager: ViewPager2
     private val tabTitles = arrayOf("연락처", "내정보")
-    private val tabIcons = arrayOf(R.drawable.ic_phone_selected, R.drawable.ic_my_unselected)
+    private val tabSelectedIcons = arrayOf(R.drawable.ic_phone_selected, R.drawable.ic_my_selected)
+    private val tabUnselectedIcons = arrayOf(R.drawable.ic_phone_unselected, R.drawable.ic_my_unselected)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
             viewPager.offscreenPageLimit = 2
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = tabTitles[position]
-                tab.setIcon(tabIcons[position])
+                tab.setIcon(tabSelectedIcons[position])
             }.attach()
         }
 
@@ -79,15 +80,28 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
             // 0번째 탭 눌렀을 때
             0 -> {
                 viewPager.setCurrentItem(0, false)
+                tab.setIcon(tabSelectedIcons[tab.position]);
             }
             // 1번째 탭 눌렀을 때
             1 -> {
                 viewPager.setCurrentItem(1, false)
+                tab.setIcon(tabSelectedIcons[tab.position]);
             }
         }
     }
 
-    override fun onTabUnselected(tab: TabLayout.Tab?) {}
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+        when (tab!!.position) {
+            // 0번째 탭 눌렀을 때
+            0 -> {
+                tab.setIcon(tabUnselectedIcons[tab.position]);
+            }
+            // 1번째 탭 눌렀을 때
+            1 -> {
+                tab.setIcon(tabUnselectedIcons[tab.position]);
+            }
+        }
+    }
 
-    override fun onTabReselected(tab: TabLayout.Tab?) {}
+    override fun onTabReselected(tab: TabLayout.Tab?) { }
 }
