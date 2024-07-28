@@ -288,10 +288,10 @@ class ContactDetailFragment : Fragment(), Parcelable {
             detailRecyclerViewPresentHistoryMine.adapter = receivedPresentAdapter
             detailRecyclerViewPresentHistory.adapter = givePresentAdapter
             detailRecyclerWishPresent.adapter = wishPresentAdapter
-            detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend!!.event_date)
+            detailTvSetPresentDate.text = santaUtil.makeDateFormat(friend.event_date)
     }
-    if(friend?.profile_image_uri != "") binding.detailIvProfile.setImageURI(friend?.profile_image_uri?.toUri())
-        else binding.detailIvProfile.setImageResource(friend!!.profile_image)
+    if(friend.profile_image_uri != "") binding.detailIvProfile.setImageURI(friend.profile_image_uri.toUri())
+        else binding.detailIvProfile.setImageResource(friend.profile_image)
     }
 
 

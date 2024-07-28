@@ -27,12 +27,12 @@ class AddContactDialogFragment : DialogFragment() {
     val binding get() = _binding!!
     private var pickURI: Uri? = null
     private val selectDate = arrayOf(0, 0, 0)
-    private var friend: User? = null
+    private var friend = User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            friend = it.getParcelable(ARG_FRIEND, User::class.java)
+            friend = it.getParcelable(ARG_FRIEND, User::class.java) ?: User()
         }
     }
 
@@ -82,19 +82,20 @@ class AddContactDialogFragment : DialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                selectDate[0] == null -> Toast.makeText(
+                selectDate[0] == 0 -> Toast.makeText(
                     this.requireContext(),
                     getString(R.string.please_check_date),
                     Toast.LENGTH_SHORT
                 ).show()
 
                 else -> {
-                    if (friend?.profile_image_uri != "") friend?.profile_image_uri =
-                        pickURI.toString()
-                    friend?.name = binding.detailEtAddDialgName.text.toString()
-                    friend?.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
-                    friend?.email = binding.detailEtAddDialgEmail.text.toString()
-                    friend?.event_date =
+//                    if (friend?.profile_image_uri != "") { friend?.profile_image_uri = pickURI.toString() }
+                    friend.profile_image_uri = pickURI.toString()
+                    friend.profile_image = -1
+                    friend.name = binding.detailEtAddDialgName.text.toString()
+                    friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
+                    friend.email = binding.detailEtAddDialgEmail.text.toString()
+                    friend.event_date =
                         LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
 
                     val dialogResult =
@@ -112,11 +113,17 @@ class AddContactDialogFragment : DialogFragment() {
     }
 
     fun getProfile() {
-        if (myData[0].uri != "") {
+//        if (myData[0].uri != "") {
+//            binding.detailIvAddDialg.setImageURI(friend?.profile_image_uri!!.toUri())
+//        } else if(){
+//            binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
+//        }
+        if (friend.profile_image_uri != "") {
             binding.detailIvAddDialg.setImageURI(friend?.profile_image_uri!!.toUri())
-        } else {
+        } else if(friend.profile_image >= 0){
+            binding.detailIvAddDialg.setImageResource(friend.profile_image)
+        } else
             binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
-        }
         with(binding) {
             detailEtAddDialgEmail.setText(friend?.email ?: "")
             detailEtAddDialgPhoneNumber.setText(friend?.phone_number ?: "")
