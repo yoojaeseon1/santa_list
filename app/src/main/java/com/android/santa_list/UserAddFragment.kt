@@ -112,7 +112,7 @@ class UserAddFragment : DialogFragment() {
             val name = binding.etAddName.text.toString()
             val email = binding.etAddEmail.text.toString()
             val tel =  binding.etAddTel.text.toString()
-
+            val event_date = LocalDateTime.of(year,month,day,0,0,0)
 
             when{
                 pickURI == null -> Toast.makeText(this.requireContext(), "프로필 이미지를 확인해주세요.", Toast.LENGTH_SHORT).show()
@@ -127,7 +127,8 @@ class UserAddFragment : DialogFragment() {
                         tel,
                         email,
                         userGroup,
-                        profile_image_uri = pickURI.toString()
+                        profile_image_uri = pickURI.toString(),
+                        event_date = event_date
                     )
                     Dummy.dummy_users.add(user)
                     requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
