@@ -441,24 +441,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
 
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-
-        //        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            ContactDetailFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
 
         @JvmStatic
         fun newInstance(user: User, param3: Int) =
@@ -479,30 +461,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("ContactDetailFragment", "onStart()")
-    }
-
     override fun onResume() {
         super.onResume()
         setAlarm()
         initFriendData()
-        Log.d("ContactDetailFragment", "onResume()")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("ContactDetailFragment", "onStop()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("ContactDetailFragment", "onPause()")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("ContactDetailFragment", "onDetach()")
+        val parentActivity = requireActivity() as ContactActivity
+        parentActivity.hideViewPager()
     }
 }
