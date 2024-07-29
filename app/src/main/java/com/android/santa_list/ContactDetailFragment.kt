@@ -27,7 +27,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
@@ -35,37 +34,38 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 private const val ARG_PARAM1 = "param1"
-
 private const val ARG_SELECTED_ALARM = "selectedAlarm"
 
 
 @Parcelize
 class ContactDetailFragment : Fragment(), Parcelable {
-
-    var bestFriend = false
     private var _binding: FragmentContactDetailBinding? = null
     private val binding get() = _binding!!
-    private val presentLogRepository = PresentLogRepository()
-    private val santaUtil = SantaUtil.getInstance()
-    private val calendar = Calendar.getInstance()
-    private var selectedAlarm = 0
+    private val presentLogRepository: PresentLogRepository = PresentLogRepository()
+    private val santaUtil: SantaUtil = SantaUtil.getInstance()
+    private val calendar: Calendar = Calendar.getInstance()
+    private var selectedAlarm: Int = 0
 
-    private val back_pressed_call_back = object : OnBackPressedCallback(true) {
+    val receivedPresentAdapter: PresentListAdapter by lazy { PresentListAdapter() }
+    val givePresentAdapter: PresentListAdapter by lazy { PresentListAdapter() }
+    val wishPresentAdapter: PresentListAdapter by lazy { PresentListAdapter() }
+
+    private var friend: User = User()
+    var bestFriend: Boolean = false
+
+    private val backPressedCallBack = object : OnBackPressedCallback(true) {
 
         @SuppressLint("NotifyDataSetChanged")
         override fun handleOnBackPressed() {
-
             val fragments = requireActivity().supportFragmentManager.fragments
-            var contact_list_fragment = ContactListFragment()
+            var contactListFragment = ContactListFragment()
 
             for (fragment in fragments) {
                 if(fragment is ContactListFragment) {
-                    contact_list_fragment = fragment
+                    contactListFragment = fragment
                     break
                 }
             }
@@ -76,28 +76,12 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     .beginTransaction()
                     .remove(this@ContactDetailFragment)
                     .commit()
-                contact_list_fragment.initRecyclerView(Dummy.dummy_users)
-                contact_list_fragment.isStarredList()
+                contactListFragment.initRecyclerView(Dummy.dummy_users)
+                contactListFragment.isStarredList()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
     }
-
-    val receivedPresentAdapter: PresentListAdapter by lazy {
-        PresentListAdapter()
-    }
-
-    val givePresentAdapter: PresentListAdapter by lazy {
-        PresentListAdapter()
-    }
-
-    val wishPresentAdapter: PresentListAdapter by lazy {
-        PresentListAdapter()
-    }
-
-
-    private var friend = User()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +95,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -173,7 +157,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 alertDialog.isCancelable = false
                 alertDialog.show(requireFragmentManager(), "DialogFragment")
             }
-
         }
 
 
@@ -246,10 +229,6 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
         wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
 
-
-
-
-
         binding.detailBtnMessage.setOnClickListener {
             val smsUri = Uri.parse("smsto:" + friend.phone_number)
             val intent = Intent(Intent.ACTION_SENDTO)
@@ -283,16 +262,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
                 startActivity(intent)
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), back_pressed_call_back)
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), backPressedCallBack)
 
     }
 
     //정보 입력해주는 함수
     fun initFriendData() {
         with(binding)
-        {detailTvName.text = friend?.name
-        detailTvSetPhoneNumber.text = friend?.phone_number
-        detailTvSetEmail.text = friend?.email
+        {detailTvName.text = friend.name
+        detailTvSetPhoneNumber.text = friend.phone_number
+        detailTvSetEmail.text = friend.email
             detailRecyclerViewPresentHistoryMine.adapter = receivedPresentAdapter
             detailRecyclerViewPresentHistory.adapter = givePresentAdapter
             detailRecyclerWishPresent.adapter = wishPresentAdapter
@@ -348,11 +327,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
         )
             .setCancelable(false)
             .setTitle(getString(R.string.alarm_ask_delete))
-            .setNegativeButton(getString(R.string.delete)) { dialog, which ->
+            .setNegativeButton(getString(R.string.delete)) { _, _ ->
                 isNotCheck()
                 selectedAlarm = 0
             }
-            .setPositiveButton(getString(R.string.dialog_cancle)) { dialog, which ->
+            .setPositiveButton(getString(R.string.dialog_cancle)) { _, _ ->
                 isCheck()
             }
             .show()
@@ -373,16 +352,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             //하루전
             2 -> {
-                val alarm_date = friend.event_date.minusDays(1)
+                val alarmDate = friend.event_date.minusDays(1)
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.alarm_day_before) + getString(R.string.alarm_selected),
                     Toast.LENGTH_SHORT
                 ).show()
                 calendar.apply {
-                    set(Calendar.YEAR, alarm_date.year)
-                    set(Calendar.MONTH, alarm_date.monthValue - 1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, alarm_date.dayOfMonth)
+                    set(Calendar.YEAR, alarmDate.year)
+                    set(Calendar.MONTH, alarmDate.monthValue - 1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, alarmDate.dayOfMonth)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)
@@ -392,16 +371,16 @@ class ContactDetailFragment : Fragment(), Parcelable {
             }
             //당일
             3 -> {
-                val alarm_date = friend.event_date
+                val alarmDate = friend.event_date
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.alarm_today) + getString(R.string.alarm_selected),
                     Toast.LENGTH_SHORT
                 ).show()
                 calendar.apply {
-                    set(Calendar.YEAR, alarm_date.year)
-                    set(Calendar.MONTH, alarm_date.monthValue -1) //0부터 시작한다
-                    set(Calendar.DAY_OF_MONTH, alarm_date.dayOfMonth)
+                    set(Calendar.YEAR, alarmDate.year)
+                    set(Calendar.MONTH, alarmDate.monthValue -1) //0부터 시작한다
+                    set(Calendar.DAY_OF_MONTH, alarmDate.dayOfMonth)
                     set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
                     set(Calendar.MINUTE, 0)
                     set(Calendar.SECOND, 0)

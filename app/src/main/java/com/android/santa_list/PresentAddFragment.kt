@@ -9,7 +9,6 @@ import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.Present
 import com.android.santa_list.dataClass.PresentLog
@@ -27,19 +25,11 @@ import com.android.santa_list.repository.PresentLogRepository
 import java.io.File
 import java.time.LocalDateTime
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private const val ARG_PARAM3 = "param3"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PresentAddFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PresentAddFragment : DialogFragment() {
-    // TODO: Rename and change types of parameters
     private var param1: User? = null
     private var param2: String? = null
     private var param3: ContactDetailFragment? = null
@@ -52,7 +42,7 @@ class PresentAddFragment : DialogFragment() {
     private var month = calendar.get(Calendar.MONTH)
     private var day = calendar.get(Calendar.DAY_OF_MONTH)
 
-    private val loginedUser = Dummy.loggedInUser
+    private val loggedInUser = Dummy.loggedInUser
 
     private val presentLogRepository = PresentLogRepository()
 
@@ -80,7 +70,7 @@ class PresentAddFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPresentAddBinding.inflate(inflater, container, false)
         return binding.root
@@ -124,17 +114,14 @@ class PresentAddFragment : DialogFragment() {
 
 
         binding.btnPresentComplete.setOnClickListener {
+            val presentName = binding.etPresentName.text.toString()
+            val presentDate = binding.tvPresentDate.text.toString()
 
-            // validation
-
-            val present_name = binding.etPresentName.text.toString()
-            val present_date = binding.tvPresentDate.text.toString()
-
-            if(present_name.isEmpty() && present_date.isEmpty() && imageUri == null)
+            if(presentName.isEmpty() && presentDate.isEmpty() && imageUri == null)
                 Toast.makeText(requireActivity(), "선물 사진, 선물 명, 날짜를 입력 해주세요.", Toast.LENGTH_SHORT).show()
-            else if(present_name.isEmpty())
+            else if(presentName.isEmpty())
                 Toast.makeText(requireActivity(), "선물 명을 입력 해주세요.", Toast.LENGTH_SHORT).show()
-            else if(present_date.isEmpty())
+            else if(presentDate.isEmpty())
                 Toast.makeText(requireActivity(), "선물 날짜를 입력 해주세요.", Toast.LENGTH_SHORT).show()
             else if(imageUri == null) {
                 Toast.makeText(requireActivity(), "사진을 추가 해주세요.", Toast.LENGTH_SHORT).show()
@@ -144,17 +131,17 @@ class PresentAddFragment : DialogFragment() {
                     "received" -> {
                         Dummy.presentLogs.add(PresentLog(
                             param1!!,
-                            loginedUser,
-                            Present(present_name, imageUri.toString()), LocalDateTime.of(year,month,day,0,0,0)))
+                            loggedInUser,
+                            Present(presentName, imageUri.toString()), LocalDateTime.of(year,month,day,0,0,0)))
                     }
                     "give" ->{
                         Dummy.presentLogs.add(PresentLog(
-                            loginedUser,
+                            loggedInUser,
                             param1!!,
-                            Present(present_name, imageUri.toString()), LocalDateTime.of(year,month,day,0,0,0)))
+                            Present(presentName, imageUri.toString()), LocalDateTime.of(year,month,day,0,0,0)))
                     }
                     else -> {
-                        param1!!.wish_list.add(Present(present_name, imageUri.toString()))
+                        param1!!.wish_list.add(Present(presentName, imageUri.toString()))
                     }
                 }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
@@ -168,15 +155,6 @@ class PresentAddFragment : DialogFragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PresentAddFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: User, from: String, fragment: ContactDetailFragment) =
             PresentAddFragment().apply {
@@ -190,16 +168,13 @@ class PresentAddFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("PresentAddFragment","onResume()")
         if(imageFile != null) {
-            Log.d("PresentAddFragment","${imageUri}")
             binding.ivAddPresent.setImageURI(imageUri)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("PresentAddFragment","onDestroy()")
         _binding = null
     }
 
