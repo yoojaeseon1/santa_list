@@ -200,6 +200,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         recyclerView.adapter = adapter
     }
 
+    // Challenge 과제 1
     private fun onClickMore(popup: PopupMenu, recyclerView: RecyclerView) {
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.main_menu_option, popup.menu)

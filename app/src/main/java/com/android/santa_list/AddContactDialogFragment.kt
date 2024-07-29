@@ -27,9 +27,21 @@ class AddContactDialogFragment : DialogFragment() {
     private var _binding: FragmentAddContactDialogBinding? = null
     val binding get() = _binding!!
     private var pickURI: Uri? = null
-    private val selectDate = arrayOf(0, 0, 0)
-    private var friend = User()
+    private val selectDate: Array<Int> = arrayOf(0, 0, 0)
+    private var friend: User = User()
     private val btnBack = binding.alertBtnDialogBack
+
+    // 유효성 검사식
+    private val regex: String = "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+\$"
+
+    // 이미지 선택
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                pickURI = uri
+                binding.detailIvAddDialg.setImageURI(uri)
+            }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,87 +77,56 @@ class AddContactDialogFragment : DialogFragment() {
 
             // 선물 해줄 날짜 클릭 : 달력 다이얼로그 호출
             detailBtnDialogPresentDay.setOnClickListener {
-                dialogCalendar()
+                detailBtnDialogPresentDay.text = dialogCalendar(detailBtnDialogPresentDay.text)
             }
 
             // 완료 버튼 : 유효성검사에 따른 토스트메시지
             alertBtnDialogComplete.setOnClickListener {
-                when {
+                with(binding){
+                    when {
+                        detailEtAddDialgName.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_name))
 
-                    binding.detailEtAddDialgName.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_name))
+                        detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_phone_number))
 
-                    binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_phone_number))
+                        !Pattern.matches(
+                            regex,
+                            detailEtAddDialgEmail.text
+                        ) -> makingToast(getString(R.string.not_match_email))
 
-                    !Pattern.matches(
-                        "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",
-                        binding.detailEtAddDialgEmail.text
-                    ) -> makingToast(getString(R.string.not_match_email))
+                        selectDate[0] == 0 -> makingToast(getString(R.string.please_check_date))
 
-                    selectDate[0] == 0 -> makingToast(getString(R.string.please_check_date))
+                        else -> {
+                            if (pickURI != null) {
+                                friend.profile_image_uri = pickURI.toString()
+                                friend.profile_image = -1
+                            }
+                            friend.name = detailEtAddDialgName.text.toString()
+                            friend.phone_number = detailEtAddDialgPhoneNumber.text.toString()
+                            friend.email = detailEtAddDialgEmail.text.toString()
+                            friend.event_date =
+                                LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
 
-                    else -> {
-                        if (pickURI != null) {
-                            friend.profile_image_uri = pickURI.toString()
-                            friend.profile_image = -1
+                            val dialogResult =
+                                ContactDetailFragment.newInstance(friend)
+                            requireActivity().supportFragmentManager.beginTransaction()
+                                .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
+                            dismiss()
                         }
-                        friend.name = binding.detailEtAddDialgName.text.toString()
-                        friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
-                        friend.email = binding.detailEtAddDialgEmail.text.toString()
-                        friend.event_date =
-                            LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
-
-                        val dialogResult =
-                            ContactDetailFragment.newInstance(friend!!)
-                        requireActivity().supportFragmentManager.beginTransaction()
-                            .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
-                        dismiss()
                     }
                 }
             }
         }
     }
 
+    // Challenge 과제 3
     private fun makingToast(string: String) {
         Toast.makeText(this@AddContactDialogFragment.requireContext(), string, Toast.LENGTH_SHORT)
             .show()
     }
 
-    private fun showToastTesting(binding: FragmentAddContactDialogBinding) {
-        when {
-            binding.detailEtAddDialgName.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_name))
-
-            binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_phone_number))
-
-            !Pattern.matches(
-                "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",
-                binding.detailEtAddDialgEmail.text
-            ) -> makingToast(getString(R.string.not_match_email))
-
-            selectDate[0] == 0 -> makingToast(getString(R.string.please_check_date))
-
-            else -> {
-                if (pickURI != null) {
-                    friend.profile_image_uri = pickURI.toString()
-                    friend.profile_image = -1
-                }
-                friend.name = binding.detailEtAddDialgName.text.toString()
-                friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
-                friend.email = binding.detailEtAddDialgEmail.text.toString()
-                friend.event_date =
-                    LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
-
-                val dialogResult =
-                    ContactDetailFragment.newInstance(friend)
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
-                dismiss()
-            }
-        }
-    }
-
     private fun getProfile() {
         if (friend.profile_image_uri != "") {
-            binding.detailIvAddDialg.setImageURI(friend.profile_image_uri!!.toUri())
+            binding.detailIvAddDialg.setImageURI(friend.profile_image_uri.toUri())
         } else if (friend.profile_image >= 0) {
             binding.detailIvAddDialg.setImageResource(friend.profile_image)
         } else
@@ -159,31 +140,25 @@ class AddContactDialogFragment : DialogFragment() {
         }
     }
 
+    // Challenge 과제 2
     // 달력 다이얼로그 출력
-    private fun dialogCalendar() {
+    private fun dialogCalendar(dateText: CharSequence): String {
+        var date = dateText;
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val listener = DatePickerDialog.OnDateSetListener { datePicker, i, i2, i3 ->
+        val listener = DatePickerDialog.OnDateSetListener { _, i, i2, i3 ->
             selectDate[0] = i
             selectDate[1] = i2 + 1
             selectDate[2] = i3
-            binding.detailBtnDialogPresentDay.text = "${i}년 ${i2 + 1}월 ${i3}일"
+            date = "${i}년 ${i2 + 1}월 ${i3}일"
         }
         val picker = DatePickerDialog(requireContext(), listener, year, month, day)
         picker.show()
-    }
 
-    // 이미지 선택
-    private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                pickURI = uri
-                Log.d("whatHappen", "${uri::class.java}")
-                binding.detailIvAddDialg.setImageURI(uri)
-            }
-        }
+        return date.toString()
+    }
 
     companion object {
         @JvmStatic
