@@ -39,6 +39,7 @@
         app:tabIndicatorColor="@color/transparent"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
+        app:tabIconTint="@null"
         app:tabRippleColor="@color/transparent"
         app:tabSelectedTextColor="@color/selected"
         app:tabTextAppearance="@style/tab_text"

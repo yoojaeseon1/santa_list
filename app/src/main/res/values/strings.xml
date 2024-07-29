@@ -16,6 +16,7 @@
     <string name="please_check_phone_number">전화번호를 확인해 주세요.</string>
     <string name="please_check_email">이메일을 확인해 주세요.</string>
     <string name="please_check_date">날짜를 선택해 주세요.</string>
+    <string name="not_match_email">이메일의 형식이 올바르지 않거나, 비어있습니다.</string>
 
     <!--Menu Items-->
     <string name="menu_item_list">리스트뷰로 보기</string>
