@@ -107,7 +107,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         with(binding) {
             toolBar.action.setOnClickListener {
                 val popup = PopupMenu(context, it)
-                onClickMore(popup)
+                onClickMore(popup, recyclerView)
             }
 
             listFilteringSpinner.onItemSelectedListener =
@@ -162,7 +162,6 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
                         mainAdapter.contact = filteredList
                         recyclerView.layoutManager = LinearLayoutManager(context)
                         recyclerView.adapter = mainAdapter
-
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -201,12 +200,7 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
         recyclerView.adapter = adapter
     }
 
-    private fun onClickMore(popup: PopupMenu) {
-        val linearLayoutManager: RecyclerView.LayoutManager =
-            LinearLayoutManager(context)
-        val gridLayoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(context, 4)
-
+    private fun onClickMore(popup: PopupMenu, recyclerView: RecyclerView) {
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.main_menu_option, popup.menu)
 
@@ -214,12 +208,12 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             when (menuItem.itemId) {
                 R.id.menu_item_list -> {
                     Log.d("🤔 ??", "리스트 뷰 선택")
-                    recyclerView.layoutManager = linearLayoutManager
+                    recyclerView.layoutManager = LinearLayoutManager(context)
                 }
 
                 R.id.menu_item_grid -> {
                     Log.d("🤔 ??", "그리드 뷰 선택")
-                    recyclerView.layoutManager = gridLayoutManager
+                    recyclerView.layoutManager = GridLayoutManager(context, 4)
                 }
 
                 else -> {

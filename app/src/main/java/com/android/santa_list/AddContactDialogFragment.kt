@@ -1,6 +1,7 @@
 package com.android.santa_list
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
@@ -14,8 +15,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
-import com.android.santa_list.dataClass.Dummy.myData
 import com.android.santa_list.dataClass.User
+import com.android.santa_list.databinding.ActivityContactBinding
 import com.android.santa_list.databinding.FragmentAddContactDialogBinding
 import java.time.LocalDateTime
 import java.util.regex.Pattern
@@ -28,6 +29,8 @@ class AddContactDialogFragment : DialogFragment() {
     private var pickURI: Uri? = null
     private val selectDate = arrayOf(0, 0, 0)
     private var friend = User()
+    private val btnBack = binding.alertBtnDialogBack
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +42,7 @@ class AddContactDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddContactDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,86 +53,108 @@ class AddContactDialogFragment : DialogFragment() {
         //기존 데이터 연결
         getProfile()
 
-        // 이미지 추가 클릭 : 사용자 카메라 또는 갤러리에서 이미지 업로드
-        binding.detailIvAddDialg.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-        // 선물 해줄 날짜 클릭 : 달력 다이얼로그 호출
-        binding.detailBtnDialogPresentDay.setOnClickListener {
-            dialogCalendar()
-        }
-        // 완료 버튼 : 유효성검사에 따른 토스트메시지
-        binding.alertBtnDialogComplete.setOnClickListener {
-            when {
-                binding.detailEtAddDialgName.text.isNullOrBlank() -> Toast.makeText(
-                    this.requireContext(),
-                    getString(R.string.please_check_name),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> Toast.makeText(
-                    this.requireContext(),
-                    getString(R.string.please_check_phone_number),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                !Pattern.matches(
-                    "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",
-                    binding.detailEtAddDialgEmail.text
-                ) -> Toast.makeText(
-                    this.requireContext(),
-                    "이메일의 형식이 올바르지 않거나, 비어있습니다.",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                selectDate[0] == 0 -> Toast.makeText(
-                    this.requireContext(),
-                    getString(R.string.please_check_date),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                else -> {
-//                    if (friend?.profile_image_uri != "") { friend?.profile_image_uri = pickURI.toString() }
-                    if(pickURI != null) {
-                        friend.profile_image_uri = pickURI.toString()
-                        friend.profile_image = -1
-                    }
-                    friend.name = binding.detailEtAddDialgName.text.toString()
-                    friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
-                    friend.email = binding.detailEtAddDialgEmail.text.toString()
-                    friend.event_date =
-                        LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
-
-                    val dialogResult =
-                        ContactDetailFragment.newInstance(friend!!)
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
-                    dismiss()
-                }
-            }
-        }
-        val btnBack = binding.alertBtnDialogBack
         btnBack.setOnClickListener() {
             dismiss()
         }
+
+        with(binding) {
+            // 이미지 추가 클릭 : 사용자 카메라 또는 갤러리에서 이미지 업로드
+            detailIvAddDialg.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+
+            // 선물 해줄 날짜 클릭 : 달력 다이얼로그 호출
+            detailBtnDialogPresentDay.setOnClickListener {
+                dialogCalendar()
+            }
+
+            // 완료 버튼 : 유효성검사에 따른 토스트메시지
+            alertBtnDialogComplete.setOnClickListener {
+                when {
+
+                    binding.detailEtAddDialgName.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_name))
+
+                    binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_phone_number))
+
+                    !Pattern.matches(
+                        "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",
+                        binding.detailEtAddDialgEmail.text
+                    ) -> makingToast(getString(R.string.not_match_email))
+
+                    selectDate[0] == 0 -> makingToast(getString(R.string.please_check_date))
+
+                    else -> {
+                        if (pickURI != null) {
+                            friend.profile_image_uri = pickURI.toString()
+                            friend.profile_image = -1
+                        }
+                        friend.name = binding.detailEtAddDialgName.text.toString()
+                        friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
+                        friend.email = binding.detailEtAddDialgEmail.text.toString()
+                        friend.event_date =
+                            LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
+
+                        val dialogResult =
+                            ContactDetailFragment.newInstance(friend!!)
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 
-    fun getProfile() {
-//        if (myData[0].uri != "") {
-//            binding.detailIvAddDialg.setImageURI(friend?.profile_image_uri!!.toUri())
-//        } else if(){
-//            binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
-//        }
+    private fun makingToast(string: String) {
+        Toast.makeText(this@AddContactDialogFragment.requireContext(), string, Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun showToastTesting(binding: FragmentAddContactDialogBinding) {
+        when {
+            binding.detailEtAddDialgName.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_name))
+
+            binding.detailEtAddDialgPhoneNumber.text.isNullOrBlank() -> makingToast(getString(R.string.please_check_phone_number))
+
+            !Pattern.matches(
+                "[0-9a-zA-Z]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",
+                binding.detailEtAddDialgEmail.text
+            ) -> makingToast(getString(R.string.not_match_email))
+
+            selectDate[0] == 0 -> makingToast(getString(R.string.please_check_date))
+
+            else -> {
+                if (pickURI != null) {
+                    friend.profile_image_uri = pickURI.toString()
+                    friend.profile_image = -1
+                }
+                friend.name = binding.detailEtAddDialgName.text.toString()
+                friend.phone_number = binding.detailEtAddDialgPhoneNumber.text.toString()
+                friend.email = binding.detailEtAddDialgEmail.text.toString()
+                friend.event_date =
+                    LocalDateTime.of(selectDate[0], selectDate[1], selectDate[2], 0, 0, 0)
+
+                val dialogResult =
+                    ContactDetailFragment.newInstance(friend)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, dialogResult).addToBackStack(null).commit()
+                dismiss()
+            }
+        }
+    }
+
+    private fun getProfile() {
         if (friend.profile_image_uri != "") {
-            binding.detailIvAddDialg.setImageURI(friend?.profile_image_uri!!.toUri())
-        } else if(friend.profile_image >= 0){
+            binding.detailIvAddDialg.setImageURI(friend.profile_image_uri!!.toUri())
+        } else if (friend.profile_image >= 0) {
             binding.detailIvAddDialg.setImageResource(friend.profile_image)
         } else
             binding.detailIvAddDialg.setImageResource(R.drawable.image_add_image)
+
         with(binding) {
-            detailEtAddDialgEmail.setText(friend?.email ?: "")
-            detailEtAddDialgPhoneNumber.setText(friend?.phone_number ?: "")
-            detailEtAddDialgName.setText(friend?.name ?: "")
+            detailEtAddDialgEmail.setText(friend.email ?: "")
+            detailEtAddDialgPhoneNumber.setText(friend.phone_number ?: "")
+            detailEtAddDialgName.setText(friend.name ?: "")
             detailEtAddDialgPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         }
     }

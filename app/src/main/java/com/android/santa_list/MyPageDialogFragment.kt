@@ -2,15 +2,10 @@ package com.android.santa_list
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.Color.argb
-import android.graphics.Color.rgb
-import android.graphics.ColorSpace.Rgb
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.android.santa_list.dataClass.Dummy.myData
 import com.android.santa_list.databinding.FragmentMyPageDialogBinding
@@ -54,7 +48,7 @@ class MyPageDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentMyPageDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,9 +80,10 @@ class MyPageDialogFragment : DialogFragment() {
             detailEtTel.addTextChangedListener(PhoneNumberFormattingTextWatcher())
             // 달력 다이얼로그 출력
             detailGiftDate.setOnClickListener {
-                dialogCalendal()
+                dialogCalendar()
             }
         }
+
         // 다이얼로그 열었을 때 selectDate Text가 있는데 null로 나온다면
         if (selectDate[0] == null && binding.detailGiftDate.text.isNotBlank()) {
             val dateText: List<String> = binding.detailGiftDate.text.split("년 ", "월 ", "일")
@@ -131,7 +126,7 @@ class MyPageDialogFragment : DialogFragment() {
     }
 
     // 달력 다이얼로그 출력
-    private fun dialogCalendal () {
+    private fun dialogCalendar () {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -146,6 +141,7 @@ class MyPageDialogFragment : DialogFragment() {
         val picker = DatePickerDialog(requireContext(), listener, year, month, day)
         picker.show()
     }
+
     // 이미지 크롭 선택
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {

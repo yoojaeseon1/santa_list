@@ -7,7 +7,6 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ItemIsStarredListBinding
-import com.android.santa_list.databinding.ItemUserListBinding
 
 class ContactIsStarredAdapter(private val contact: MutableList<User>) : RecyclerView.Adapter<ContactIsStarredAdapter.Holder>() {
     override fun onCreateViewHolder(
@@ -41,7 +40,7 @@ class ContactIsStarredAdapter(private val contact: MutableList<User>) : Recycler
         fun onClick(view : View, position: Int)
     }
 
-    var itemClick : ItemClick? = null
+    private var itemClick : ItemClick? = null
 
     inner class Holder(private val binding: ItemIsStarredListBinding):
         RecyclerView.ViewHolder(binding.root) {
@@ -52,5 +51,4 @@ class ContactIsStarredAdapter(private val contact: MutableList<User>) : Recycler
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
-
 }

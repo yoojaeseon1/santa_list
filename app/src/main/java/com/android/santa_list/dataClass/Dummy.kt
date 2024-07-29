@@ -3,10 +3,8 @@ package com.android.santa_list.dataClass
 import com.android.santa_list.R
 
 object Dummy {
-
     val presentLogs: MutableList<PresentLog> = mutableListOf()
     val myData = mutableListOf<MyData>()
-
 
     private val jaeseon = User("id1", "유재선", "010-1234-5678", "jaeseon@gmail.com",UserGroup.SCHOOL, R.drawable.image_jaesun, is_starred = false)
     private val hwamin = User("id2", "이화민", "010-1256-5678", "hwamin@gmail.com", UserGroup.SCHOOL, R.drawable.image_hwamin, is_starred = false)

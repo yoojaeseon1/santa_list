@@ -18,6 +18,7 @@ class ContactActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener, Ch
     private val binding: ActivityContactBinding by lazy { ActivityContactBinding.inflate( layoutInflater ) }
     private val fragmentManager: FragmentManager = supportFragmentManager
     private lateinit var viewPager: ViewPager2
+
     private val tabTitles = arrayOf("연락처", "내정보")
     private val tabSelectedIcons = arrayOf(R.drawable.ic_phone_selected, R.drawable.ic_my_selected)
     private val tabUnselectedIcons = arrayOf(R.drawable.ic_phone_unselected, R.drawable.ic_my_unselected)
