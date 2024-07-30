@@ -342,11 +342,12 @@ class ContactDetailFragment : Fragment(), Parcelable {
         when (selectedAlarm) {
             //5초뒤
             1 -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
-                    Toast.LENGTH_SHORT
-                ).show()
+                makingToast(getString(R.string.alarm_second_5) + getString(R.string.alarm_selected))
+//                Toast.makeText(
+//                    requireContext(),
+//                    getString(R.string.alarm_second_5) + getString(R.string.alarm_selected),
+//                    Toast.LENGTH_SHORT
+//                ).show()
                 reserveAlarm()
                 selectedAlarm = 4
             }

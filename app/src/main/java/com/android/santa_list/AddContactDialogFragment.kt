@@ -15,6 +15,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.User
 import com.android.santa_list.databinding.ActivityContactBinding
 import com.android.santa_list.databinding.FragmentAddContactDialogBinding
@@ -22,6 +23,12 @@ import java.time.LocalDateTime
 import java.util.regex.Pattern
 
 private const val ARG_FRIEND = "FRIEND"
+
+// Challenge 과제 3 :: 확장함수
+fun Fragment.makingToast(string: String) {
+    Toast.makeText(this.requireContext(), string, Toast.LENGTH_SHORT)
+        .show()
+}
 
 class AddContactDialogFragment : DialogFragment() {
     private var _binding: FragmentAddContactDialogBinding? = null
@@ -118,12 +125,6 @@ class AddContactDialogFragment : DialogFragment() {
         }
     }
 
-    // Challenge 과제 3
-    private fun makingToast(string: String) {
-        Toast.makeText(this@AddContactDialogFragment.requireContext(), string, Toast.LENGTH_SHORT)
-            .show()
-    }
-
     private fun getProfile() {
         if (friend.profile_image_uri != "") {
             binding.detailIvAddDialg.setImageURI(friend.profile_image_uri.toUri())
@@ -154,7 +155,7 @@ class AddContactDialogFragment : DialogFragment() {
             selectDate[2] = i3
             date = "${i}년 ${i2 + 1}월 ${i3}일"
         }
-        val picker = DatePickerDialog(requireContext(), listener, year, month, day)
+        val picker = DatePickerDialog(requireContext(), listener, year, month, day) // 이것도 side effect, 외부에서 호출 하고 return
         picker.show()
 
         return date.toString()

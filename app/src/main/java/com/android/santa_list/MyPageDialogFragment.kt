@@ -31,6 +31,7 @@ class MyPageDialogFragment : DialogFragment() {
     private var _binding: FragmentMyPageDialogBinding? = null
     val binding get() = _binding!!
     val selectDate: Array<Int?> = arrayOfNulls<Int>(3)
+
     // Fragment에 데이터를 넘겨주기 위한 인터페이스
     interface FragmentInterfacer {
         fun onButtonClick(input: String)
