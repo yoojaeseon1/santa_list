@@ -53,6 +53,7 @@ class PresentLogRepository {
             }
         })
 
+
         return filteredList
     }
 
