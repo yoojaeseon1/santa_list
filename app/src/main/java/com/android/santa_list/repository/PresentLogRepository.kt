@@ -17,6 +17,8 @@ class PresentLogRepository {
                 givenPresents.add(presentLog.present)
         }
 
+        givenPresents.add(0, Present(""))
+
         return givenPresents
     }
 

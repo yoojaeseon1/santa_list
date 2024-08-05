@@ -95,6 +95,11 @@ class ContactListFragment : Fragment(), MainRecyclerViewAdapter.OnStarredChangeL
             binding.listFilteringSpinner.adapter = adapter
         }
 
+//        val itemClickListener = {view: View, position: Int ->
+//            isStarredList()
+//            mainAdapter.notifyItemChanged(position)
+//        }
+
         with(mainAdapter) {
             itemClick = object : MainRecyclerViewAdapter.ItemClick {
                 override fun onClick(view: View, position: Int) {

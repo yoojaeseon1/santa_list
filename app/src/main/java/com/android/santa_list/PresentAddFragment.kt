@@ -1,6 +1,7 @@
 package com.android.santa_list
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -63,6 +65,7 @@ class PresentAddFragment : DialogFragment() {
         if(result.resultCode == RESULT_OK) {
             imageUri = result.data?.data
             imageUri?.let {
+//                imageFile = File(santaUtil.getRealPathFromURI(requireActivity(), imageUri!!))
                 imageFile = File(santaUtil.getRealPathFromURI(requireActivity(), imageUri!!))
             }
         }
@@ -86,6 +89,8 @@ class PresentAddFragment : DialogFragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -106,8 +111,11 @@ class PresentAddFragment : DialogFragment() {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
             )
             imageLauncher.launch(intent)
-
         }
+
+
+
+//        binding.ivAddPresent.setOnClickListener()
 
         binding.tvPresentDate.setOnClickListener {
             val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -207,14 +215,15 @@ class PresentAddFragment : DialogFragment() {
     override fun onDetach() {
         super.onDetach()
         val receivedPresents = presentLogRepository.selectPresentList(param1!!, Dummy.loggedInUser)
-        param3?.receivedPresentAdapter?.submitList(santaUtil.makePresentList(receivedPresents))
+        param3?.receivedPresentAdapter?.submitList(receivedPresents.makePresentList())
 
         val givePresents = presentLogRepository.selectPresentList(Dummy.loggedInUser, param1!!)
-        param3?.givePresentAdapter?.submitList(santaUtil.makePresentList(givePresents))
+        param3?.givePresentAdapter?.submitList(givePresents.makePresentList())
 
         val wishList = param1!!.wish_list
-        param3?.wishPresentAdapter?.submitList(santaUtil.makePresentList(wishList))
+        param3?.wishPresentAdapter?.submitList(wishList.makePresentList())
 
     }
 
 }
+

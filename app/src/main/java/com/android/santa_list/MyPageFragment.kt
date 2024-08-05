@@ -71,7 +71,8 @@ class MyPageFragment : Fragment() {
 
     private fun setMyPageData() {
         if (myData[0].santa_number.isNullOrBlank()) {
-            myData[0].santa_number = randomSantaNumber()
+            myData[0].santa_number = randomSantaNumber.invoke()
+//            myData[0].santa_number = randomSantaNumber()
         }
 
         binding.mypageTvSetSantaNumber.text = myData[0].santa_number
@@ -87,8 +88,21 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun randomSantaNumber(): String {
-        var santaNumber: String = ""
+//    private fun randomSantaNumber(): String {
+//        var santaNumber: String = ""
+//        val random = Random()
+//        repeat(6) {
+//            santaNumber += random.nextInt(10).toString()
+//        }
+//        santaNumber += "-"
+//        repeat(7) {
+//            santaNumber += random.nextInt(10).toString()
+//        }
+//        return santaNumber
+//    }
+
+    private val randomSantaNumber = {
+        var santaNumber = ""
         val random = Random()
         repeat(6) {
             santaNumber += random.nextInt(10).toString()
@@ -97,8 +111,10 @@ class MyPageFragment : Fragment() {
         repeat(7) {
             santaNumber += random.nextInt(10).toString()
         }
-        return santaNumber
+
+        santaNumber
     }
+
 
     companion object {
         @JvmStatic

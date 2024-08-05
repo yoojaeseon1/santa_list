@@ -1,33 +1,26 @@
 package com.android.santa_list
 
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.icu.util.Calendar
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.android.santa_list.dataClass.Dummy
 import com.android.santa_list.dataClass.User
@@ -35,8 +28,6 @@ import com.android.santa_list.databinding.FragmentContactDetailBinding
 import com.android.santa_list.repository.PresentLogRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 private const val ARG_PARAM1 = "param1"
@@ -54,6 +45,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
     private val santaUtil = SantaUtil.getInstance()
     private val calendar = Calendar.getInstance()
     private var selectedAlarm = 0
+
+//    private val callingListener: CustomClickListener? = null
+    private val customClickListener: CustomClickListener by lazy {
+        CustomClickListener(requireActivity())
+    }
 
     private val back_pressed_call_back = object : OnBackPressedCallback(true) {
 
@@ -105,6 +101,9 @@ class ContactDetailFragment : Fragment(), Parcelable {
             friend = it.getParcelable(ARG_PARAM1, User::class.java)?:User()
             selectedAlarm = it.getInt(ARG_SELECTED_ALARM)
         }
+
+//        callingListener?.onClick = santaUtil.callListener
+//        callingListener?.onClick(requireActivity(), friend.phone_number)
 
     }
 
@@ -200,15 +199,11 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     )
                 }
             }
-        receivedPresentAdapter.submitList(
-            santaUtil.makePresentList(
-                receivedPresents
-            )
-        )
+        receivedPresentAdapter.submitList(receivedPresents.makePresentList())
 
 
         val givePresents =
-            presentLogRepository.selectPresentList(Dummy.loggedInUser, friend!!)
+            presentLogRepository.selectPresentList(Dummy.loggedInUser, friend)
         givePresentAdapter.imageClick =
             object : PresentListAdapter.ImageClick {
                 override fun onClick() {
@@ -225,7 +220,7 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     )
                 }
             }
-        givePresentAdapter.submitList(santaUtil.makePresentList(givePresents))
+        givePresentAdapter.submitList(givePresents.makePresentList())
 
         val wishList = friend.wish_list
         wishPresentAdapter.imageClick =
@@ -244,47 +239,47 @@ class ContactDetailFragment : Fragment(), Parcelable {
                     )
                 }
             }
-        wishPresentAdapter.submitList(santaUtil.makePresentList(wishList))
+        wishPresentAdapter.submitList(wishList.makePresentList())
 
 
 
 
 
-        binding.detailBtnMessage.setOnClickListener {
-            val smsUri = Uri.parse("smsto:" + friend.phone_number)
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.setData(smsUri)
-            intent.putExtra("sms_body", "")
-            startActivity(intent)
-        }
+//        binding.detailBtnMessage.setOnClickListener {
+//            val smsUri = Uri.parse("smsto:" + friend.phone_number)
+//            val intent = Intent(Intent.ACTION_SENDTO)
+//            intent.setData(smsUri)
+//            intent.putExtra("sms_body", "")
+//            startActivity(intent)
+//        }
 
-        binding.detailBtnCall.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.CALL_PHONE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.d("contactDetailFragment", "don't have permission")
+//        binding.detailBtnCall.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(
+//                    requireActivity(),
+//                    Manifest.permission.CALL_PHONE
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                ActivityCompat.requestPermissions(
+//                    requireActivity(),
+//                    arrayOf(Manifest.permission.CALL_PHONE),
+//                    1
+//                )
+//            } else {
+//                val phone_number =
+//                    "tel:" + santaUtil.removePhoneHyphen(friend.phone_number)
+//                val intent = Intent(
+//                    "android.intent.action.CALL",
+//                    Uri.parse(phone_number)
+//                )
+//                startActivity(intent)
+//            }
+//        }
 
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.CALL_PHONE),
-                    1
-                )
+        customClickListener.phoneNumber = friend.phone_number
+        binding.detailBtnMessage.setOnClickListener(customClickListener.messageListener)
+        binding.detailBtnCall.setOnClickListener(customClickListener.callingListener)
 
-            } else {
-                Log.d("contactDetailFragment", "have permission")
-                val phone_number =
-                    "tel:" + santaUtil.removePhoneHyphen(friend.phone_number)
-                val intent = Intent(
-                    "android.intent.action.CALL",
-                    Uri.parse(phone_number)
-                )
-                startActivity(intent)
-            }
-        }
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), back_pressed_call_back)
-
     }
 
     //정보 입력해주는 함수
